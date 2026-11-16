@@ -31,16 +31,16 @@ Her madde küçük ve tek başına test edilebilir. Bitince `[x]` ile işaretle.
 
 ### Veritabanı ve yetki
 - [x] Şema migration'ını yaz: `venue`, `menu`, `menu_item`, `dish`, `profile`, `invite_code`, `swipe`, `rating`.
-- [ ] API yetki kuralları (servis katmanı hazır: setSwipe/rateDish banlıyı ve başkasının adına yazmayı reddeder; HTTP rotaları girişle gelecek): kullanıcı sadece kendi kaydırmasını ve puanını yazabilsin, menüyü giriş yapmış herkes okuyabilsin, banlı kullanıcı hiçbir şey yazamasın. Her kural için bir test olsun.
+- [x] API yetki kuralları (rotalar oturumdan kullanıcıyı alır; başkası adına yazılamaz; banlı reddedilir): kullanıcı sadece kendi kaydırmasını ve puanını yazabilsin, menüyü giriş yapmış herkes okuyabilsin, banlı kullanıcı hiçbir şey yazamasın. Her kural için bir test olsun.
 - [x] Puan kuralları: pencere (11:30'dan ertesi gün 11:30'a), "yemem" diyenin puanlayamaması, `user + dish + date` başına tek puan. API'de kontrol edilsin, veritabanında unique ve check kısıtlarıyla da güvenceye alınsın. Testli olsun.
 - [x] Oran sınırı (saatte 300 kaydırma, 60 puan). Sınır aşılınca yazma reddedilmeli. Testli olsun.
 
 ### Giriş ve davet
-- [ ] Better Auth ile Google girişini kur. Oturum çerezi `HttpOnly`, `Secure` ve `SameSite=Lax` olsun.
-- [ ] İlk girişte davet kodu ekranı: geçerli kod kabul edilsin, kullanılmış ya da geçersiz kod reddedilsin. `invited_by` kaydedilsin.
-- [ ] Takma ad seçimi: tekil olsun, uzunluk sınırı olsun.
-- [ ] Kullanıcının kendi davet kodlarını görüp paylaşabildiği ekran (5 hak).
-- [ ] Admin için kod üretme (başta SQL ya da basit bir admin sayfası yeterli).
+- [x] Better Auth ile Google girişini kur. Oturum çerezi `HttpOnly`, `Secure` ve `SameSite=Lax` olsun.
+- [ ] İlk girişte davet kodu ekranı (API hazır: POST /api/onboarding; arayüz bekliyor): geçerli kod kabul edilsin, kullanılmış ya da geçersiz kod reddedilsin. `invited_by` kaydedilsin.
+- [ ] Takma ad seçimi (kurallar API'de hazır; arayüz bekliyor): tekil olsun, uzunluk sınırı olsun.
+- [ ] Kullanıcının kendi davet kodlarını (API hazır: GET /api/invites; arayüz bekliyor) görüp paylaşabildiği ekran (5 hak).
+- [x] Admin için kod üretme: `docker compose exec api node --import tsx src/cli/invite-codes.ts <n>`.
 
 ### Arayüz
 - [ ] PWA manifest'i, ikonlar ve service worker. Android'de ve iOS'ta ana ekrana eklenebilmeli.
