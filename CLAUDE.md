@@ -43,7 +43,7 @@ Hepsi mevcut VPS'te çalışır: Debian 12, 2 çekirdek, 2 GB RAM, 40 GB disk, 2
 | İzleme | healthchecks.io (ücretsiz katman) | Scraper ve yedekleme her çalışmada ping atar. Hata ya da hiç ping gelmemesi durumunda mail gönderir. |
 | Yedekleme | Günlük `pg_dump` | Sunucuda 14 günlük yedek tutulur. Haftalık bir kopya `rclone` ile Cloudflare R2'ye (10 GB'a kadar ücretsiz) gönderilir. |
 | CI/CD | GitHub Actions + watchtower | Repo `drxkarub/yersen` (sahibinin hesabında Actions açık). Testler geçince tek imaj (API + derlenmiş ön yüz) GHCR'ye gider, watchtower çeker. SSH anahtarı gerekmez, imaj VPS'te derlenmez. |
-| Yemek görselleri | Pexels API | Ücretsiz ve serbest lisanslı. Görseller indirilip WebP'ye küçültülür ve diskte tutulur. Kaynak gösterilir. |
+| Yemek görselleri | Wikimedia Commons API | Anahtarsız; Türk yemeklerinde isabetli. Yalnızca CC0/PD/CC BY/CC BY-SA. 800 px indirilip `images` volume'ünde tutulur, `/img/<id>.jpg`. Yazar ve lisans gösterilir. |
 
 **Yetki kuralları:** Puanlama penceresi, tek puan ve "yemem" diyenin puanlayamaması API katmanında kontrol edilir. Bunun yanında veritabanı kısıtlarıyla (unique, check, trigger) ikinci kez güvenceye alınır. Testler gerçek bir Postgres'e karşı çalışır: yerelde ve testlerde PGlite (WASM Postgres), üretimde PostgreSQL 17. Aynı Drizzle migration'ları ikisinde de uygulanır.
 
@@ -96,7 +96,7 @@ Hepsi mevcut VPS'te çalışır: Debian 12, 2 çekirdek, 2 GB RAM, 40 GB disk, 2
 
 ### Görseller
 - Her yemeğe bir temsili görsel eklenir ve "temsili görsel" etiketiyle gösterilir.
-- Görsel, eşleşme anahtarına göre bir kez Pexels'ten aranır ve saklanır. Yanlış çıkan görseli admin değiştirebilir.
+- Görsel, scraper çalışırken Wikimedia Commons'ta aranır (önce "<ad> food", sonra yalın; tam ad, çorba eki, son kelime) ve saklanır. Birebir aynı yemek şart değil: kartta "Beklenen yemek görseli" yazar. Yanlış çıkan görseli admin değiştirebilir.
 - Görsel bulunamazsa yemek adındaki anahtar kelimeye göre bir ikon gösterilir ("ÇORBA" geçiyorsa çorba ikonu gibi).
 
 ### Menü yok ekranı

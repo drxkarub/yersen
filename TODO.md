@@ -51,7 +51,7 @@ Her madde küçük ve tek başına test edilebilir. Bitince `[x]` ile işaretle.
 - [x] Puanlama ekranı: 1-10 seçimi. "Yemem" demiş ya da hiç kaydırmamış kullanıcı için "yedim" seçeneği.
 - [x] Gün kartı: tarih, yemekler, günlük kalori, her yemeğin ortalama puanı ve puan sayısı.
 - [x] Menü yok ekranları: hafta sonu/tatil ve "menü henüz yayınlanmadı" durumları.
-- [ ] Yemek görselleri: Pexels'ten bir kez arayıp sakla, kaynak bilgisini göster. Bulunamazsa ikon göster. Admin görseli değiştirebilsin.
+- [x] Yemek görselleri: Wikimedia Commons'tan (Pexels yeni anahtar vermiyor) bir kez arayıp sakla, yazar/lisans ve kaynak bağlantısını göster; bulunamazsa ikon. Admin değiştirme: yönetim panelinde.
 - [ ] Hakkında / Sözleşme / KVKK sayfası ve hesabı silme butonu.
 
 ### Yönetim (giriş arayüzünden sonra)
