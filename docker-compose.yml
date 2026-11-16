@@ -44,6 +44,10 @@ services:
         condition: service_healthy
     environment:
       DATABASE_URL: postgres://yersen:${POSTGRES_PASSWORD}@db:5432/yersen
+      BETTER_AUTH_URL: ${BETTER_AUTH_URL:-}
+      BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET:-}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-}
     ports:
       - "127.0.0.1:3300:3300"
     mem_limit: 192m
