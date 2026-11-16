@@ -52,7 +52,7 @@ Her madde küçük ve tek başına test edilebilir. Bitince `[x]` ile işaretle.
 - [x] Gün kartı: tarih, yemekler, günlük kalori, her yemeğin ortalama puanı ve puan sayısı.
 - [x] Menü yok ekranları: hafta sonu/tatil ve "menü henüz yayınlanmadı" durumları.
 - [x] Yemek görselleri: Wikimedia Commons'tan (Pexels yeni anahtar vermiyor) bir kez arayıp sakla, yazar/lisans ve kaynak bağlantısını göster; bulunamazsa ikon. Admin değiştirme: yönetim panelinde.
-- [ ] Hakkında / Sözleşme / KVKK sayfası ve hesabı silme butonu.
+- [x] Hakkında / kullanım şartları / KVKK aydınlatma metni (#hakkinda, girişsiz de açılır) ve hesabı silme (takma ad onaylı; yönetici hesabı silinemez). İletişim e-postası geliştiricinin onayını bekliyor.
 
 ### Yönetim (giriş arayüzünden sonra)
 - [x] `set-role <takma ad> <admin|moderator|user>` sunucu komutu; geliştirici (big_brother) admin.

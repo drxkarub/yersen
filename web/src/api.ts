@@ -46,6 +46,7 @@ export const api = {
     window.location.assign(url);
   },
   signOut: () => call<void>("/auth/sign-out", { body: {} }),
+  deleteAccount: (confirmNickname: string) => call<void>("/me", { method: "DELETE", body: { confirmNickname } }),
   admin: {
     overview: () => call<{ role: "admin" | "moderator"; scrapeRuns: { id: number; at: string; ok: boolean; message: string }[] }>("/admin/overview"),
     users: () =>
@@ -89,6 +90,8 @@ export function errorText(err: unknown): string {
     cannot_change_admin: "Yöneticinin rolü panelden değiştirilemez.",
     invalid_image: "Bu dosya bir fotoğraf değil ya da bozuk.",
     too_large: "Fotoğraf çok büyük (en fazla 10 MB).",
+    confirm_mismatch: "Takma adın tutmadı. Aynen yaz.",
+    admin_cannot_delete: "Yönetici hesabı silinemez.",
     network: "Bağlantı yok gibi. İnternetini kontrol edip tekrar dene.",
   };
   return messages[code] ?? "Bir şeyler ters gitti. Sayfayı yenileyip tekrar dene.";

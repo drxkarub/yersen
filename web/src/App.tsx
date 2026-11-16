@@ -8,6 +8,7 @@ import { TodayScreen } from "./screens/TodayScreen.tsx";
 import { SwipeScreen } from "./screens/SwipeScreen.tsx";
 import { MeScreen } from "./screens/MeScreen.tsx";
 import { AdminScreen } from "./screens/AdminScreen.tsx";
+import { LegalScreen } from "./screens/LegalScreen.tsx";
 
 type Gate = { kind: "loading" } | { kind: "signed_out" } | { kind: "needs_invite"; me: MeResponse } | { kind: "ready"; me: MeResponse } | { kind: "error" };
 
@@ -20,6 +21,7 @@ const tabFromHash = (): Tab => {
 export function App() {
   const [gate, setGate] = useState<Gate>({ kind: "loading" });
   const [tab, setTab] = useState<Tab>(tabFromHash);
+  const [, setHash] = useState(window.location.hash); // #hakkinda gibi sekme olmayan adresler de yeniden çizdirsin
 
   const load = useCallback(async () => {
     try {
@@ -32,12 +34,22 @@ export function App() {
 
   useEffect(() => {
     void load();
-    const onHash = () => setTab(tabFromHash());
+    const onHash = () => {
+      setTab(tabFromHash());
+      setHash(window.location.hash);
+      window.scrollTo(0, 0);
+    };
     window.addEventListener("hashchange", onHash);
     return () => window.removeEventListener("hashchange", onHash);
   }, [load]);
 
   const now = new Date();
+  if (window.location.hash === "#hakkinda")
+    return (
+      <Shell date={now}>
+        <LegalScreen />
+      </Shell>
+    );
   if (gate.kind === "loading") return <Shell date={now} />;
   if (gate.kind === "error")
     return (

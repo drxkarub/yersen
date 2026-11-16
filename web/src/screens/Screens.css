@@ -540,3 +540,79 @@ button:disabled {
 .mini-gorsel figcaption {
   display: none;
 }
+
+/* --- Hakkında ve kurallar --- */
+
+.metin {
+  display: grid;
+  gap: 10px;
+  font-size: 16px;
+  line-height: 1.55;
+}
+
+.metin h1 {
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.metin h2 {
+  margin-top: 14px;
+  font-size: 19px;
+  font-weight: 700;
+}
+
+.metin h3 {
+  margin-top: 6px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.metin p,
+.metin li {
+  max-width: 68ch;
+}
+
+.metin ul {
+  margin: 0;
+  padding-left: 20px;
+  display: grid;
+  gap: 8px;
+}
+
+.dipnot a {
+  color: var(--ikincil);
+  font-weight: 600;
+}
+
+/* --- Hesap silme --- */
+
+.sil-ac {
+  justify-self: center;
+}
+
+.sil {
+  display: grid;
+  gap: 10px;
+  border: 2px solid var(--iptal);
+}
+
+.sil-tuslar {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.sil-tuslar .dugme {
+  min-height: 50px;
+  font-size: 16px;
+}
+
+.dugme.dugme-tehlike {
+  background: var(--iptal);
+  color: #fff;
+}
+
+.dugme.dugme-tehlike:active {
+  background: #9d2c22;
+}

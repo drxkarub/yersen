@@ -1,3 +1,5 @@
+import { eq } from "drizzle-orm";
+import { profile } from "./db/schema.ts";
 import { beforeEach, describe, expect, it } from "vitest";
 import { createApp, type AuthPort } from "./app.ts";
 import { createTestDb, type Db } from "./db/client.ts";
@@ -170,5 +172,19 @@ describe("GET /api/menu/today ve /api/menu/upcoming", () => {
   it("profili yoksa 403, oturum yoksa 401", async () => {
     expect((await req("/api/menu/today", { user: "profilsiz" })).status).toBe(403);
     expect((await req("/api/menu/today")).status).toBe(401);
+  });
+});
+
+describe("DELETE /api/me", () => {
+  it("takma ad onayıyla hesabı siler (204), sonra profil yok", async () => {
+    const res = await req("/api/me", { user: "u1", method: "DELETE", body: { confirmNickname: "u1" } });
+    expect(res.status).toBe(204);
+    expect((await (await req("/api/me", { user: "u1" })).json()).profile).toBeNull();
+  });
+
+  it("onay tutmazsa 400, yönetici 409", async () => {
+    expect((await req("/api/me", { user: "u1", method: "DELETE", body: { confirmNickname: "yanlis" } })).status).toBe(400);
+    await db.update(profile).set({ role: "admin" }).where(eq(profile.id, "u1"));
+    expect((await req("/api/me", { user: "u1", method: "DELETE", body: { confirmNickname: "u1" } })).status).toBe(409);
   });
 });

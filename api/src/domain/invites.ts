@@ -73,7 +73,7 @@ export async function claimInvite(
         .where(eq(inviteCode.code, normalizeCode(input.code)))
         .for("update");
       if (!invite) return { ok: false, error: "invalid_code" };
-      if (invite.usedBy) return { ok: false, error: "used_code" };
+      if (invite.usedBy || invite.usedAt) return { ok: false, error: "used_code" }; // silinen hesabın kodu da harcanmış sayılır
 
       const [taken] = await tx
         .select({ n: count() })

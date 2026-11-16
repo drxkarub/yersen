@@ -35,7 +35,9 @@ export function Login() {
         <button type="button" className="dugme" onClick={() => void signIn()} disabled={busy}>
           {busy ? "Google'a gidiyor…" : "Google ile giriş yap"}
         </button>
-        <p className="dipnot">yersen öğrenci işidir; Trakya Üniversitesi ile resmi bir bağı yoktur.</p>
+        <p className="dipnot">
+          yersen öğrenci işidir; Trakya Üniversitesi ile resmi bir bağı yoktur. <a href="#hakkinda">Kurallar ve KVKK</a>
+        </p>
       </div>
     </main>
   );

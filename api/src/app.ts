@@ -17,6 +17,7 @@ import {
   setDishImage,
   setModerator,
 } from "./domain/admin.ts";
+import { deleteAccount } from "./domain/account.ts";
 import { claimInvite, myInvites } from "./domain/invites.ts";
 import { getDayMenu, getUpcoming } from "./domain/menuQueries.ts";
 import { istanbulDate } from "./domain/time.ts";
@@ -51,6 +52,8 @@ const STATUS: Record<string, ContentfulStatusCode> = {
   cannot_change_admin: 409,
   bad_count: 400,
   invalid_image: 400,
+  confirm_mismatch: 400,
+  admin_cannot_delete: 409,
   invalid_score: 400,
   invalid_code: 400,
   used_code: 400,
@@ -109,6 +112,14 @@ export function createApp({ db, auth, staticDir, imageDir, publicOrigin, now = (
         .from(profile)
         .where(eq(profile.id, s.userId));
       return c.json({ user: { name: s.name, image: s.image }, profile: p ?? null });
+    });
+
+    // KVKK: hesabı ve verileri sil. Yönetici hesabı silinemez.
+    api.delete("/me", requireJson, requireUser, async (c) => {
+      const b = await body(c, z.object({ confirmNickname: z.string().max(64) }));
+      if (!b) return c.json({ error: "bad_request" }, 400);
+      const r = await deleteAccount(db, { userId: c.get("userId"), confirmNickname: b.confirmNickname });
+      return r.ok ? c.body(null, 204) : fail(c, r.error);
     });
 
     api.post("/onboarding", requireJson, requireUser, async (c) => {
