@@ -10,6 +10,15 @@ const hostname = process.env.API_HOST ?? "127.0.0.1";
 const db = await createDb(process.env.DATABASE_URL || undefined);
 
 function authFromEnv(): AuthPort | undefined {
+  // Yalnızca geliştirme: Google'sız ekran denemesi için sabit bir kullanıcı. Üretimde asla.
+  const devUser = process.env.DEV_FAKE_USER;
+  if (devUser && process.env.NODE_ENV !== "production") {
+    console.warn(`auth: GELİŞTİRME kısayolu açık, herkes "${devUser}" sayılıyor.`);
+    return {
+      handler: async () => new Response(JSON.stringify({ error: "dev" }), { status: 400 }),
+      session: async () => ({ userId: devUser, name: "Geliştirici Deneme", email: "dev@localhost", image: null }),
+    };
+  }
   const { BETTER_AUTH_URL, BETTER_AUTH_SECRET, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } = process.env;
   if (!BETTER_AUTH_URL || !BETTER_AUTH_SECRET || !GOOGLE_CLIENT_ID || !GOOGLE_CLIENT_SECRET) {
     console.warn("auth: BETTER_AUTH_* veya GOOGLE_CLIENT_* eksik; giriş kapalı.");

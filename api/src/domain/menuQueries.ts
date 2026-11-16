@@ -3,23 +3,8 @@ import type { DbOrTx } from "../db/client.ts";
 import { menu, menuItem, rating, swipe, venue } from "../db/schema.ts";
 import { istanbulDate, isRatingOpen, ratingWindow } from "./time.ts";
 
-export type MenuItemView = {
-  menuItemId: number;
-  dishId: number;
-  rawName: string;
-  average: number | null; // yemeğin tüm günlerdeki ortalaması (tek havuz)
-  votes: number;
-  myChoice: "yes" | "no" | "maybe" | null;
-  myScore: number | null; // bu günün puanı
-};
-export type DayMenuView = {
-  date: string;
-  kcal: number | null;
-  ratingOpen: boolean;
-  opensAt: string;
-  closesAt: string;
-  items: MenuItemView[];
-};
+export type { DayMenuView, MenuItemView } from "@yersen/shared";
+import type { DayMenuView } from "@yersen/shared";
 
 const DEFAULT_VENUE = "trakya-merkez";
 

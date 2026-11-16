@@ -1,0 +1,262 @@
+/* Giriş, davet, kaydırma ve "ben" ekranları. Bugün ekranının fiş dilini (Today.css) kullanır. */
+
+.hata {
+  padding: 10px 14px;
+  border: 2px solid var(--iptal);
+  border-radius: var(--kose);
+  background: var(--fis);
+  color: var(--marka-koyu);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.dipnot {
+  text-align: center;
+  font-size: 13px;
+  color: var(--ikincil);
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+/* --- Davet formu --- */
+
+.form-fis {
+  display: grid;
+  gap: 16px;
+}
+
+.form-fis h1 {
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.form-aciklama {
+  font-size: 14px;
+  color: var(--ikincil);
+  max-width: 40ch;
+}
+
+.alan {
+  display: grid;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.alan small {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--ikincil);
+}
+
+.alan input {
+  min-height: 50px;
+  padding: 0 14px;
+  border: 1px solid var(--koparma);
+  border-radius: var(--kose);
+  background: var(--zemin);
+  font: inherit;
+  font-size: 19px;
+  font-weight: 600;
+  color: var(--marka-koyu);
+}
+
+.alan input:focus-visible {
+  outline-offset: 0;
+  border-color: var(--marka);
+}
+
+.kod-girdi {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- Ben: davet kodları --- */
+
+.fis .fis-bas.fis-bas-kisa {
+  min-height: 0;
+  padding-right: 0;
+  margin-bottom: 12px;
+}
+
+.alt-baslik {
+  font-size: 19px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.kodlar {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+}
+
+.kodlar li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  min-height: 52px;
+  border-top: 1px solid var(--cizgi);
+}
+
+.kod {
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  font-variant-numeric: tabular-nums;
+}
+
+.kodlar li[data-kullanildi] .kod {
+  color: var(--soluk);
+  text-decoration: line-through;
+  text-decoration-thickness: 2px;
+}
+
+.kod-kim {
+  font-size: 14px;
+  color: var(--ikincil);
+}
+
+.kod-paylas {
+  min-height: 40px;
+  padding: 0 14px;
+  border: 2px solid var(--marka);
+  border-radius: var(--kose);
+  background: transparent;
+  color: var(--marka);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* --- Kaydırma destesi --- */
+
+.deste {
+  display: grid;
+  gap: 12px;
+}
+
+.deste-sayac {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ikincil);
+}
+
+.kart {
+  position: relative;
+  min-height: 260px;
+  display: grid;
+  align-content: center;
+  gap: 8px;
+  padding: 28px 22px;
+  touch-action: pan-y;
+  user-select: none;
+  cursor: grab;
+}
+
+.kart-gun {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ikincil);
+}
+
+.kart-ad {
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1.05;
+  text-wrap: balance;
+}
+
+.kart-puan {
+  font-size: 14px;
+  color: var(--ikincil);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Sürüklerken karta basılan karar damgası. */
+.kart-damga {
+  position: absolute;
+  top: 18px;
+  padding: 4px 12px;
+  border: 3px solid currentColor;
+  border-radius: 4px;
+  font-size: 24px;
+  font-weight: 900;
+  transform: rotate(-10deg);
+}
+
+.kart-damga-yes {
+  left: 18px;
+  color: var(--marka);
+}
+
+.kart-damga-no {
+  right: 18px;
+  color: var(--iptal);
+  transform: rotate(10deg);
+}
+
+.deste-tuslar {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+}
+
+.deste-tuslar .dugme {
+  min-height: 54px;
+  font-size: 19px;
+}
+
+/* --- Kararlarım --- */
+
+.karar-gun {
+  display: grid;
+  gap: 6px;
+}
+
+.karar-gun + .karar-gun {
+  margin-top: 10px;
+}
+
+.karar-gun h3 {
+  padding: 0 4px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ikincil);
+}
+
+.karar {
+  flex-wrap: wrap;
+}
+
+.karar-tuslar {
+  display: inline-flex;
+  border: 1px solid var(--koparma);
+  border-radius: var(--kose);
+  overflow: hidden;
+}
+
+.karar-tuslar button {
+  min-height: 36px;
+  padding: 0 10px;
+  border: 0;
+  background: var(--fis);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ikincil);
+  cursor: pointer;
+}
+
+.karar-tuslar button + button {
+  border-left: 1px solid var(--koparma);
+}
+
+.karar-tuslar button[aria-pressed="true"] {
+  background: var(--marka);
+  color: #fff;
+}

@@ -1,52 +1,71 @@
 import { useState } from "react";
-import { displayName, type DayMenu, type Dish } from "../sample.ts";
+import type { DayMenuView, MenuItemView } from "@yersen/shared";
+import { displayName } from "../format.ts";
 import "./Today.css";
-
-export type TodayStatus =
-  | "acik" // menü var, puanlama penceresi açık
-  | "bekliyor" // menü var, puanlama 11:30'da açılacak
-  | "kapali" // hafta sonu ya da tatil
-  | "yayinlanmadi"; // okul ayın menüsünü henüz koymadı
+import "./Screens.css";
 
 const LOW_VOTES = 5; // bunun altındaki puanlar soluk ve küçük basılır
 const SCORES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] as const;
 
 type MyRating = number | "yemedim";
 
+export type TodayActions = {
+  rate: (item: MenuItemView, score: number) => Promise<string | null>; // hata metni ya da null
+  skip: (item: MenuItemView) => Promise<string | null>;
+};
+
+/** Bugünün fişi. Gün menüsü yoksa durum fişi (kapalı / yayınlanmadı) gösterilir. */
 export function Today({
-  menu,
-  status,
-  extra,
-  demo,
+  day,
+  next,
+  now,
+  actions,
 }: {
-  menu: DayMenu;
-  status: TodayStatus;
-  extra: ExtraList; // kapalıyken sıradaki menü, yayınlanmadıysa geçen ayın en iyileri
-  demo: boolean;
+  day: DayMenuView | null;
+  next: DayMenuView | null;
+  now: Date;
+  actions: TodayActions;
 }) {
-  const [ratings, setRatings] = useState<Record<string, MyRating>>({});
-  const [activeId, setActiveId] = useState<string | null>(null);
+  const [mine, setMine] = useState<Record<number, MyRating>>(() =>
+    Object.fromEntries((day?.items ?? []).filter((i) => i.myScore !== null).map((i) => [i.menuItemId, i.myScore!])),
+  );
+  const [items, setItems] = useState<MenuItemView[]>(day?.items ?? []);
+  const [activeId, setActiveId] = useState<number | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
-  if (status === "kapali" || status === "yayinlanmadi") {
-    return <StatusTicket status={status} extra={extra} demo={demo} />;
-  }
+  if (!day) return <StatusTicket next={next} />;
 
-  const nextUnrated = (after: Record<string, MyRating>) => menu.dishes.find((d) => after[d.id] === undefined)?.id ?? null;
-  const rate = (dish: Dish, value: MyRating) => {
-    const next = { ...ratings, [dish.id]: value };
-    setRatings(next);
-    setActiveId(nextUnrated(next));
+  const waiting = !day.ratingOpen && now < new Date(day.opensAt);
+  const nextUnrated = (after: Record<number, MyRating>) => items.find((i) => after[i.menuItemId] === undefined)?.menuItemId ?? null;
+
+  const record = async (item: MenuItemView, value: MyRating) => {
+    setError(null);
+    const before = mine;
+    const after = { ...mine, [item.menuItemId]: value };
+    setMine(after); // mühür hemen basılır; sunucu reddederse geri alınır
+    setActiveId(nextUnrated(after));
+    const err = value === "yemedim" ? await actions.skip(item) : await actions.rate(item, value);
+    if (err) {
+      setMine(before);
+      setActiveId(item.menuItemId);
+      setError(err);
+    } else if (typeof value === "number") {
+      // Kendi puanın ortalamaya ve oy sayısına hemen yansısın.
+      const old = typeof before[item.menuItemId] === "number" ? (before[item.menuItemId] as number) : null;
+      setItems((list) => list.map((i) => (i.menuItemId === item.menuItemId ? withMyScore(i, old, value) : i)));
+    }
   };
-  const ratedCount = Object.keys(ratings).length;
-  const allRated = ratedCount === menu.dishes.length;
-  const dayAverage = weightedAverage(menu.dishes);
+
+  const ratedCount = items.filter((i) => mine[i.menuItemId] !== undefined).length;
+  const allRated = items.length > 0 && ratedCount === items.length;
+  const dayAverage = weightedAverage(items);
 
   return (
     <main className="bugun">
       <section className="fis" aria-labelledby="fis-baslik">
         <div className="fis-bas">
           <h1 id="fis-baslik">Bugünün fişi</h1>
-          <span className="fis-no">No {String(menu.ticketNo).padStart(4, "0")}</span>
+          <span className="fis-no">{formatDay(day.date)}</span>
         </div>
 
         {dayAverage !== null && (
@@ -57,35 +76,33 @@ export function Today({
         )}
 
         <ol className="yemekler">
-          {menu.dishes.map((dish) => {
-            const mine = ratings[dish.id];
-            const isActive = activeId === dish.id;
+          {items.map((item) => {
+            const my = mine[item.menuItemId];
+            const isActive = activeId === item.menuItemId;
             return (
-              <li key={dish.id} className="yemek" data-active={isActive || undefined}>
+              <li key={item.menuItemId} className="yemek" data-active={isActive || undefined}>
                 <div className="yemek-satir">
-                  <span className="yemek-ad">{displayName(dish.rawName)}</span>
-                  {mine !== undefined && <MyStamp value={mine} />}
-                  {dish.average !== null && (
-                    <span className="yemek-puan" data-az={dish.votes < LOW_VOTES || undefined}>
-                      {formatScore(dish.average)}
+                  <span className="yemek-ad">{displayName(item.rawName)}</span>
+                  {my !== undefined && <MyStamp value={my} />}
+                  {item.average !== null && (
+                    <span className="yemek-puan" data-az={item.votes < LOW_VOTES || undefined}>
+                      {formatScore(item.average)}
                     </span>
                   )}
-                  <span className="yemek-oy">
-                    {dish.votes === 0 ? "Henüz puanlayan yok" : `${dish.votes} kişi puanladı`}
-                  </span>
+                  <span className="yemek-oy">{item.votes === 0 ? "Henüz puanlayan yok" : `${item.votes} kişi puanladı`}</span>
                 </div>
 
                 {isActive && (
                   <fieldset className="olcek">
-                    <legend>{displayName(dish.rawName)} kaç puan?</legend>
+                    <legend>{displayName(item.rawName)} kaç puan?</legend>
                     <div className="olcek-tuslar">
                       {SCORES.map((s) => (
-                        <button key={s} type="button" className="olcek-tus" onClick={() => rate(dish, s)}>
+                        <button key={s} type="button" className="olcek-tus" onClick={() => void record(item, s)}>
                           {s}
                         </button>
                       ))}
                     </div>
-                    <button type="button" className="yemedim" onClick={() => rate(dish, "yemedim")}>
+                    <button type="button" className="yemedim" onClick={() => void record(item, "yemedim")}>
                       Bunu yemedim
                     </button>
                   </fieldset>
@@ -96,27 +113,36 @@ export function Today({
         </ol>
 
         <div className="fis-alt">
-          <span>{menu.kcal} kcal, günün toplamı</span>
-          {demo && <span className="ornek">Örnek veri</span>}
+          <span>{day.kcal ? `${day.kcal} kcal, günün toplamı` : "Kalori bilgisi yok"}</span>
         </div>
       </section>
 
+      {error && (
+        <p className="hata" role="alert">
+          {error}
+        </p>
+      )}
+
       <div className="eylem">
-        {status === "bekliyor" ? (
+        {waiting ? (
           <p className="eylem-bilgi">Puanlama 11:30'da açılıyor. Önce ye, sonra konuş.</p>
+        ) : !day.ratingOpen ? (
+          <p className="eylem-bilgi">Bu günün puanlaması kapandı.</p>
         ) : activeId !== null ? (
           <button type="button" className="dugme dugme-ikincil" onClick={() => setActiveId(null)}>
             Şimdilik bu kadar
           </button>
         ) : allRated ? (
           <>
-            <p className="eylem-bilgi" role="status">Puanların fişe basıldı. Afiyet olsun.</p>
-            <button type="button" className="dugme dugme-ikincil" onClick={() => setActiveId(menu.dishes[0]?.id ?? null)}>
+            <p className="eylem-bilgi" role="status">
+              Puanların fişe basıldı. Afiyet olsun.
+            </p>
+            <button type="button" className="dugme dugme-ikincil" onClick={() => setActiveId(items[0]?.menuItemId ?? null)}>
               Puanlarını değiştir
             </button>
           </>
         ) : (
-          <button type="button" className="dugme" onClick={() => setActiveId(nextUnrated(ratings))}>
+          <button type="button" className="dugme" onClick={() => setActiveId(nextUnrated(mine))}>
             {ratedCount === 0 ? "Yedim, puanla" : "Puanlamaya devam et"}
           </button>
         )}
@@ -140,19 +166,10 @@ function MyStamp({ value }: { value: MyRating }) {
   );
 }
 
-function StatusTicket({ status, extra, demo }: { status: "kapali" | "yayinlanmadi"; extra: ExtraList; demo: boolean }) {
-  const copy =
-    status === "kapali"
-      ? {
-          stamp: "Kapalı",
-          title: "Bugün yemekhane kapalı",
-          body: "Evde ne varsa artık. Sıradaki menü aşağıda, kaydırmaya şimdiden başlayabilirsin.",
-        }
-      : {
-          stamp: "Bekleniyor",
-          title: "Menü henüz yayınlanmadı",
-          body: "Okul bu ayın menüsünü daha koymadı. Biz her sabah bakıyoruz, gelir gelmez burada.",
-        };
+function StatusTicket({ next }: { next: DayMenuView | null }) {
+  const copy = next
+    ? { stamp: "Kapalı", title: "Bugün yemekhane kapalı", body: "Evde ne varsa artık. Sıradaki menü aşağıda, kaydırmaya şimdiden başlayabilirsin." }
+    : { stamp: "Bekleniyor", title: "Menü henüz yayınlanmadı", body: "Okul menüyü daha koymadı. Biz her sabah bakıyoruz, gelir gelmez burada." };
   return (
     <main className="bugun">
       <section className="fis fis-durum" aria-labelledby="durum-baslik">
@@ -163,24 +180,20 @@ function StatusTicket({ status, extra, demo }: { status: "kapali" | "yayinlanmad
         <p>{copy.body}</p>
       </section>
 
-      <section className="ek" aria-labelledby="ek-baslik">
-        <h2 id="ek-baslik">{extra.title}</h2>
-        <ul className="ek-liste">
-          {extra.dishes.map((d) => (
-            <li key={d.id}>
-              <span>{displayName(d.rawName)}</span>
-              {extra.showScores && d.average !== null && (
-                <span className="yemek-puan" data-az={d.votes < LOW_VOTES || undefined}>
-                  {formatScore(d.average)}
-                </span>
-              )}
-            </li>
-          ))}
-        </ul>
-        {demo && <p className="ek-not">Örnek veri</p>}
-      </section>
+      {next && (
+        <section className="ek" aria-labelledby="ek-baslik">
+          <h2 id="ek-baslik">{formatDay(next.date)} menüsü</h2>
+          <ul className="ek-liste">
+            {next.items.map((d) => (
+              <li key={d.menuItemId}>
+                <span>{displayName(d.rawName)}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
-      {status === "kapali" && (
+      {next && (
         <div className="eylem">
           <a className="dugme dugme-ikincil dugme-baglanti" href="#kaydir">
             Sıradaki günleri kaydır
@@ -191,20 +204,30 @@ function StatusTicket({ status, extra, demo }: { status: "kapali" | "yayinlanmad
   );
 }
 
-/** showScores: sıradaki menüde false, çünkü henüz kimse yemedi. */
-export type ExtraList = { title: string; dishes: Dish[]; showScores: boolean };
+/** Ortalama ve oy sayısını kullanıcının yeni (ya da değişen) puanıyla günceller. */
+function withMyScore(i: MenuItemView, old: number | null, score: number): MenuItemView {
+  const total = (i.average ?? 0) * i.votes;
+  if (old === null) return { ...i, votes: i.votes + 1, average: (total + score) / (i.votes + 1), myScore: score };
+  return { ...i, average: i.votes > 0 ? (total - old + score) / i.votes : score, myScore: score };
+}
 
-function weightedAverage(dishes: Dish[]): number | null {
+function weightedAverage(items: MenuItemView[]): number | null {
   let sum = 0;
   let votes = 0;
-  for (const d of dishes) {
-    if (d.average === null) continue;
-    sum += d.average * d.votes;
-    votes += d.votes;
+  for (const i of items) {
+    if (i.average === null) continue;
+    sum += i.average * i.votes;
+    votes += i.votes;
   }
   return votes === 0 ? null : sum / votes;
 }
 
-function formatScore(n: number): string {
+export function formatScore(n: number): string {
   return n.toLocaleString("tr-TR", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+}
+
+export function formatDay(date: string): string {
+  return new Intl.DateTimeFormat("tr-TR", { weekday: "long", day: "numeric", month: "long", timeZone: "UTC" }).format(
+    new Date(`${date}T00:00:00Z`),
+  );
 }

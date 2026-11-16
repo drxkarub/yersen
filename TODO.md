@@ -37,20 +37,20 @@ Her madde küçük ve tek başına test edilebilir. Bitince `[x]` ile işaretle.
 
 ### Giriş ve davet
 - [x] Better Auth ile Google girişini kur. Oturum çerezi `HttpOnly`, `Secure` ve `SameSite=Lax` olsun.
-- [ ] İlk girişte davet kodu ekranı (API hazır: POST /api/onboarding; arayüz bekliyor): geçerli kod kabul edilsin, kullanılmış ya da geçersiz kod reddedilsin. `invited_by` kaydedilsin.
-- [ ] Takma ad seçimi (kurallar API'de hazır; arayüz bekliyor): tekil olsun, uzunluk sınırı olsun.
-- [ ] Kullanıcının kendi davet kodlarını (API hazır: GET /api/invites; arayüz bekliyor) görüp paylaşabildiği ekran (5 hak).
+- [x] İlk girişte davet kodu ekranı: geçerli kod kabul edilsin, kullanılmış ya da geçersiz kod reddedilsin. `invited_by` kaydedilsin.
+- [x] Takma ad seçimi: tekil olsun, uzunluk sınırı olsun.
+- [x] Kullanıcının kendi davet kodlarını görüp paylaşabildiği ekran (5 hak).
 - [x] Admin için kod üretme: `docker compose exec api node --import tsx src/cli/invite-codes.ts <n>`.
 
 ### Arayüz
 - [ ] PWA manifest'i, ikonlar ve service worker. Android'de ve iOS'ta ana ekrana eklenebilmeli.
-- [ ] Kaydırma ekranı: gelecek günlerin henüz işaretlenmemiş yemekleri kart olarak gelsin. Sağa kaydırma "yerim", sola "yemem", yukarı "belki". Butonla da seçilebilsin.
-- [ ] Kararlarım listesi: kullanıcı verdiği kararları görüp değiştirebilsin.
-- [ ] Bugün ekranını (şu an `web/src/sample.ts` ile örnek veride) gerçek API'ye bağla; yükleniyor ve hata durumlarını ekle.
-- [ ] Ana ekranda "Bugün yedin mi, puanla" kartı. Puanlama penceresi açıkken ve kullanıcının "yerim" ya da "belki" dediği bir yemek varsa en üstte görünsün.
-- [ ] Puanlama ekranı: 1-10 seçimi. "Yemem" demiş ya da hiç kaydırmamış kullanıcı için "yedim" seçeneği.
-- [ ] Gün kartı: tarih, yemekler, günlük kalori, her yemeğin ortalama puanı ve puan sayısı.
-- [ ] Menü yok ekranları: hafta sonu/tatil ve "menü henüz yayınlanmadı" durumları.
+- [x] Kaydırma ekranı (butonlar + yatay sürükleme; yukarı kaydırma yok, 'Belki' butonla): gelecek günlerin henüz işaretlenmemiş yemekleri kart olarak gelsin. Sağa kaydırma "yerim", sola "yemem", yukarı "belki". Butonla da seçilebilsin.
+- [x] Kararlarım listesi: kullanıcı verdiği kararları görüp değiştirebilsin.
+- [x] Bugün ekranını gerçek API'ye bağla; yükleniyor ve hata durumları.
+- [x] Ana ekranda "Bugün yedin mi, puanla" kartı. Puanlama penceresi açıkken ve kullanıcının "yerim" ya da "belki" dediği bir yemek varsa en üstte görünsün.
+- [x] Puanlama ekranı: 1-10 seçimi. "Yemem" demiş ya da hiç kaydırmamış kullanıcı için "yedim" seçeneği.
+- [x] Gün kartı: tarih, yemekler, günlük kalori, her yemeğin ortalama puanı ve puan sayısı.
+- [x] Menü yok ekranları: hafta sonu/tatil ve "menü henüz yayınlanmadı" durumları.
 - [ ] Yemek görselleri: Pexels'ten bir kez arayıp sakla, kaynak bilgisini göster. Bulunamazsa ikon göster. Admin görseli değiştirebilsin.
 - [ ] Hakkında / Sözleşme / KVKK sayfası ve hesabı silme butonu.
 

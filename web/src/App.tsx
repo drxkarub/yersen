@@ -1,31 +1,72 @@
-import { Shell } from "./Shell.tsx";
-import { Today, type TodayStatus } from "./screens/Today.tsx";
-import { sampleLastMonthBest, sampleNotYetRated, sampleToday } from "./sample.ts";
+import { useCallback, useEffect, useState } from "react";
+import type { MeResponse } from "@yersen/shared";
+import { api, ApiError } from "./api.ts";
+import { Shell, type Tab } from "./Shell.tsx";
+import { Login } from "./screens/Login.tsx";
+import { Onboarding } from "./screens/Onboarding.tsx";
+import { TodayScreen } from "./screens/TodayScreen.tsx";
+import { SwipeScreen } from "./screens/SwipeScreen.tsx";
+import { MeScreen } from "./screens/MeScreen.tsx";
 
-// Gerçek veri Faz 1'de API'den gelecek. O zamana kadar ekran örnek veriyle çalışır;
-// durumlar ?durum=acik|bekliyor|kapali|yayinlanmadi ile önizlenebilir.
-const STATUSES: TodayStatus[] = ["acik", "bekliyor", "kapali", "yayinlanmadi"];
+type Gate = { kind: "loading" } | { kind: "signed_out" } | { kind: "needs_invite"; me: MeResponse } | { kind: "ready"; me: MeResponse } | { kind: "error" };
+
+const TABS: Tab[] = ["bugun", "kaydir", "ben"];
+const tabFromHash = (): Tab => {
+  const h = window.location.hash.replace("#", "") as Tab;
+  return TABS.includes(h) ? h : "bugun";
+};
 
 export function App() {
-  const param = new URLSearchParams(location.search).get("durum");
-  const status: TodayStatus = STATUSES.includes(param as TodayStatus) ? (param as TodayStatus) : "acik";
+  const [gate, setGate] = useState<Gate>({ kind: "loading" });
+  const [tab, setTab] = useState<Tab>(tabFromHash);
 
-  // Kapalı durumu bir hafta sonunda (Pazar 15 Kasım) sahnelenir; sıradaki menü Pazartesininki.
-  const date = status === "kapali" ? "2026-11-15" : sampleToday.date;
-  const menu = status === "bekliyor" ? sampleNotYetRated : sampleToday;
+  const load = useCallback(async () => {
+    try {
+      const me = await api.me();
+      setGate(me.profile ? { kind: "ready", me } : { kind: "needs_invite", me });
+    } catch (err) {
+      setGate(err instanceof ApiError && err.status === 401 ? { kind: "signed_out" } : { kind: "error" });
+    }
+  }, []);
+
+  useEffect(() => {
+    void load();
+    const onHash = () => setTab(tabFromHash());
+    window.addEventListener("hashchange", onHash);
+    return () => window.removeEventListener("hashchange", onHash);
+  }, [load]);
+
+  const now = new Date();
+  if (gate.kind === "loading") return <Shell date={now} />;
+  if (gate.kind === "error")
+    return (
+      <Shell date={now}>
+        <main className="bugun">
+          <section className="fis fis-durum">
+            <h1>Sunucuya ulaşılamadı</h1>
+            <p>Yemekhane kapalı olabilir, biz değil. Birazdan sayfayı yenile.</p>
+          </section>
+        </main>
+      </Shell>
+    );
+  if (gate.kind === "signed_out")
+    return (
+      <Shell date={now}>
+        <Login />
+      </Shell>
+    );
+  if (gate.kind === "needs_invite")
+    return (
+      <Shell date={now}>
+        <Onboarding name={gate.me.user.name} onDone={load} />
+      </Shell>
+    );
 
   return (
-    <Shell date={new Date(`${date}T12:00:00`)} active="bugun">
-      <Today
-        menu={menu}
-        status={status}
-        extra={
-          status === "kapali"
-            ? { title: "Pazartesinin menüsü", dishes: sampleNotYetRated.dishes, showScores: false }
-            : { title: "Geçen ayın en iyileri", dishes: sampleLastMonthBest, showScores: true }
-        }
-        demo
-      />
+    <Shell date={now} active={tab}>
+      {tab === "bugun" && <TodayScreen />}
+      {tab === "kaydir" && <SwipeScreen />}
+      {tab === "ben" && <MeScreen me={gate.me} />}
     </Shell>
   );
 }
