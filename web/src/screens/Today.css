@@ -87,11 +87,19 @@
   display: grid;
   grid-template-columns: auto 1fr auto;
   grid-template-areas:
+    "kat kat puan"
     "ad muhur puan"
     "oy oy puan";
   align-items: center;
   column-gap: 10px;
   padding: 11px 0 10px;
+}
+
+.yemek-kategori {
+  grid-area: kat;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ikincil);
 }
 
 .yemek-ad {

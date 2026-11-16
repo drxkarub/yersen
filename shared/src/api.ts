@@ -6,6 +6,7 @@ export type MenuItemView = {
   menuItemId: number;
   dishId: number;
   rawName: string; // menüde yazdığı gibi
+  category: "corba" | "ana" | "pilav" | "yan"; // bkz. dishCategory
   imageUrl: string | null; // temsili görsel (yoksa ön yüz ikon gösterir)
   imageCredit: string | null; // "Yazar, lisans"
   imageSourceUrl: string | null; // atıf bağlantısı

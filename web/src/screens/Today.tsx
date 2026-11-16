@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { DayMenuView, MenuItemView } from "@yersen/shared";
+import { CATEGORY_LABEL, type DayMenuView, type MenuItemView } from "@yersen/shared";
 import { displayName } from "../format.ts";
 import "./Today.css";
 import "./Screens.css";
@@ -82,6 +82,7 @@ export function Today({
             return (
               <li key={item.menuItemId} className="yemek" data-active={isActive || undefined}>
                 <div className="yemek-satir">
+                  <span className="yemek-kategori">{CATEGORY_LABEL[item.category]}</span>
                   <span className="yemek-ad">{displayName(item.rawName)}</span>
                   {my !== undefined && <MyStamp value={my} />}
                   {item.average !== null && (

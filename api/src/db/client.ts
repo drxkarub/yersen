@@ -32,9 +32,22 @@ export async function createDb(databaseUrl: string | undefined): Promise<Db> {
   return db as unknown as Db;
 }
 
+// Migration'lar bir kez uygulanmış şablon; her test onun kopyasını alır (her seferinde migrate etmek yavaş).
+let template: Promise<PGlite> | undefined;
+
 /** Testler için bellekte, migration'ları uygulanmış, her çağrıda temiz bir veritabanı. */
 export async function createTestDb(): Promise<Db> {
-  const db = drizzlePglite({ client: new PGlite(), schema });
-  await migratePglite(db, { migrationsFolder });
-  return db as unknown as Db;
+  template ??= (async () => {
+    // globalSetup'ın yazdığı hazır veri dizini varsa onu yükle; yoksa (tek test dosyası çalıştırılırken) migrate et.
+    const file = process.env.YERSEN_TEST_TEMPLATE;
+    if (file) {
+      const { readFileSync } = await import("node:fs");
+      return PGlite.create({ loadDataDir: new Blob([readFileSync(file)]) });
+    }
+    const pg = new PGlite();
+    await migratePglite(drizzlePglite({ client: pg, schema }), { migrationsFolder });
+    return pg;
+  })();
+  const client = (await (await template).clone()) as PGlite;
+  return drizzlePglite({ client, schema }) as unknown as Db;
 }

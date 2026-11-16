@@ -4,7 +4,7 @@ import { dish, menu, menuItem, rating, swipe, venue } from "../db/schema.ts";
 import { istanbulDate, isRatingOpen, ratingWindow } from "./time.ts";
 
 export type { DayMenuView, MenuItemView } from "@yersen/shared";
-import type { DayMenuView } from "@yersen/shared";
+import { dishCategory, type DayMenuView } from "@yersen/shared";
 
 const DEFAULT_VENUE = "trakya-merkez";
 
@@ -38,6 +38,7 @@ async function loadDays(db: DbOrTx, where: SQL, userId: string, now: Date): Prom
       menuItemId: menuItem.id,
       dishId: menuItem.dishId,
       rawName: menuItem.rawName,
+      position: menuItem.position,
       imageUrl: dish.imageUrl,
       imageCredit: dish.imageCredit,
       imageSourceUrl: dish.imageSourceUrl,
@@ -69,6 +70,7 @@ async function loadDays(db: DbOrTx, where: SQL, userId: string, now: Date): Prom
           menuItemId: r.menuItemId,
           dishId: r.dishId,
           rawName: r.rawName,
+          category: dishCategory(r.rawName, r.position),
           imageUrl: r.imageUrl,
           imageCredit: r.imageCredit,
           imageSourceUrl: r.imageSourceUrl,

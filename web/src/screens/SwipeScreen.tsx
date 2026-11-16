@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type PointerEvent } from "react";
 import { ArrowDown, ArrowLeft, ArrowRight, ListChecks, X } from "lucide-react";
-import type { DayMenuView, MenuItemView, SwipeChoice } from "@yersen/shared";
+import { CATEGORY_LABEL, type DayMenuView, type MenuItemView, type SwipeChoice } from "@yersen/shared";
 import { api, errorText } from "../api.ts";
 import { DishVisual } from "../DishVisual.tsx";
 import { displayName } from "../format.ts";
@@ -179,7 +179,9 @@ function FullScreenDeck({
       >
         <DishVisual name={card.rawName} imageUrl={card.imageUrl} imageCredit={card.imageCredit} imageSourceUrl={card.imageSourceUrl} />
         <div className="kart-govde">
-          <span className="kart-gun">{formatDay(card.date)}</span>
+          <span className="kart-gun">
+            {formatDay(card.date)}, {CATEGORY_LABEL[card.category].toLocaleLowerCase("tr-TR")}
+          </span>
           <h1 id="kart-ad" className="kart-ad">
             {name}
           </h1>

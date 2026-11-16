@@ -25,8 +25,8 @@ export function LegalScreen() {
           <li>Kişi başına tek hesap. Birden fazla hesapla oy vermek yasaktır; tespit edilirse hesaplar ve davet ettikleri kapatılabilir.</li>
           <li>Puanlar ve yorumlar kişisel görüştür; yersen'in ya da üniversitenin görüşü değildir.</li>
           <li>
-            Küfür serbest. Ama bir kişiyi (öğrenci, aşçı, personel, kim olursa) hedef alan, taciz eden ya da kavga çıkarmak için yazılan
-            içerik silinir ve yazanın hesabı kapatılır.
+            Bir kişiyi (öğrenci, aşçı, personel, kim olursa) hedef alan, taciz eden ya da kavga çıkarmak için yazılan içerik silinir ve
+            yazanın hesabı kapatılır.
           </li>
           <li>
             <strong>Görseller temsilidir.</strong> Kaydırırken gördüğün yemek fotoğrafları "beklenen yemek görseli"dir: çoğu Wikimedia

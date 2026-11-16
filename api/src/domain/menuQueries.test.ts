@@ -27,6 +27,7 @@ describe("getDayMenu", () => {
     const day = await getDayMenu(db, { date: "2026-11-16", userId: "u1", now: NOW });
     expect(day).toMatchObject({ date: "2026-11-16", kcal: 916, ratingOpen: true });
     expect(day!.items.map((i) => i.rawName)).toEqual(["DÜĞÜN ÇORBA", "ETLİ NOHUT"]);
+    expect(day!.items.map((i) => i.category)).toEqual(["corba", "ana"]);
     expect(day!.items[0]).toMatchObject({ average: null, votes: 0, myChoice: null, myScore: null });
   });
 
