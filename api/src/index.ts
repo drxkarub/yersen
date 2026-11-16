@@ -7,7 +7,8 @@ const port = Number(process.env.API_PORT ?? 3300);
 const hostname = process.env.API_HOST ?? "127.0.0.1";
 
 const db = await createDb(process.env.DATABASE_URL || undefined);
-const app = createApp({ db });
+// Üretim imajında STATIC_DIR=/app/web/dist; geliştirmede ön yüzü Vite servis eder.
+const app = createApp({ db, staticDir: process.env.STATIC_DIR || undefined });
 
 serve({ fetch: app.fetch, port, hostname }, (info) => {
   console.log(`api: http://${info.address}:${info.port}`);

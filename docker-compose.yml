@@ -1,6 +1,6 @@
 # Üretim. Sunucuda /opt/yersen altında çalışır; gizli değerler .env dosyasından gelir.
 # Kurallar (bkz. CLAUDE.md): portlar yalnızca 127.0.0.1'e, Postgres hiç port yayınlamaz,
-# bellek sınırları sabit, otomatik imaj güncelleyiciler bu konteynerlere dokunmaz.
+# bellek sınırları sabit. API imajını watchtower CI'dan gelen :latest ile günceller; Postgres'e dokunmaz.
 name: yersen
 
 services:
@@ -35,10 +35,9 @@ services:
       com.centurylinklabs.watchtower.enable: "false"
 
   api:
-    image: ${API_IMAGE:-yersen-api:local}
-    build:
-      context: .
-      dockerfile: api/Dockerfile
+    # CI her main push'unda bu etiketi günceller; watchtower en geç 60 sn içinde çeker.
+    # Sorunlu sürümde geri dönmek: API_IMAGE=ghcr.io/drxkarub/yersen:<eski sha> docker compose up -d api
+    image: ${API_IMAGE:-ghcr.io/drxkarub/yersen:latest}
     restart: unless-stopped
     depends_on:
       db:
@@ -49,7 +48,7 @@ services:
       - "127.0.0.1:3300:3300"
     mem_limit: 192m
     labels:
-      com.centurylinklabs.watchtower.enable: "false"
+      com.centurylinklabs.watchtower.enable: "true"
 
 volumes:
   db-data:

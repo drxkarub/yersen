@@ -28,12 +28,12 @@ Hepsi mevcut VPS'te çalışır: Debian 12, 2 çekirdek, 2 GB RAM, 40 GB disk, 2
 - `yersen.aegis.net.tr` Cloudflare proxy'si arkasında. İstemcinin gerçek IP'si `CF-Connecting-IP` başlığından alınır, oran sınırı bu IP'yi kullanır.
 - Docker'ın yayınladığı portlar güvenlik duvarını atlatır. Her port `127.0.0.1:` önekiyle yayınlanır (API: `127.0.0.1:3300`). Postgres hiç port yayınlamaz.
 - Bellek sınırları sabit: Postgres 256 MB, API 192 MB, scraper 128 MB.
-- Deploy sadece CI'dan yapılır; sunucudaki otomatik imaj güncelleyiciler yersen'e dokunmaz.
+- Deploy: CI testler geçince imajı `ghcr.io/drxkarub/yersen`'e gönderir, sunucudaki watchtower API konteynerini en geç 60 sn içinde günceller. Postgres watchtower'ın dışındadır (`enable=false`). Repoda sunucuya ait gizli bilgi yoktur. Geri dönmek için: `API_IMAGE=ghcr.io/drxkarub/yersen:<sha> docker compose up -d api`.
 
 | Katman | Seçim | Neden |
 |---|---|---|
 | Reverse proxy | Sunucudaki nginx ve certbot | Zaten 80/443'te çalışıyor, ikinci bir proxy RAM ve port çakışması demek. |
-| Ön yüz | Vite + React + TypeScript, `vite-plugin-pwa` | Statik olarak derlenir, `/var/www/yersen` altından nginx servis eder. Çalışma sırasında RAM harcamaz. |
+| Ön yüz | Vite + React + TypeScript, `vite-plugin-pwa` | Statik olarak derlenir ve API imajının içinde gelir; API `/api` dışındaki yolları ön yüz olarak servis eder. |
 | API | Node 24 LTS + Hono + TypeScript | Hafif ve hızlı. Ön yüzle aynı dil ve tipler kullanılır. Yaklaşık 100-150 MB RAM. |
 | Giriş | Better Auth (Google OAuth) | Kendi sunucunda çalışır, oturumları Postgres'te tutar. Dış servis bağımlılığı yok. |
 | Veritabanı | PostgreSQL 17 | Konteyner sınırı 256 MB; içinde `shared_buffers=64MB`, `max_connections=30`. |
@@ -42,14 +42,14 @@ Hepsi mevcut VPS'te çalışır: Debian 12, 2 çekirdek, 2 GB RAM, 40 GB disk, 2
 | Zamanlanmış işler | Sunucuda systemd timer + `docker compose run --rm scraper` | API çökse bile scraper çalışır. |
 | İzleme | healthchecks.io (ücretsiz katman) | Scraper ve yedekleme her çalışmada ping atar. Hata ya da hiç ping gelmemesi durumunda mail gönderir. |
 | Yedekleme | Günlük `pg_dump` | Sunucuda 14 günlük yedek tutulur. Haftalık bir kopya `rclone` ile Cloudflare R2'ye (10 GB'a kadar ücretsiz) gönderilir. |
-| CI/CD | GitHub Actions | Testler çalışır, Docker imajı derlenip GHCR'ye gönderilir, sunucu SSH ile yeni imajı çekip yeniden başlatır. İmaj VPS'te derlenmediği için RAM sorunu olmaz. |
+| CI/CD | GitHub Actions + watchtower | Repo `drxkarub/yersen` (sahibinin hesabında Actions açık). Testler geçince tek imaj (API + derlenmiş ön yüz) GHCR'ye gider, watchtower çeker. SSH anahtarı gerekmez, imaj VPS'te derlenmez. |
 | Yemek görselleri | Pexels API | Ücretsiz ve serbest lisanslı. Görseller indirilip WebP'ye küçültülür ve diskte tutulur. Kaynak gösterilir. |
 
 **Yetki kuralları:** Puanlama penceresi, tek puan ve "yemem" diyenin puanlayamaması API katmanında kontrol edilir. Bunun yanında veritabanı kısıtlarıyla (unique, check, trigger) ikinci kez güvenceye alınır. Testler gerçek bir Postgres'e karşı çalışır: yerelde ve testlerde PGlite (WASM Postgres), üretimde PostgreSQL 17. Aynı Drizzle migration'ları ikisinde de uygulanır.
 
 ## Geliştirme komutları
 
-- `npm run dev`: API (`127.0.0.1:3300`) ve ön yüz (`localhost:5173`, `/api` proxy'li) birlikte açılır.
+- `npm run dev`: API (`127.0.0.1:3300`, yollar `/api` altında) ve ön yüz (`localhost:5173`, `/api` proxy'li) birlikte açılır.
 - `npm test`: bütün paketlerin testleri.
 - `npm run typecheck`: bütün paketlerin tip kontrolü.
 - `npm run db:generate -w api`: şemadan yeni migration üretir.
