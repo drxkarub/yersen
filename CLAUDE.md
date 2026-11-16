@@ -36,7 +36,7 @@ Hepsi mevcut VPS'te çalışır: Debian 12, 2 çekirdek, 2 GB RAM, 40 GB disk, 2
 | Ön yüz | Vite + React + TypeScript, `vite-plugin-pwa` | Statik olarak derlenir, `/var/www/yersen` altından nginx servis eder. Çalışma sırasında RAM harcamaz. |
 | API | Node 24 LTS + Hono + TypeScript | Hafif ve hızlı. Ön yüzle aynı dil ve tipler kullanılır. Yaklaşık 100-150 MB RAM. |
 | Giriş | Better Auth (Google OAuth) | Kendi sunucunda çalışır, oturumları Postgres'te tutar. Dış servis bağımlılığı yok. |
-| Veritabanı | PostgreSQL 17 | Az kaynak için ayarlanır (`shared_buffers=256MB`, `max_connections=30`). Yaklaşık 200-300 MB RAM. |
+| Veritabanı | PostgreSQL 17 | Konteyner sınırı 256 MB; içinde `shared_buffers=64MB`, `max_connections=30`. |
 | ORM ve migration | Drizzle + drizzle-kit | Tip güvenli, ince bir katman. Migration'lar SQL dosyası olarak repoda durur. |
 | Doğrulama | zod | API girdileri için. Şemalar ön yüzle paylaşılır. |
 | Zamanlanmış işler | Sunucuda systemd timer + `docker compose run --rm scraper` | API çökse bile scraper çalışır. |

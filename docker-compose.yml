@@ -1,0 +1,55 @@
+# Üretim. Sunucuda /opt/yersen altında çalışır; gizli değerler .env dosyasından gelir.
+# Kurallar (bkz. CLAUDE.md): portlar yalnızca 127.0.0.1'e, Postgres hiç port yayınlamaz,
+# bellek sınırları sabit, otomatik imaj güncelleyiciler bu konteynerlere dokunmaz.
+name: yersen
+
+services:
+  db:
+    image: postgres:17-bookworm
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: yersen
+      POSTGRES_USER: yersen
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD .env içinde tanımlı olmalı}
+    command:
+      - postgres
+      - -c
+      - shared_buffers=64MB
+      - -c
+      - effective_cache_size=128MB
+      - -c
+      - work_mem=2MB
+      - -c
+      - maintenance_work_mem=32MB
+      - -c
+      - max_connections=30
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    mem_limit: 256m
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U yersen -d yersen"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    labels:
+      com.centurylinklabs.watchtower.enable: "false"
+
+  api:
+    image: ${API_IMAGE:-yersen-api:local}
+    build:
+      context: .
+      dockerfile: api/Dockerfile
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgres://yersen:${POSTGRES_PASSWORD}@db:5432/yersen
+    ports:
+      - "127.0.0.1:3300:3300"
+    mem_limit: 192m
+    labels:
+      com.centurylinklabs.watchtower.enable: "false"
+
+volumes:
+  db-data:

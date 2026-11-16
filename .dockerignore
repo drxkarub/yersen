@@ -1,0 +1,10 @@
+**/node_modules
+**/dist
+**/.pglite
+**/.impeccable
+.git
+.github
+.env
+.env.*
+docs
+*.md
