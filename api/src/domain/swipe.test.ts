@@ -25,6 +25,14 @@ describe("setSwipe", () => {
     expect(await setSwipe(db, { userId: "u1", menuItemId: yesterday.id, choice: "yes", now: NOW })).toEqual({ ok: false, error: "past_day" });
   });
 
+  it("puanlama penceresi açıksa ertesi gün gece yarısından sonra da karar değiştirilebilir", async () => {
+    const it = await world.item("2026-11-16", "ETLİ NOHUT");
+    const afterMidnight = new Date("2026-11-16T22:00:00Z"); // 17 Kasım 01:00 İstanbul, pencere 11:30'a kadar açık
+    expect(await setSwipe(db, { userId: "u1", menuItemId: it.id, choice: "yes", now: afterMidnight })).toEqual({ ok: true });
+    const closed = new Date("2026-11-17T08:30:00Z");
+    expect(await setSwipe(db, { userId: "u1", menuItemId: it.id, choice: "no", now: closed })).toEqual({ ok: false, error: "past_day" });
+  });
+
   it("karar değiştirmek tek satırı günceller", async () => {
     const it = await world.item("2026-11-17", "TAVUK SOTE");
     await setSwipe(db, { userId: "u1", menuItemId: it.id, choice: "no", now: NOW });

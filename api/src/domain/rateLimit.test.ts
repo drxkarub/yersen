@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it } from "vitest";
+import { sql } from "drizzle-orm";
 import { createTestDb, type Db } from "../db/client.ts";
 import { consumeRate, RATE_LIMITS } from "./rateLimit.ts";
 
@@ -36,5 +37,15 @@ describe("consumeRate", () => {
     // 61. reddedildi; t0+1 saat+1 sn'de pencerede hiç olay kalmamalı, 60 hak yeniden açık olmalı
     const later = plus(60 * 60 * 1000 + 1000);
     for (let i = 0; i < 60; i++) expect(await consumeRate(db, "u1", "rating", later)).toBe(true);
+  });
+
+  it("kullanıcı-tür başına işlem kilidi alır (eşzamanlı isteklerin sınırı aşmaması için)", async () => {
+    // PGlite tek bağlantılı olduğu için yarış burada canlandırılamaz; kilidin alındığını doğruluyoruz.
+    const locks = await db.transaction(async (tx) => {
+      await consumeRate(tx, "u1", "rating", t0);
+      const r = await tx.execute(sql`select count(*)::int as n from pg_locks where locktype = 'advisory' and granted`);
+      return (r as unknown as { rows: { n: number }[] }).rows[0]!.n;
+    });
+    expect(locks).toBe(1);
   });
 });

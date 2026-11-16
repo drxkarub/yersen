@@ -2,7 +2,7 @@ import { and, eq, gte, sql } from "drizzle-orm";
 import type { Db, Tx } from "../db/client.ts";
 import { menu, menuItem, profile, swipe } from "../db/schema.ts";
 import { consumeRate } from "./rateLimit.ts";
-import { istanbulDate } from "./time.ts";
+import { istanbulDate, isRatingOpen } from "./time.ts";
 
 export type SwipeChoice = "yes" | "no" | "maybe";
 export type SwipeResult = { ok: true } | { ok: false; error: "not_found" | "banned" | "past_day" | "rate_limited" };
@@ -28,7 +28,11 @@ export async function setSwipe(
   return db.transaction(async (tx): Promise<SwipeResult> => {
     const ctx = await loadActorAndItem(tx, input.userId, input.menuItemId);
     if (!ctx.ok) return { ok: false, error: ctx.error };
-    if (ctx.item.date < istanbulDate(input.now)) return { ok: false, error: "past_day" };
+    // Geçmiş gün kapalıdır; ama puanlama penceresi (ertesi gün 11:30'a kadar) açıksa karar değiştirilebilir,
+    // yoksa akşam "aslında yedim" diyen biri sabaha kadar puanlayamaz.
+    if (ctx.item.date < istanbulDate(input.now) && !isRatingOpen(ctx.item.date, input.now)) {
+      return { ok: false, error: "past_day" };
+    }
     if (!(await consumeRate(tx, input.userId, "swipe", input.now))) return { ok: false, error: "rate_limited" };
     await upsertSwipe(tx, input.userId, input.menuItemId, input.choice);
     return { ok: true };

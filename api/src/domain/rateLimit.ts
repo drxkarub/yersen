@@ -1,4 +1,4 @@
-import { and, count, eq, gt, lt } from "drizzle-orm";
+import { and, count, eq, gt, lt, sql } from "drizzle-orm";
 import type { DbOrTx } from "../db/client.ts";
 import { rateEvent } from "../db/schema.ts";
 
@@ -16,6 +16,9 @@ export async function consumeRate(
   kind: keyof typeof RATE_LIMITS,
   now: Date,
 ): Promise<boolean> {
+  // Aynı kullanıcı-tür için eşzamanlı istekleri sıraya sok: say-sonra-yaz arasında yarış olmasın.
+  // Kilit transaction bitince kendiliğinden bırakılır; çağıran bir transaction içinde çağırmalı.
+  await db.execute(sql`select pg_advisory_xact_lock(hashtext(${`rate:${userId}:${kind}`}))`);
   const since = new Date(now.getTime() - WINDOW_MS);
   await db.delete(rateEvent).where(and(eq(rateEvent.userId, userId), lt(rateEvent.at, since)));
   const [row] = await db
