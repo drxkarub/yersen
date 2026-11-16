@@ -99,7 +99,9 @@ export const dish = pgTable(
     displayName: text("display_name").notNull(), // menüde ilk görüldüğü ham ad
     ownerVenueId: integer("owner_venue_id").references(() => venue.id),
     imageUrl: text("image_url"),
-    imageCredit: text("image_credit"),
+    imageCredit: text("image_credit"), // "Yazar, CC BY-SA 4.0"
+    imageSourceUrl: text("image_source_url"), // görselin kaynak sayfası (atıf bağlantısı)
+    imageCheckedAt: timestamp("image_checked_at", { withTimezone: true }), // son arama; bulunamazsa haftada bir yeniden denenir
     createdAt: createdAt(),
   },
   (t) => [unique("dish_owner_key_unique").on(t.ownerVenueId, t.key).nullsNotDistinct()],

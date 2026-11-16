@@ -7,7 +7,8 @@ export type MenuItemView = {
   dishId: number;
   rawName: string; // menüde yazdığı gibi
   imageUrl: string | null; // temsili görsel (yoksa ön yüz ikon gösterir)
-  imageCredit: string | null; // "Fotoğrafçı / Pexels"
+  imageCredit: string | null; // "Yazar, lisans"
+  imageSourceUrl: string | null; // atıf bağlantısı
   average: number | null; // yemeğin tüm günlerdeki ortalaması (tek havuz)
   votes: number;
   myChoice: SwipeChoice | null;

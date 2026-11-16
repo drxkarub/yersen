@@ -26,6 +26,7 @@
   "exports": {
     "./menu-store": "./src/domain/menuStore.ts",
     "./db": "./src/db/client.ts",
-    "./time": "./src/domain/time.ts"
+    "./time": "./src/domain/time.ts",
+    "./dish-images": "./src/domain/dishImages.ts"
   }
 }

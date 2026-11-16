@@ -69,3 +69,21 @@ function makeDist(): string {
   writeFileSync(join(dir, "assets", "index-abc123.js"), "console.log(1)");
   return dir;
 }
+
+describe("yemek görselleri (imageDir verildiğinde)", () => {
+  it("/img/<id>.jpg dosyasını bir haftalık önbellekle servis eder", async () => {
+    const dir = mkdtempSync(join(tmpdir(), "yersen-img-"));
+    writeFileSync(join(dir, "7.jpg"), "jpgverisi");
+    const app = createApp({ db: await createTestDb(), imageDir: dir, staticDir: makeDist() });
+    const res = await app.request("/img/7.jpg");
+    expect(res.status).toBe(200);
+    expect(await res.text()).toBe("jpgverisi");
+    expect(res.headers.get("cache-control")).toBe("public, max-age=604800");
+    expect((await app.request("/img/yok.jpg")).status).toBe(404);
+    // Kodlanmış ".." ile görsel klasörünün dışına çıkılamaz.
+    const secret = `gizli-${Date.now()}.txt`;
+    writeFileSync(join(dir, "..", secret), "GIZLI");
+    const escape = await app.request(`/img/..%2f${secret}`);
+    expect(await escape.text()).not.toContain("GIZLI");
+  });
+});

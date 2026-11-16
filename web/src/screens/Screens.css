@@ -238,7 +238,8 @@ button:disabled {
   font-weight: 600;
 }
 
-.gorsel figcaption span {
+.gorsel figcaption span,
+.gorsel figcaption a {
   padding: 2px 8px;
   border-radius: 4px;
   background: rgb(13 26 74 / 0.78);

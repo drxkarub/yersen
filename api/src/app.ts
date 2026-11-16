@@ -25,6 +25,8 @@ export type AppDeps = {
   auth?: AuthPort;
   /** Derlenmiş ön yüz klasörü (web/dist). Verilirse API onu da servis eder; üretimde tek imaj. */
   staticDir?: string;
+  /** İndirilen yemek görselleri; /img/<id>.jpg olarak servis edilir. */
+  imageDir?: string;
   now?: () => Date;
 };
 
@@ -51,7 +53,7 @@ const onboardingBody = z.object({ code: z.string().min(1).max(32), nickname: z.s
 const swipeBody = z.object({ menuItemId: z.number().int().positive(), choice: z.enum(["yes", "no", "maybe"]) });
 const ratingBody = z.object({ menuItemId: z.number().int().positive(), score: z.number() });
 
-export function createApp({ db, auth, staticDir, now = () => new Date() }: AppDeps) {
+export function createApp({ db, auth, staticDir, imageDir, now = () => new Date() }: AppDeps) {
   const api = new Hono<Env>();
 
   api.get("/health", async (c) => {
@@ -141,6 +143,15 @@ export function createApp({ db, auth, staticDir, now = () => new Date() }: AppDe
 
   const app = new Hono();
   app.route("/api", api);
+
+  if (imageDir) {
+    app.use(
+      "/img/*",
+      cacheControl("public, max-age=604800"),
+      serveStatic({ root: imageDir, rewriteRequestPath: (p) => p.replace(/^\/img/, "") }),
+    );
+    app.get("/img/*", (c) => c.notFound());
+  }
 
   if (staticDir) {
     // Dosya adları içerik özetli (index-abc123.js): sonsuza kadar önbelleğe alınabilir.

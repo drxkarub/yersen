@@ -48,6 +48,8 @@ services:
       BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET:-}
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
       GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-}
+    volumes:
+      - images:/app/data/img
     ports:
       - "127.0.0.1:3300:3300"
     mem_limit: 192m
@@ -67,6 +69,8 @@ services:
     environment:
       DATABASE_URL: postgres://yersen:${POSTGRES_PASSWORD}@db:5432/yersen
       HEALTHCHECKS_SCRAPER_URL: ${HEALTHCHECKS_SCRAPER_URL:-}
+    volumes:
+      - images:/app/data/img
     mem_limit: 128m
     restart: "no"
     labels:
@@ -74,3 +78,4 @@ services:
 
 volumes:
   db-data:
+  images:

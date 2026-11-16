@@ -177,7 +177,7 @@ function FullScreenDeck({
         onPointerUp={up}
         onPointerCancel={up}
       >
-        <DishVisual name={card.rawName} imageUrl={card.imageUrl} imageCredit={card.imageCredit} />
+        <DishVisual name={card.rawName} imageUrl={card.imageUrl} imageCredit={card.imageCredit} imageSourceUrl={card.imageSourceUrl} />
         <div className="kart-govde">
           <span className="kart-gun">{formatDay(card.date)}</span>
           <h1 id="kart-ad" className="kart-ad">

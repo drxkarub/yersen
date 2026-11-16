@@ -40,6 +40,9 @@ COPY api/drizzle ./api/drizzle
 COPY scraper/package.json ./scraper/
 COPY scraper/src ./scraper/src
 COPY --from=web /app/web/dist ./web/dist
+# Yemek görselleri volume'ü: node kullanıcısı yazabilsin (yeni volume bu sahiplikle başlar).
+RUN mkdir -p /app/data/img && chown -R node:node /app/data
+ENV IMAGE_DIR=/app/data/img
 USER node
 EXPOSE 3300
 HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \

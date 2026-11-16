@@ -2,6 +2,7 @@
 //   docker compose -f /opt/yersen/docker-compose.yml run --rm scraper
 // Ortam: DATABASE_URL (zorunlu), HEALTHCHECKS_SCRAPER_URL (isteğe bağlı; yoksa yalnızca konsola yazar).
 import { createDb } from "@yersen/api/db";
+import { commons, fillDishImages } from "@yersen/api/dish-images";
 import { MENU_URL, runScrape, type Ping } from "./run.ts";
 
 const TIMEOUT_MS = 30_000;
@@ -27,4 +28,15 @@ await hc("/start").catch(() => {});
 const db = await createDb(process.env.DATABASE_URL || undefined);
 const result = await runScrape({ db, now: new Date(), fetchHtml, ping });
 console.log(result.message);
+
+// Menüden sonra: görseli olmayan yemeklere temsili görsel (hata menüyü etkilemez).
+const imageDir = process.env.IMAGE_DIR;
+if (imageDir) {
+  try {
+    const img = await fillDishImages(db, { dir: imageDir, now: new Date(), ...commons });
+    console.log(`görsel: ${img.checked} yemek bakıldı, ${img.found} görsel bulundu.`);
+  } catch (err) {
+    console.error(`görsel adımı başarısız: ${err instanceof Error ? err.message : String(err)}`);
+  }
+}
 process.exit(result.exitCode);

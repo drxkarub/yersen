@@ -40,7 +40,12 @@ function authFromEnv(): AuthPort | undefined {
 }
 
 // Üretim imajında STATIC_DIR=/app/web/dist; geliştirmede ön yüzü Vite servis eder.
-const app = createApp({ db, auth: authFromEnv(), staticDir: process.env.STATIC_DIR || undefined });
+const app = createApp({
+  db,
+  auth: authFromEnv(),
+  staticDir: process.env.STATIC_DIR || undefined,
+  imageDir: process.env.IMAGE_DIR || undefined,
+});
 
 serve({ fetch: app.fetch, port, hostname }, (info) => {
   console.log(`api: http://${info.address}:${info.port}`);

@@ -12,14 +12,31 @@ function iconFor(name: string): LucideIcon {
   return UtensilsCrossed;
 }
 
-export function DishVisual({ name, imageUrl, imageCredit }: { name: string; imageUrl: string | null; imageCredit: string | null }) {
+export function DishVisual({
+  name,
+  imageUrl,
+  imageCredit,
+  imageSourceUrl,
+}: {
+  name: string;
+  imageUrl: string | null;
+  imageCredit: string | null;
+  imageSourceUrl: string | null;
+}) {
   if (imageUrl) {
     return (
       <figure className="gorsel">
         <img src={imageUrl} alt="" loading="lazy" decoding="async" draggable={false} />
         <figcaption>
-          <span>Temsili görsel</span>
-          {imageCredit && <span>{imageCredit}</span>}
+          <span>Beklenen yemek görseli</span>
+          {imageCredit &&
+            (imageSourceUrl ? (
+              <a href={imageSourceUrl} target="_blank" rel="noreferrer noopener" onPointerDown={(e) => e.stopPropagation()}>
+                {imageCredit}
+              </a>
+            ) : (
+              <span>{imageCredit}</span>
+            ))}
         </figcaption>
       </figure>
     );
