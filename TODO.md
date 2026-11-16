@@ -43,7 +43,7 @@ Her madde küçük ve tek başına test edilebilir. Bitince `[x]` ile işaretle.
 - [x] Admin için kod üretme: `docker compose exec api node --import tsx src/cli/invite-codes.ts <n>`.
 
 ### Arayüz
-- [ ] PWA manifest'i, ikonlar ve service worker. Android'de ve iOS'ta ana ekrana eklenebilmeli.
+- [x] PWA manifest'i, ikonlar (dil çıkaran Y, demo) ve service worker (kabuk önbellekte, /api canlı, /img önbellekte). Android'de ve iOS'ta ana ekrana eklenebilmeli.
 - [x] Kaydırma ekranı: gelecek günlerin işaretlenmemiş yemekleri kart olarak gelir. Sağa yerim, sola yemem, aşağı belki; butonlarla da seçilebilir.
 - [x] Kararlarım listesi: kullanıcı verdiği kararları görüp değiştirebilsin.
 - [x] Bugün ekranını gerçek API'ye bağla; yükleniyor ve hata durumları.
