@@ -103,9 +103,15 @@ Hepsi mevcut VPS'te çalışır: Debian 12, 2 çekirdek, 2 GB RAM, 40 GB disk, 2
 - **Hafta sonu ve tatil:** "Bugün yemekhane kapalı" mesajı ve bir sonraki menülü günün yemekleri.
 - **Ay başında menü yayınlanmadıysa:** "Menü henüz yayınlanmadı, son kontrol: <saat>" mesajı ve geçen ayın en yüksek puanlı yemekleri.
 
+### Yönetim ve roller
+- Yönetim paneli sitenin içinde (`/yonetim`), ayrı alt alan adı yok. Asıl koruma sunucuda: her `/api/admin/*` rotası rolü kontrol eder; arayüzde gizlemek koruma sayılmaz.
+- Ek katman: Cloudflare Access, yalnızca `/yonetim*` ve `/api/admin/*` yollarında (geliştiricinin e-postası). Panel hazır olunca geliştirici Cloudflare'de açar.
+- Roller: `admin`, `moderator`, `user`. Admin panelden kullanıcıyı moderatör yapabilir/moderatörlükten alabilir. Admin atamak panelde YOK: sunucuda `set-role` komutuyla yapılır (bir açık ya da hata ile kimse kendini admin yapamasın). Geliştirici Haziran 2027'de mezun olunca yöneticiliği bu komutla devreder.
+- Her yönetim işlemi kayda düşer (kim, ne zaman, ne yaptı, hangi kayıt üzerinde).
+
 ### Yorum ve moderasyon (Faz 2)
 - Küfür serbest. Hedef alan, taciz eden, tartışma çıkaran ya da kişileri (personel, aşçı) hedef alan yorum silinir, kullanıcı banlanır.
-- Hafif küfür filtresi, "bildir" butonu, roller: `admin`, `moderator`, `user`. Başta tek admin geliştirici.
+- Hafif küfür filtresi, "bildir" butonu. Roller için bkz. "Yönetim ve roller".
 - Kurallar "Hakkında / Sözleşme" sayfasında yazar, kayıtta ayrıca gösterilmez.
 
 ## Veri modeli taslağı (geleceğe açık)

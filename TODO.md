@@ -54,6 +54,17 @@ Her madde küçük ve tek başına test edilebilir. Bitince `[x]` ile işaretle.
 - [ ] Yemek görselleri: Pexels'ten bir kez arayıp sakla, kaynak bilgisini göster. Bulunamazsa ikon göster. Admin görseli değiştirebilsin.
 - [ ] Hakkında / Sözleşme / KVKK sayfası ve hesabı silme butonu.
 
+### Yönetim (giriş arayüzünden sonra)
+- [ ] `set-role <takma ad> <admin|moderator|user>` sunucu komutu; geliştiriciyi admin yap.
+- [ ] Yönetim işlem kaydı tablosu (kim, ne zaman, ne, hangi kayıt).
+- [ ] `/yonetim` paneli ve `/api/admin/*` rotaları (her rota sunucuda rol kontrolü; testli):
+  - [ ] Davet kodu üretme, kullanıcı listesi ve davet ağacı
+  - [ ] Moderatör yapma / moderatörlükten alma (yalnızca admin)
+  - [ ] Yemek görselini değiştirme
+  - [ ] Scraper durumu (son çalışma, sonuç) ve "şimdi çalıştır"
+  - [ ] Menüde elle düzeltme / günü gizleme
+- [ ] Cloudflare Access: `/yonetim*` ve `/api/admin/*` için kural (geliştirici Cloudflare panelinden).
+
 ### Operasyon
 - [ ] Günlük `pg_dump` yedeği (sunucuda 14 gün tutulsun) ve haftalık R2 kopyası. Yedekten geri yükleme bir kez denenmiş olsun.
 - [ ] Faz sonu güvenlik denetimi: `security-audit` skill'iyle tam denetim. Yüksek ve kritik bulgular kapatılmış olsun.
