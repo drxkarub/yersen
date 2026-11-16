@@ -1,7 +1,7 @@
 import "./Screens.css";
 
 /** Veri sorumlusuna ulaşma adresi. Geliştirici onaylayınca doldurulur; boşsa "Ben" sekmesindeki yol tarif edilir. */
-const CONTACT_EMAIL = "";
+const CONTACT_EMAIL = "burakozsoy@trakya.edu.tr";
 const UPDATED = "17 Kasım 2026";
 
 /** Hakkında, kullanım şartları ve KVKK aydınlatma metni. Giriş yapmadan da okunabilir (#hakkinda). */
