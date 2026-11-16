@@ -13,7 +13,7 @@ Her madde küçük ve tek başına test edilebilir. Bitince `[x]` ile işaretle.
 - [x] Sunucuda `/opt/yersen` dizini (repo klonu, `.env` 600). Docker zaten kurulu, ufw'ye yeni kural eklenmedi. Deploy için ayrı kullanıcı CD kurulurken.
 - [x] DNS: Cloudflare'de `yersen.aegis.net.tr` kaydı, proxy açık.
 - [x] nginx: `yersen.aegis.net.tr` için `server` bloğu (statik dosyalar `/var/www/yersen`, `/api/` istekleri `127.0.0.1:3300`'e) ve certbot sertifikası. Değişiklikten önce `nginx -t` çalıştır. Diğer alt alan adları etkilenmemeli.
-- [ ] GitHub Actions: testler, GHCR'ye imaj gönderme ve SSH ile deploy. `main` dalına push'tan sonra sunucuda yeni sürüm çalışıyor olmalı.
+- [x] GitHub Actions: testler ve GHCR'ye imaj gönderme; sunucuda watchtower çeker (SSH anahtarı yok). `main` dalına push'tan sonra sunucuda yeni sürüm çalışıyor olmalı.
 - [x] Tasarım yönü: `frontend-design` ve `impeccable` ile renk, yazı tipi ve bileşen dilini belirle. Kısa bir `DESIGN.md` yaz ve onaya sun. (Yön: "Yemek fişi". Bugün ekranı örnek veriyle kuruldu, gözden geçirmeden "ship" aldı. Bkz. `PRODUCT.md`, `web/DESIGN.md`, `web/.impeccable/surfaces/`.)
 
 **Tamam sayılır:** Boş uygulama `yersen.aegis.net.tr` adresinde HTTPS ile açılıyor, `/health` 200 dönüyor, push'tan sonra deploy otomatik yapılıyor, tasarım yönü onaylandı.
