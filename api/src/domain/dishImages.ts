@@ -45,7 +45,7 @@ export async function fillDishImages(
   const todo = await db
     .select({ id: dish.id, displayName: dish.displayName })
     .from(dish)
-    .where(and(isNull(dish.imageUrl), or(isNull(dish.imageCheckedAt), lt(dish.imageCheckedAt, retryBefore))))
+    .where(and(isNull(dish.imageUrl), eq(dish.imageLocked, false), or(isNull(dish.imageCheckedAt), lt(dish.imageCheckedAt, retryBefore))))
     .limit(PER_RUN);
 
   let found = 0;

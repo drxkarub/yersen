@@ -3,6 +3,7 @@
 // Ortam: DATABASE_URL (zorunlu), HEALTHCHECKS_SCRAPER_URL (isteğe bağlı; yoksa yalnızca konsola yazar).
 import { createDb } from "@yersen/api/db";
 import { commons, fillDishImages } from "@yersen/api/dish-images";
+import { recordScrapeRun } from "@yersen/api/admin";
 import { MENU_URL, runScrape, type Ping } from "./run.ts";
 
 const TIMEOUT_MS = 30_000;
@@ -28,6 +29,7 @@ await hc("/start").catch(() => {});
 const db = await createDb(process.env.DATABASE_URL || undefined);
 const result = await runScrape({ db, now: new Date(), fetchHtml, ping });
 console.log(result.message);
+await recordScrapeRun(db, { ok: result.exitCode === 0, message: result.message }).catch(() => {});
 
 // Menüden sonra: görseli olmayan yemeklere temsili görsel (hata menüyü etkilemez).
 const imageDir = process.env.IMAGE_DIR;

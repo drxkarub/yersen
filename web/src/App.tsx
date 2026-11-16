@@ -7,10 +7,11 @@ import { Onboarding } from "./screens/Onboarding.tsx";
 import { TodayScreen } from "./screens/TodayScreen.tsx";
 import { SwipeScreen } from "./screens/SwipeScreen.tsx";
 import { MeScreen } from "./screens/MeScreen.tsx";
+import { AdminScreen } from "./screens/AdminScreen.tsx";
 
 type Gate = { kind: "loading" } | { kind: "signed_out" } | { kind: "needs_invite"; me: MeResponse } | { kind: "ready"; me: MeResponse } | { kind: "error" };
 
-const TABS: Tab[] = ["bugun", "kaydir", "ben"];
+const TABS: Tab[] = ["bugun", "kaydir", "ben", "yonetim"];
 const tabFromHash = (): Tab => {
   const h = window.location.hash.replace("#", "") as Tab;
   return TABS.includes(h) ? h : "bugun";
@@ -62,11 +63,13 @@ export function App() {
       </Shell>
     );
 
+  const staff = gate.me.profile?.role === "admin" || gate.me.profile?.role === "moderator";
   return (
-    <Shell date={now} active={tab}>
+    <Shell date={now} active={tab} staff={staff}>
       {tab === "bugun" && <TodayScreen />}
       {tab === "kaydir" && <SwipeScreen />}
       {tab === "ben" && <MeScreen me={gate.me} />}
+      {tab === "yonetim" && (staff ? <AdminScreen /> : <TodayScreen />)}
     </Shell>
   );
 }

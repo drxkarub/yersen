@@ -16,6 +16,7 @@
     "drizzle-orm": "^0.45.4",
     "hono": "^4.13.19",
     "pg": "^8.23.1",
+    "sharp": "^0.35.5",
     "tsx": "^4.23.15",
     "zod": "^4.6.7"
   },
@@ -27,6 +28,7 @@
     "./menu-store": "./src/domain/menuStore.ts",
     "./db": "./src/db/client.ts",
     "./time": "./src/domain/time.ts",
-    "./dish-images": "./src/domain/dishImages.ts"
+    "./dish-images": "./src/domain/dishImages.ts",
+    "./admin": "./src/domain/admin.ts"
   }
 }

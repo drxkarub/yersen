@@ -45,6 +45,7 @@ const app = createApp({
   auth: authFromEnv(),
   staticDir: process.env.STATIC_DIR || undefined,
   imageDir: process.env.IMAGE_DIR || undefined,
+  publicOrigin: process.env.BETTER_AUTH_URL || undefined,
 });
 
 serve({ fetch: app.fetch, port, hostname }, (info) => {

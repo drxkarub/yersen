@@ -46,6 +46,27 @@ export const api = {
     window.location.assign(url);
   },
   signOut: () => call<void>("/auth/sign-out", { body: {} }),
+  admin: {
+    overview: () => call<{ role: "admin" | "moderator"; scrapeRuns: { id: number; at: string; ok: boolean; message: string }[] }>("/admin/overview"),
+    users: () =>
+      call<{ users: { id: string; nickname: string; role: "user" | "moderator" | "admin"; invitedBy: string | null; banned: boolean }[] }>(
+        "/admin/users",
+      ),
+    setModerator: (id: string, moderator: boolean) => call<void>(`/admin/users/${encodeURIComponent(id)}/moderator`, { body: { moderator } }),
+    invites: (count: number) => call<{ codes: string[] }>("/admin/invites", { body: { count } }),
+    dishes: (q: string) =>
+      call<{ dishes: { id: number; displayName: string; imageUrl: string | null; imageCredit: string | null; imageSourceUrl: string | null; imageLocked: boolean }[] }>(
+        `/admin/dishes?q=${encodeURIComponent(q)}`,
+      ),
+    uploadDishImage: async (id: number, file: File) => {
+      const form = new FormData();
+      form.set("file", file);
+      const res = await fetch(`/api/admin/dishes/${id}/image`, { method: "POST", body: form, credentials: "same-origin" });
+      if (!res.ok) throw new ApiError(res.status, ((await res.json().catch(() => ({}))) as { error?: string }).error ?? `http_${res.status}`);
+      return (await res.json()) as { imageUrl: string };
+    },
+    removeDishImage: (id: number) => call<void>(`/admin/dishes/${id}/image`, { method: "DELETE" }),
+  },
 };
 
 /** Sunucu hata kodlarının kullanıcıya gösterilecek hali. Ne olduğunu ve ne yapılacağını söyler. */
@@ -64,6 +85,10 @@ export function errorText(err: unknown): string {
     banned: "Hesabın kapatılmış.",
     not_found: "Bu yemek menüde artık yok. Sayfayı yenile.",
     unauthorized: "Oturumun kapanmış. Yeniden giriş yap.",
+    forbidden: "Bunun için yetkin yok.",
+    cannot_change_admin: "Yöneticinin rolü panelden değiştirilemez.",
+    invalid_image: "Bu dosya bir fotoğraf değil ya da bozuk.",
+    too_large: "Fotoğraf çok büyük (en fazla 10 MB).",
     network: "Bağlantı yok gibi. İnternetini kontrol edip tekrar dene.",
   };
   return messages[code] ?? "Bir şeyler ters gitti. Sayfayı yenileyip tekrar dene.";

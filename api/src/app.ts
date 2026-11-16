@@ -8,6 +8,15 @@ import { z } from "zod";
 import type { HealthResponse } from "@yersen/shared";
 import type { Db } from "./db/client.ts";
 import { profile } from "./db/schema.ts";
+import {
+  adminCreateInvites,
+  listDishes,
+  listUsers,
+  recentScrapeRuns,
+  removeDishImage,
+  setDishImage,
+  setModerator,
+} from "./domain/admin.ts";
 import { claimInvite, myInvites } from "./domain/invites.ts";
 import { getDayMenu, getUpcoming } from "./domain/menuQueries.ts";
 import { istanbulDate } from "./domain/time.ts";
@@ -27,6 +36,8 @@ export type AppDeps = {
   staticDir?: string;
   /** İndirilen yemek görselleri; /img/<id>.jpg olarak servis edilir. */
   imageDir?: string;
+  /** https://yersen.aegis.net.tr — yönetim isteklerinde Origin bununla eşleşmeli. */
+  publicOrigin?: string;
   now?: () => Date;
 };
 
@@ -36,6 +47,10 @@ type Env = { Variables: { userId: string } };
 const STATUS: Record<string, ContentfulStatusCode> = {
   not_found: 404,
   banned: 403,
+  forbidden: 403,
+  cannot_change_admin: 409,
+  bad_count: 400,
+  invalid_image: 400,
   invalid_score: 400,
   invalid_code: 400,
   used_code: 400,
@@ -53,7 +68,7 @@ const onboardingBody = z.object({ code: z.string().min(1).max(32), nickname: z.s
 const swipeBody = z.object({ menuItemId: z.number().int().positive(), choice: z.enum(["yes", "no", "maybe"]) });
 const ratingBody = z.object({ menuItemId: z.number().int().positive(), score: z.number() });
 
-export function createApp({ db, auth, staticDir, imageDir, now = () => new Date() }: AppDeps) {
+export function createApp({ db, auth, staticDir, imageDir, publicOrigin, now = () => new Date() }: AppDeps) {
   const api = new Hono<Env>();
 
   api.get("/health", async (c) => {
@@ -137,6 +152,65 @@ export function createApp({ db, auth, staticDir, imageDir, now = () => new Date(
       const r = await rateDish(db, { userId: c.get("userId"), ...b, now: now() });
       return r.ok ? c.json({ ratingId: r.ratingId }, 201) : fail(c, r.error);
     });
+
+    // --- Yönetim: moderatör ve admin. İnce yetki (yalnızca admin) domain fonksiyonlarında. ---
+    const admin = new Hono<Env & { Variables: { role: "moderator" | "admin" } }>();
+    admin.use(requireUser);
+    admin.use(async (c, next) => {
+      // Başka siteden gelen istekler (CSRF) reddedilir; SameSite=Lax çereze ek kat.
+      const origin = c.req.header("origin");
+      if (origin && publicOrigin && origin !== publicOrigin) return c.json({ error: "forbidden" }, 403);
+      const [p] = await db.select({ role: profile.role }).from(profile).where(eq(profile.id, c.get("userId")));
+      if (p?.role !== "admin" && p?.role !== "moderator") return c.json({ error: "forbidden" }, 403);
+      c.set("role", p.role);
+      await next();
+    });
+
+    admin.get("/overview", async (c) => c.json({ role: c.get("role"), scrapeRuns: await recentScrapeRuns(db, 5) }));
+
+    admin.get("/users", async (c) => {
+      if (c.get("role") !== "admin") return fail(c, "forbidden");
+      return c.json({ users: await listUsers(db) });
+    });
+
+    admin.post("/users/:id/moderator", requireJson, async (c) => {
+      const b = await body(c, z.object({ moderator: z.boolean() }));
+      if (!b) return c.json({ error: "bad_request" }, 400);
+      const r = await setModerator(db, { actorId: c.get("userId"), targetId: c.req.param("id"), moderator: b.moderator });
+      return r.ok ? c.body(null, 204) : fail(c, r.error);
+    });
+
+    admin.post("/invites", requireJson, async (c) => {
+      const b = await body(c, z.object({ count: z.number() }));
+      if (!b) return c.json({ error: "bad_request" }, 400);
+      const r = await adminCreateInvites(db, { actorId: c.get("userId"), count: b.count });
+      return r.ok ? c.json({ codes: r.codes }, 201) : fail(c, r.error);
+    });
+
+    admin.get("/dishes", async (c) => c.json({ dishes: await listDishes(db, { q: c.req.query("q") }) }));
+
+    admin.post("/dishes/:id/image", async (c) => {
+      if (!imageDir) return c.json({ error: "images_disabled" }, 503);
+      const form = await c.req.parseBody().catch(() => null);
+      const file = form?.["file"];
+      if (!(file instanceof File)) return c.json({ error: "bad_request" }, 400);
+      if (file.size > 10 * 1024 * 1024) return c.json({ error: "too_large" }, 413);
+      const r = await setDishImage(db, {
+        actorId: c.get("userId"),
+        dishId: Number(c.req.param("id")),
+        bytes: new Uint8Array(await file.arrayBuffer()),
+        dir: imageDir,
+        now: now(),
+      });
+      return r.ok ? c.json({ imageUrl: r.imageUrl }, 201) : fail(c, r.error);
+    });
+
+    admin.delete("/dishes/:id/image", async (c) => {
+      const r = await removeDishImage(db, { actorId: c.get("userId"), dishId: Number(c.req.param("id")) });
+      return r.ok ? c.body(null, 204) : fail(c, r.error);
+    });
+
+    api.route("/admin", admin);
   }
 
   api.all("*", (c) => c.json({ error: "Böyle bir API yolu yok" }, 404));

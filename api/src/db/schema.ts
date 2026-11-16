@@ -1,6 +1,7 @@
 import { sql } from "drizzle-orm";
 import {
   boolean,
+  jsonb,
   check,
   date,
   index,
@@ -102,6 +103,7 @@ export const dish = pgTable(
     imageCredit: text("image_credit"), // "Yazar, CC BY-SA 4.0"
     imageSourceUrl: text("image_source_url"), // görselin kaynak sayfası (atıf bağlantısı)
     imageCheckedAt: timestamp("image_checked_at", { withTimezone: true }), // son arama; bulunamazsa haftada bir yeniden denenir
+    imageLocked: boolean("image_locked").notNull().default(false), // görseli yönetici/moderatör belirledi; Commons dokunmaz
     createdAt: createdAt(),
   },
   (t) => [unique("dish_owner_key_unique").on(t.ownerVenueId, t.key).nullsNotDistinct()],
@@ -217,3 +219,28 @@ export const rateEvent = pgTable(
   },
   (t) => [index("rate_event_user_kind_at").on(t.userId, t.kind, t.at)],
 );
+
+// --- Yönetim ---
+
+/** Her yönetim işlemi: kim, ne zaman, ne yaptı, hangi kayıt üzerinde. */
+export const adminAction = pgTable(
+  "admin_action",
+  {
+    id: serial("id").primaryKey(),
+    actorId: text("actor_id").notNull(), // profile.id ya da "cli"
+    action: text("action").notNull(), // "set_role", "create_invites", "set_dish_image", "remove_dish_image"
+    targetType: text("target_type").notNull(), // "profile", "dish", "invite"
+    targetId: text("target_id"),
+    detail: jsonb("detail"),
+    at: timestamp("at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [index("admin_action_at").on(t.at)],
+);
+
+/** Scraper çalışmaları (panelde "son çalışma" durumu). */
+export const scrapeRun = pgTable("scrape_run", {
+  id: serial("id").primaryKey(),
+  at: timestamp("at", { withTimezone: true }).notNull().defaultNow(),
+  ok: boolean("ok").notNull(),
+  message: text("message").notNull(),
+});

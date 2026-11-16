@@ -398,3 +398,145 @@ button:disabled {
   background: var(--marka);
   color: #fff;
 }
+
+/* --- Yönetim --- */
+
+.yonetim {
+  gap: 14px;
+}
+
+.sayi {
+  font-weight: 600;
+  color: var(--ikincil);
+}
+
+.kayitlar {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+}
+
+.kayitlar li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-top: 1px solid var(--cizgi);
+  font-size: 14px;
+}
+
+.kayitlar li[data-hata] {
+  color: var(--iptal);
+  font-weight: 600;
+}
+
+.kayit-zaman {
+  flex: none;
+  color: var(--ikincil);
+  font-variant-numeric: tabular-nums;
+}
+
+.kullanici > span {
+  display: grid;
+}
+
+.kullanici small {
+  font-size: 13px;
+  color: var(--ikincil);
+}
+
+.satir-form {
+  display: flex;
+  align-items: end;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.satir-form .dugme {
+  width: auto;
+  min-height: 50px;
+  padding: 0 18px;
+  font-size: 16px;
+}
+
+.alan-kisa input {
+  width: 90px;
+}
+
+.alan-genis {
+  flex: 1;
+}
+
+.yemek-gorselleri {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.yemek-gorselleri li {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  gap: 12px;
+  align-items: center;
+}
+
+.yemek-gorselleri li[aria-busy] {
+  opacity: 0.5;
+}
+
+.mini-gorsel {
+  height: 72px;
+  border-radius: var(--kose);
+  overflow: hidden;
+  display: grid;
+}
+
+.mini-gorsel .gorsel-ikon svg {
+  width: 32px;
+  height: 32px;
+}
+
+.mini-govde {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.mini-govde small {
+  font-size: 13px;
+  color: var(--ikincil);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mini-tuslar {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.mini-tuslar .kod-paylas {
+  min-height: 36px;
+  font-size: 14px;
+}
+
+.dosya-sec {
+  display: inline-grid;
+  place-items: center;
+  position: relative;
+}
+
+.dosya-sec input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.mini-gorsel figcaption {
+  display: none;
+}

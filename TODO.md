@@ -55,15 +55,15 @@ Her madde küçük ve tek başına test edilebilir. Bitince `[x]` ile işaretle.
 - [ ] Hakkında / Sözleşme / KVKK sayfası ve hesabı silme butonu.
 
 ### Yönetim (giriş arayüzünden sonra)
-- [ ] `set-role <takma ad> <admin|moderator|user>` sunucu komutu; geliştiriciyi admin yap.
-- [ ] Yönetim işlem kaydı tablosu (kim, ne zaman, ne, hangi kayıt).
-- [ ] `/yonetim` paneli ve `/api/admin/*` rotaları (her rota sunucuda rol kontrolü; testli):
-  - [ ] Davet kodu üretme, kullanıcı listesi ve davet ağacı
-  - [ ] Moderatör yapma / moderatörlükten alma (yalnızca admin)
-  - [ ] Yemek görselini değiştirme
-  - [ ] Scraper durumu (son çalışma, sonuç) ve "şimdi çalıştır"
+- [x] `set-role <takma ad> <admin|moderator|user>` sunucu komutu; geliştirici (big_brother) admin.
+- [x] Yönetim işlem kaydı tablosu (admin_action).
+- [x] Yönetim sekmesi (yalnızca admin/moderatöre görünür) ve `/api/admin/*` rotaları (sunucuda rol + Origin kontrolü; testli):
+  - [x] Davet kodu üretme, kullanıcı listesi (davet eden görünür)
+  - [x] Moderatör yapma / moderatörlükten alma (yalnızca admin)
+  - [x] Yemek görselini değiştirme/kaldırma (moderatör + admin; EXIF silinir)
+  - [x] Scraper durumu (son 5 çalışma). "Şimdi çalıştır" bilerek yok: API'nin Docker çalıştırması istenmiyor.
   - [ ] Menüde elle düzeltme / günü gizleme
-- [ ] Cloudflare Access: `/yonetim*` ve `/api/admin/*` için kural (geliştirici Cloudflare panelinden).
+- [ ] Cloudflare Access: `/api/admin/*` için kural (geliştirici Cloudflare panelinden). Not: panel ayrı sayfa değil, sekme (#yonetim); korunacak yol API.
 
 ### Operasyon
 - [ ] Günlük `pg_dump` yedeği (sunucuda 14 gün tutulsun) ve haftalık R2 kopyası. Yedekten geri yükleme bir kez denenmiş olsun.
@@ -81,10 +81,10 @@ Her madde küçük ve tek başına test edilebilir. Bitince `[x]` ile işaretle.
 
 ### Tepsi fotoğrafı (Faz 2'nin ilk işi; "bildir" ve moderatör silmesiyle birlikte açılır)
 - [ ] Günün tepsisinin fotoğrafı: Bugün ekranında fişin en üstünde. Yarının yemeğine fotoğraf yok (Kaydır'da Commons görseli kalır).
-- [ ] Yükleme kuralları: o gün "yerim"/"belki" diyen, puanlama penceresi açıkken (11:30 → ertesi gün 11:30), kişi başına günde 1. Boyut sınırı, oran sınırı.
-- [ ] Gizlilik: sunucuda EXIF/GPS ve cihaz bilgisi silinir, görsel küçültülür (sharp). Yükleyen takma adla görünür. Testli (EXIF'li örnek dosya → çıktıda EXIF yok).
+- [ ] Yükleme kuralları: YALNIZCA moderatör ve admin yükler (geliştirici kararı; moderasyon yükü yok). Puanlama penceresi açıkken (11:30 → ertesi gün 11:30). Boyut sınırı. Altyapı hazır: setDishImage (sharp, EXIF silme, rol kontrolü).
+- [ ] Gizlilik: EXIF/GPS silinir, görsel küçültülür (yemek görselinde yapıldı ve testli; tepsi için aynı yol). Yükleyen takma adla görünür.
 - [ ] Birden fazla fotoğraf: biri büyük, diğerleri küçük şerit. Başta ilk yüklenen öne çıkar.
-- [ ] "Bildir" ve moderatör/admin kaldırma; kaldırılan fotoğraf diskten de silinir.
+- [ ] Moderatör/admin kaldırma; kaldırılan fotoğraf diskten de silinir.
 - [ ] Amaç: ertesi sabah puanlarken tepsiyi görüp tadı hatırlamak; "beklenen (Commons) / gelen (tepsi)" karşılaştırması paylaşılabilir.
 
 
