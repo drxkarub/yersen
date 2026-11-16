@@ -27,7 +27,7 @@ Her madde küçük ve tek başına test edilebilir. Bitince `[x]` ile işaretle.
 - [x] Eşleşme anahtarı fonksiyonu: boşluk temizliği, `(%NN)` silme, `tr-TR` küçük harf. Testlerde en az şu örnekler olsun: "İ"/"ı", "(%50)", çift boşluk, ayraçsız iki yemekli satır.
 - [x] Yapı kontrolü: beklenen seçiciler bulunamazsa iş hata versin. "Menü henüz yayınlanmadı" durumu ayrı ele alınsın. İki durum da testli olsun.
 - [x] Veritabanına yazma: menü, menü kalemleri ve yemekler. Aynı gün ikinci kez çalışınca kopya kayıt oluşmamalı.
-- [ ] Sunucuda systemd timer kur (07:00 ve 10:00, Europe/Istanbul). Başarı ve hata durumları healthchecks.io'ya ping atsın. Hata durumunda mail gelmeli.
+- [x] Sunucuda systemd timer kur (07:00 ve 10:00, Europe/Istanbul). Başarı ve hata durumları healthchecks.io'ya ping atsın. Hata durumunda mail gelmeli.
 
 ### Veritabanı ve yetki
 - [x] Şema migration'ını yaz: `venue`, `menu`, `menu_item`, `dish`, `profile`, `invite_code`, `swipe`, `rating`.
