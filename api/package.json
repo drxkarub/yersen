@@ -23,6 +23,7 @@
   },
   "exports": {
     "./menu-store": "./src/domain/menuStore.ts",
-    "./db": "./src/db/client.ts"
+    "./db": "./src/db/client.ts",
+    "./time": "./src/domain/time.ts"
   }
 }

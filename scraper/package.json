@@ -6,6 +6,8 @@
     "typecheck": "tsc -p ."
   },
   "dependencies": {
+    "@yersen/api": "*",
+    "@yersen/shared": "*",
     "node-html-parser": "^9.0.7"
   }
 }

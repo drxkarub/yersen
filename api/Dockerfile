@@ -14,7 +14,7 @@ COPY shared ./shared
 COPY web ./web
 RUN npm run build -w web
 
-# 2) API'nin yalnızca üretim bağımlılıkları.
+# 2) API ve scraper'ın yalnızca üretim bağımlılıkları.
 FROM node:24-bookworm-slim AS deps
 WORKDIR /app
 COPY package.json package-lock.json ./
@@ -22,7 +22,7 @@ COPY shared/package.json shared/
 COPY api/package.json api/
 COPY scraper/package.json scraper/
 COPY web/package.json web/
-RUN npm ci --workspace api --include-workspace-root=false --omit=dev
+RUN npm ci --workspace api --workspace scraper --include-workspace-root=false --omit=dev
 
 # 3) Çalışma imajı.
 FROM node:24-bookworm-slim
@@ -37,6 +37,8 @@ COPY shared ./shared
 COPY api/package.json api/drizzle.config.ts ./api/
 COPY api/src ./api/src
 COPY api/drizzle ./api/drizzle
+COPY scraper/package.json ./scraper/
+COPY scraper/src ./scraper/src
 COPY --from=web /app/web/dist ./web/dist
 USER node
 EXPOSE 3300
