@@ -9,6 +9,9 @@ import pg from "pg";
 import * as schema from "./schema.ts";
 
 export type Db = PgDatabase<PgQueryResultHKT, typeof schema>;
+/** db.transaction içindeki işlem nesnesi. */
+export type Tx = Parameters<Parameters<Db["transaction"]>[0]>[0];
+export type DbOrTx = Db | Tx;
 
 const migrationsFolder = fileURLToPath(new URL("../../drizzle", import.meta.url));
 
