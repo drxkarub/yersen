@@ -1,0 +1,376 @@
+.bugun {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 18px 14px 14px;
+}
+
+
+/* --- Fiş --- */
+
+.fis {
+  position: relative;
+  background: var(--fis);
+  border-radius: var(--kose);
+  padding: 16px 18px 14px;
+  box-shadow: 0 1px 0 var(--koparma);
+}
+
+.fis-bas {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: start;
+  min-height: 92px;
+  padding-right: 104px; /* gün mührüne yer */
+}
+
+.fis-bas h1 {
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+}
+
+.fis-no {
+  grid-column: 1;
+  font-size: 14px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--ikincil);
+}
+
+/* Günün ortalaması: fişin sağ üstüne basılmış altın mühür. */
+.gun-muhru {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  width: 92px;
+  height: 92px;
+  display: grid;
+  place-content: center;
+  text-align: center;
+  border: 4px solid var(--vurgu);
+  border-radius: 50%;
+  color: var(--marka-koyu);
+  transform: rotate(-12deg);
+}
+
+.gun-muhru b {
+  font-size: 32px;
+  font-weight: 900;
+  line-height: 0.95;
+  font-variant-numeric: tabular-nums;
+}
+
+.gun-muhru small {
+  max-width: 62px;
+  margin: 2px auto 0;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.05;
+}
+
+/* --- Yemek satırları --- */
+
+.yemekler {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.yemek {
+  border-top: 1px solid var(--cizgi);
+}
+
+.yemek-satir {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-areas:
+    "ad muhur puan"
+    "oy oy puan";
+  align-items: center;
+  column-gap: 10px;
+  padding: 11px 0 10px;
+}
+
+.yemek-ad {
+  grid-area: ad;
+  font-size: 19px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.yemek-puan {
+  grid-area: puan;
+  min-width: 2.6ch;
+  text-align: right;
+  font-size: 30px;
+  font-weight: 900;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--marka);
+}
+
+/* Az oy: hiyerarşiyi oy sayısı taşır. */
+.yemek-puan[data-az] {
+  font-size: 22px;
+  color: var(--soluk);
+}
+
+.yemek-oy {
+  grid-area: oy;
+  font-size: 13px;
+  color: var(--ikincil);
+}
+
+/* Senin puanın: satıra basılan küçük mühür. İmza hareketi burada. */
+.benim-muhur {
+  grid-area: muhur;
+  justify-self: start;
+  display: inline-grid;
+  place-items: center;
+  /* Ad satırının yüksekliğini aşmaz: puan basılınca satırlar kaymaz. */
+  min-width: 24px;
+  height: 23px;
+  padding: 0 5px;
+  border: 2px solid var(--vurgu);
+  border-radius: 999px;
+  color: var(--marka-koyu);
+  font-size: 14px;
+  line-height: 1;
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+  transform: rotate(-8deg);
+  animation: damga 280ms var(--ease-out) both;
+}
+
+.benim-muhur-yemedim {
+  border-color: var(--iptal);
+  color: var(--iptal);
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 4px;
+}
+
+@keyframes damga {
+  from {
+    opacity: 0;
+    transform: scale(1.9) rotate(-26deg);
+  }
+  60% {
+    opacity: 1;
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(-8deg);
+  }
+}
+
+/* --- Puan ölçeği --- */
+
+.yemek[data-active] {
+  background: linear-gradient(var(--zemin), var(--zemin)) padding-box;
+  margin: 0 -18px;
+  padding: 0 18px 14px;
+}
+
+.olcek {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+
+.olcek legend {
+  padding: 0 0 8px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ikincil);
+}
+
+.olcek-tuslar {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+}
+
+.olcek-tus {
+  height: 50px;
+  border: 1px solid var(--koparma);
+  border-radius: var(--kose);
+  background: var(--fis);
+  font-size: 20px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--marka);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.olcek-tus:active {
+  background: var(--marka);
+  color: #fff;
+}
+
+.yemedim {
+  margin-top: 10px;
+  padding: 6px 0;
+  border: 0;
+  background: none;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ikincil);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+/* --- Fişin koparma hattı ve altı --- */
+
+.fis-alt {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+  padding-top: 14px;
+  border-top: 2px dashed var(--koparma);
+  font-size: 14px;
+  color: var(--ikincil);
+}
+
+.ornek {
+  font-weight: 700;
+}
+
+/* --- Durum fişi (kapalı, yayınlanmadı) --- */
+
+.fis-durum {
+  padding: 24px 22px 26px;
+  display: flow-root;
+}
+
+.fis-durum p {
+  margin-top: 10px;
+}
+
+.fis-durum h1 {
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.1;
+  text-wrap: balance;
+}
+
+.fis-durum p {
+  font-size: 17px;
+  color: var(--ikincil);
+  max-width: 34ch;
+}
+
+/* Damga sağa yüzer: başlığın yalnızca ilk satırı ona yer açar, kendi boş satırı olmaz. */
+.durum-muhru {
+  float: right;
+  margin: 2px -4px 6px 12px;
+  padding: 4px 12px;
+  border: 3px solid var(--marka);
+  border-radius: 4px;
+  font-size: 18px;
+  font-weight: 900;
+  color: var(--marka);
+  transform: rotate(-6deg);
+}
+
+/* Durum fişinin altındaki içerik: sıradaki menü ya da geçen ayın en iyileri. */
+.ek {
+  display: grid;
+  gap: 8px;
+}
+
+.ek h2 {
+  padding: 4px 4px 0;
+  font-size: 19px;
+  font-weight: 700;
+}
+
+.ek-liste {
+  list-style: none;
+  margin: 0;
+  padding: 4px 18px;
+  background: var(--fis);
+  border-radius: var(--kose);
+}
+
+.ek-liste li {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  padding: 10px 0;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.ek-liste li + li {
+  border-top: 1px solid var(--cizgi);
+}
+
+.ek-liste .yemek-puan {
+  font-size: 24px;
+}
+
+/* --- Eylem bölgesi (başparmak bölgesi) --- */
+
+.eylem {
+  margin-top: auto;
+  display: grid;
+  gap: 10px;
+}
+
+.eylem-bilgi {
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ikincil);
+}
+
+.dugme {
+  width: 100%;
+  min-height: 58px;
+  border: 0;
+  border-radius: var(--kose);
+  background: var(--vurgu);
+  color: var(--marka-koyu);
+  font-size: 21px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 120ms var(--ease-out);
+}
+
+.dugme:active {
+  background: var(--vurgu-basili);
+}
+
+.dugme-ikincil {
+  background: transparent;
+  border: 2px solid var(--marka);
+  color: var(--marka);
+  min-height: 52px;
+  font-size: 18px;
+}
+
+.dugme-baglanti {
+  display: grid;
+  place-items: center;
+  text-decoration: none;
+}
+
+.ek-not {
+  padding: 0 4px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ikincil);
+}
+
+.dugme-ikincil:active {
+  background: var(--marka);
+  color: #fff;
+}

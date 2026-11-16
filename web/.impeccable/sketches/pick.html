@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=390">
+<link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  :root { --lacivert: #112a79; --altin: #cb9832; --metin: #1e2a44; --cizgi: #d9deea; }
+  * { box-sizing: border-box; margin: 0; }
+  body { width: 390px; height: 844px; background: #fff; font-family: "Titillium Web", system-ui, sans-serif; color: var(--metin); display: flex; flex-direction: column; }
+  header { background: var(--lacivert); color: #fff; padding: 16px 18px; display: flex; justify-content: space-between; align-items: baseline; }
+  .wordmark { font-weight: 900; font-size: 26px; }
+  main { flex: 1; padding: 20px 16px; }
+  h1 { font-size: 28px; font-weight: 700; margin-bottom: 4px; }
+  .sub { font-size: 15px; color: #66708a; margin-bottom: 14px; }
+  table { width: 100%; border-collapse: collapse; border: 2px solid var(--lacivert); }
+  th { background: var(--lacivert); color: #fff; font-size: 15px; text-align: left; padding: 8px 10px; }
+  th:last-child, td:last-child { text-align: right; width: 84px; }
+  td { padding: 12px 10px; border-top: 1px solid var(--cizgi); font-size: 19px; font-weight: 600; }
+  td:last-child { font-size: 30px; font-weight: 900; color: var(--lacivert); font-variant-numeric: tabular-nums; border-left: 1px solid var(--cizgi); }
+  .takdir { margin-top: 22px; border: 2px solid var(--altin); padding: 14px 16px; display: flex; justify-content: space-between; align-items: center; }
+  .takdir strong { font-size: 22px; }
+  .takdir span { font-size: 15px; color: #66708a; }
+  .action { padding: 14px; }
+  .btn { width: 100%; height: 58px; border: 0; background: var(--lacivert); color: #fff; font: 700 22px "Titillium Web", sans-serif; }
+  nav { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--cizgi); height: 68px; }
+  nav a { display: grid; place-items: center; font-size: 15px; font-weight: 600; color: #66708a; }
+  nav a.on { color: var(--lacivert); }
+</style>
+</head>
+<body>
+  <header><span class="wordmark">yersen</span><span>16 Kasım</span></header>
+  <main>
+    <h1>Bugünün karnesi</h1>
+    <p class="sub">916 kcal, örnek veri</p>
+    <table>
+      <tr><th>Yemek</th><th>Not</th></tr>
+      <tr><td>Düğün çorbası</td><td>8.1</td></tr>
+      <tr><td>Etli nohut</td><td>7.6</td></tr>
+      <tr><td>Pirinç pilavı</td><td>6.9</td></tr>
+      <tr><td>Yoğurt</td><td>5.0</td></tr>
+    </table>
+    <div class="takdir"><div><strong>Haftanın takdiri</strong><br><span>Tavuk döner, 8.7</span></div><span>Takdir</span></div>
+  </main>
+  <div class="action"><button class="btn">Not ver</button></div>
+  <nav><a class="on">Bugün</a><a>Kaydır</a><a>Ben</a></nav>
+</body>
+</html>

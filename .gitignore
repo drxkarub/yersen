@@ -1,0 +1,13 @@
+node_modules/
+dist/
+.env
+.env.*
+!.env.example
+*.log
+.pglite/
+coverage/
+graphify-out/
+.DS_Store
+
+# Yerel, gizli notlar (sunucu haritası vb.)
+*.local.md

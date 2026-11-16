@@ -1,0 +1,24 @@
+{
+  "name": "@yersen/api",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "start": "node --import tsx src/index.ts",
+    "typecheck": "tsc -p .",
+    "db:generate": "drizzle-kit generate"
+  },
+  "dependencies": {
+    "@yersen/shared": "*",
+    "@electric-sql/pglite": "^0.5.16",
+    "@hono/node-server": "^2.1.8",
+    "drizzle-orm": "^0.45.4",
+    "hono": "^4.13.19",
+    "pg": "^8.23.1",
+    "tsx": "^4.23.15"
+  },
+  "devDependencies": {
+    "@types/pg": "^8.23.1",
+    "drizzle-kit": "^0.31.11"
+  }
+}

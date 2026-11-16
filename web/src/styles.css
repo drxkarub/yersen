@@ -1,0 +1,106 @@
+@import "@fontsource/titillium-web/400.css";
+@import "@fontsource/titillium-web/600.css";
+@import "@fontsource/titillium-web/700.css";
+@import "@fontsource/titillium-web/900.css";
+
+/*
+ * Üniversite temaları. Her üniversite kendi sitesinin renk ailesini taşır.
+ * Trakya: trakya.edu.tr'deki lacivert ve altın.
+ */
+:root,
+[data-uni="trakya"] {
+  --marka: #112a79;          /* üst bant, puan rakamları, seçili durum */
+  --marka-koyu: #0d1a4a;     /* metin */
+  --vurgu: #cb9832;          /* altın: mühür, ana düğme, bant çizgisi */
+  --vurgu-basili: #b5852a;   /* ana düğme basılıyken */
+  --zemin: #f3f5fa;          /* lacivertten soğutulmuş zemin */
+  --fis: #ffffff;
+  --cizgi: #e3e7f1;
+  --koparma: #c9d0e3;        /* fişin kesik koparma hattı */
+  --ikincil: #5d6688;        /* ikincil metin, zeminde ve fişte AA */
+  --soluk: #7f88a8;          /* az oylu puan; büyük punto: fişte 3.5:1, zeminde 3.2:1 */
+  --iptal: #c2382c;          /* yalnızca "yemem" damgası */
+  --bant-ikincil: #c9d3f0;   /* lacivert bant üstünde ikincil metin */
+  --masaustu-zemin: #dfe4f1; /* 600px üstünde dar sütunun iki yanı */
+}
+
+:root {
+  --yazi: "Titillium Web", system-ui, sans-serif;
+  --kose: 6px;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  color-scheme: light;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scrollbar-color: var(--koparma) transparent;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  background: var(--zemin);
+  color: var(--marka-koyu);
+  font-family: var(--yazi);
+  font-size: 16px;
+  line-height: 1.4;
+  caret-color: var(--marka);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+::selection {
+  background: var(--vurgu);
+  color: var(--marka-koyu);
+}
+
+h1,
+h2,
+p {
+  margin: 0;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+a {
+  color: var(--marka);
+  text-underline-offset: 3px;
+}
+
+/* Açık zeminde lacivert odak (11.8:1); lacivert bant üstünde altın. */
+:focus-visible {
+  outline: 3px solid var(--marka);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.bant :focus-visible {
+  outline-color: var(--vurgu);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

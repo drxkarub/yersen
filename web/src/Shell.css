@@ -1,0 +1,83 @@
+.shell {
+  min-height: 100dvh;
+  max-width: 480px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  background: var(--zemin);
+}
+
+/* Masaüstünde dar sütun, iki yanda lacivertten türeyen derin zemin. */
+@media (min-width: 600px) {
+  body {
+    background: var(--masaustu-zemin);
+  }
+  .shell {
+    box-shadow: 0 0 0 1px var(--cizgi);
+  }
+}
+
+.bant {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: max(14px, env(safe-area-inset-top)) 18px 12px;
+  background: var(--marka);
+  border-bottom: 4px solid var(--vurgu);
+  color: #fff;
+}
+
+.kelime-isareti {
+  font-size: 26px;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.bant-tarih {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--bant-ikincil);
+}
+
+.shell-icerik {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.sekmeler {
+  position: sticky;
+  bottom: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  padding-bottom: env(safe-area-inset-bottom);
+  background: var(--fis);
+  border-top: 1px solid var(--cizgi);
+}
+
+.sekme {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-height: 64px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ikincil);
+  text-decoration: none;
+}
+
+.sekme[aria-current="page"] {
+  color: var(--marka);
+  box-shadow: inset 0 3px 0 var(--vurgu);
+}
+
+.sekme:focus-visible {
+  outline-offset: -4px;
+}

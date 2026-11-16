@@ -1,0 +1,468 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-16T14:02:59+00:00",
+  "title": "Design System: yersen",
+  "extensions": {
+    "colorMeta": {
+      "marka": {
+        "role": "primary",
+        "displayName": "Trakya Laciverti",
+        "canonical": "oklch(32.5% 0.138 265.4)",
+        "tonalRamp": [
+          "#030920",
+          "#111f44",
+          "#22376b",
+          "#365195",
+          "#5476c8",
+          "#7f9de0",
+          "#b0c7fa",
+          "#dfefff"
+        ],
+        "cssVar": "--marka"
+      },
+      "vurgu": {
+        "role": "secondary",
+        "displayName": "Tabldot Altını",
+        "canonical": "oklch(71.1% 0.129 80.7)",
+        "tonalRamp": [
+          "#150800",
+          "#321d00",
+          "#523400",
+          "#744d00",
+          "#9f7100",
+          "#be9853",
+          "#e0c393",
+          "#ffeccc"
+        ],
+        "cssVar": "--vurgu"
+      },
+      "vurgu-basili": {
+        "role": "secondary",
+        "displayName": "Basılı Altın",
+        "canonical": "oklch(64.8% 0.119 79.2)",
+        "tonalRamp": [
+          "#140800",
+          "#311d00",
+          "#513400",
+          "#724d00",
+          "#9e7117",
+          "#bd985b",
+          "#dfc397",
+          "#feeccf"
+        ],
+        "cssVar": "--vurgu-basili"
+      },
+      "iptal": {
+        "role": "tertiary",
+        "displayName": "İptal Kırmızısı",
+        "canonical": "oklch(54.6% 0.177 29.1)",
+        "tonalRamp": [
+          "#1f0000",
+          "#440604",
+          "#6c1610",
+          "#96271e",
+          "#cb483b",
+          "#e67b6d",
+          "#ffafa3",
+          "#ffdfd6"
+        ],
+        "cssVar": "--iptal"
+      },
+      "marka-koyu": {
+        "role": "neutral",
+        "displayName": "Koyu Lacivert Mürekkep",
+        "canonical": "oklch(24.2% 0.091 267.5)",
+        "tonalRamp": [
+          "#060a19",
+          "#182038",
+          "#2c395b",
+          "#425380",
+          "#6478ae",
+          "#8b9eca",
+          "#b9c7e9",
+          "#e5eeff"
+        ],
+        "cssVar": "--marka-koyu"
+      },
+      "zemin": {
+        "role": "neutral",
+        "displayName": "Soğuk Zemin",
+        "canonical": "oklch(97.0% 0.007 268.5)",
+        "tonalRamp": [
+          "#0a0b0e",
+          "#202225",
+          "#393a3e",
+          "#545559",
+          "#787a7f",
+          "#9c9ea3",
+          "#c5c7cc",
+          "#eceef3"
+        ],
+        "cssVar": "--zemin"
+      },
+      "fis": {
+        "role": "neutral",
+        "displayName": "Fiş Beyazı",
+        "canonical": "oklch(100% 0 0)",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#222222",
+          "#3a3a3a",
+          "#555555",
+          "#7a7a7a",
+          "#9e9e9e",
+          "#c7c7c7",
+          "#eeeeee"
+        ],
+        "cssVar": "--fis"
+      },
+      "cizgi": {
+        "role": "neutral",
+        "displayName": "Kıl Çizgi",
+        "canonical": "oklch(92.8% 0.014 268.5)",
+        "tonalRamp": [
+          "#0a0b0d",
+          "#202225",
+          "#383a40",
+          "#52555c",
+          "#777a83",
+          "#9b9ea5",
+          "#c5c7cd",
+          "#edeef2"
+        ],
+        "cssVar": "--cizgi"
+      },
+      "koparma": {
+        "role": "neutral",
+        "displayName": "Koparma Grisi",
+        "canonical": "oklch(85.8% 0.027 269.6)",
+        "tonalRamp": [
+          "#090b0f",
+          "#1f2129",
+          "#373a45",
+          "#505562",
+          "#747a8a",
+          "#999eac",
+          "#c3c7d1",
+          "#eceef5"
+        ],
+        "cssVar": "--koparma"
+      },
+      "ikincil": {
+        "role": "neutral",
+        "displayName": "İkincil Mürekkep",
+        "canonical": "oklch(51.6% 0.055 272.9)",
+        "tonalRamp": [
+          "#080b14",
+          "#1d2130",
+          "#34394e",
+          "#4c546f",
+          "#70799a",
+          "#959db9",
+          "#c0c7dc",
+          "#eaeefc"
+        ],
+        "cssVar": "--ikincil"
+      },
+      "soluk": {
+        "role": "neutral",
+        "displayName": "Soluk Mürekkep",
+        "canonical": "oklch(63.1% 0.049 272.6)",
+        "tonalRamp": [
+          "#090b13",
+          "#1d212e",
+          "#343a4c",
+          "#4d546d",
+          "#717997",
+          "#969db6",
+          "#c1c7da",
+          "#eaeefb"
+        ],
+        "cssVar": "--soluk"
+      },
+      "bant-ikincil": {
+        "role": "neutral",
+        "displayName": "Bant Mürekkebi",
+        "canonical": "oklch(86.8% 0.042 270.4)",
+        "tonalRamp": [
+          "#090b12",
+          "#1e212c",
+          "#353a4a",
+          "#4e5569",
+          "#717a92",
+          "#979eb3",
+          "#c1c7d7",
+          "#eaeef9"
+        ],
+        "cssVar": "--bant-ikincil"
+      },
+      "masaustu-zemin": {
+        "role": "neutral",
+        "displayName": "Masaüstü Kenar Zemini",
+        "canonical": "oklch(91.9% 0.018 269.1)",
+        "tonalRamp": [
+          "#0a0b0e",
+          "#202226",
+          "#383a41",
+          "#52555e",
+          "#767a85",
+          "#9b9ea7",
+          "#c4c7ce",
+          "#eceef3"
+        ],
+        "cssVar": "--masaustu-zemin"
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Fiş başlığı ('Bugünün fişi'); durum fişinde 28px."
+      },
+      "score": {
+        "displayName": "Score",
+        "purpose": "Yemek puanı, tablo rakamı, sağa hizalı; gün mührü 32px, ek liste 24px, az oy 22px soluk."
+      },
+      "wordmark": {
+        "displayName": "Wordmark",
+        "purpose": "Bantta küçük harfli 'yersen' kelime işareti."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Yemek adı ve ek liste başlığı."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Gövde metni; durum açıklaması 17px, en fazla 34ch."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Fiş numarası, sekme etiketleri, ölçek sorusu, bant tarihi."
+      },
+      "caption": {
+        "displayName": "Caption",
+        "purpose": "Oy sayısı ('42 kişi puanladı')."
+      }
+    },
+    "theming": {
+      "selector": "[data-uni=\"<kod>\"]",
+      "source": "src/styles.css",
+      "default": "trakya",
+      "rule": "Her üniversite aynı token adlarını taşıyan tek bir [data-uni] bloğudur; Trakya değerleri trakya.edu.tr'den türetilmiştir; üniversite logosu/amblemi asla kullanılmaz.",
+      "tokens": [
+        "--marka",
+        "--marka-koyu",
+        "--vurgu",
+        "--vurgu-basili",
+        "--zemin",
+        "--fis",
+        "--cizgi",
+        "--koparma",
+        "--ikincil",
+        "--soluk",
+        "--iptal",
+        "--bant-ikincil",
+        "--masaustu-zemin"
+      ]
+    },
+    "fonts": [
+      {
+        "family": "Titillium Web",
+        "weights": [
+          400,
+          600,
+          700,
+          900
+        ],
+        "source": "@fontsource/titillium-web (self-hosted)",
+        "numerals": "tabular-nums for every score, vote count and ticket number"
+      }
+    ],
+    "shadows": [
+      {
+        "name": "fis-taban",
+        "value": "0 1px 0 var(--koparma)",
+        "purpose": "Fişin alt kenarındaki 1px taban çizgisi; bulanıklık 0."
+      },
+      {
+        "name": "sutun-kenari",
+        "value": "0 0 0 1px var(--cizgi)",
+        "purpose": "Masaüstünde dar sütunun çevresi."
+      },
+      {
+        "name": "sekme-secili",
+        "value": "inset 0 3px 0 var(--vurgu)",
+        "purpose": "Etkin sekmenin üstündeki 3px altın çizgi."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Tüm geçişlerin ve damga hareketinin eğrisi."
+      },
+      {
+        "name": "damga",
+        "value": "280ms var(--ease-out) both; scale(1.9) rotate(-26deg) opacity 0 -> scale(1) rotate(-8deg)",
+        "purpose": "Tek imza hareketi: kişisel mührün fişe basılması."
+      },
+      {
+        "name": "renk-gecisi",
+        "value": "background-color 120ms var(--ease-out)",
+        "purpose": "Düğme basılı durumu."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "animation/transition-duration: 0.01ms",
+        "purpose": "prefers-reduced-motion altında mühür anında basılı görünür."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "masaustu",
+        "value": "600px"
+      },
+      {
+        "name": "shell-max",
+        "value": "480px"
+      }
+    ],
+    "focus": {
+      "value": "3px solid var(--marka) (11.8:1 on --zemin); outline-offset 2px (sekmelerde -4px)",
+      "onBand": ".bant :focus-visible { outline-color: var(--vurgu) }"
+    },
+    "thresholds": {
+      "LOW_VOTES": 5
+    }
+  },
+  "components": [
+    {
+      "name": "Ana Düğme",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Başparmak bölgesindeki tek altın eylem.",
+      "html": "<button class=\"ds-dugme\">Yedim, puanla</button>",
+      "css": ".ds-dugme{--marka:#112a79;--marka-koyu:#0d1a4a;--vurgu:#cb9832;--vurgu-basili:#b5852a;--zemin:#f3f5fa;--fis:#ffffff;--cizgi:#e3e7f1;--koparma:#c9d0e3;--ikincil:#5d6688;--soluk:#7f88a8;--iptal:#c2382c;--bant-ikincil:#c9d3f0;--masaustu-zemin:#dfe4f1;--kose:6px;--ease-out:cubic-bezier(0.16,1,0.3,1);font-family:'Titillium Web',system-ui,sans-serif;width:100%;min-height:58px;border:0;border-radius:var(--kose);background:var(--vurgu);color:var(--marka-koyu);font-size:21px;font-weight:700;cursor:pointer;transition:background-color 120ms var(--ease-out);} .ds-dugme:active{background:var(--vurgu-basili);} .ds-dugme:focus-visible{outline:3px solid var(--marka);outline-offset:2px;}"
+    },
+    {
+      "name": "İkincil Düğme",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Lacivert çerçeveli tam genişlik düğme ya da bağlantı.",
+      "html": "<button class=\"ds-dugme-ikincil\">Şimdilik bu kadar</button>",
+      "css": ".ds-dugme-ikincil{--marka:#112a79;--marka-koyu:#0d1a4a;--vurgu:#cb9832;--vurgu-basili:#b5852a;--zemin:#f3f5fa;--fis:#ffffff;--cizgi:#e3e7f1;--koparma:#c9d0e3;--ikincil:#5d6688;--soluk:#7f88a8;--iptal:#c2382c;--bant-ikincil:#c9d3f0;--masaustu-zemin:#dfe4f1;--kose:6px;--ease-out:cubic-bezier(0.16,1,0.3,1);font-family:'Titillium Web',system-ui,sans-serif;width:100%;min-height:52px;border:2px solid var(--marka);border-radius:var(--kose);background:transparent;color:var(--marka);font-size:18px;font-weight:700;cursor:pointer;transition:background-color 120ms var(--ease-out);} .ds-dugme-ikincil:active{background:var(--marka);color:#fff;} .ds-dugme-ikincil:focus-visible{outline:3px solid var(--marka);outline-offset:2px;}"
+    },
+    {
+      "name": "Puan Ölçeği",
+      "kind": "input",
+      "refersTo": "olcek-tus",
+      "description": "1-10 tuşları, 5 sütunlu ızgara, etkin satırın altında açılır.",
+      "html": "<fieldset class=\"ds-olcek\"><legend>Pirinç pilavı kaç puan?</legend><div class=\"ds-olcek-tuslar\"><button type=\"button\" class=\"ds-olcek-tus\">1</button><button type=\"button\" class=\"ds-olcek-tus\">2</button><button type=\"button\" class=\"ds-olcek-tus\">3</button><button type=\"button\" class=\"ds-olcek-tus\">4</button><button type=\"button\" class=\"ds-olcek-tus\">5</button><button type=\"button\" class=\"ds-olcek-tus\">6</button><button type=\"button\" class=\"ds-olcek-tus\">7</button><button type=\"button\" class=\"ds-olcek-tus\">8</button><button type=\"button\" class=\"ds-olcek-tus\">9</button><button type=\"button\" class=\"ds-olcek-tus\">10</button></div></fieldset>",
+      "css": ".ds-olcek{--marka:#112a79;--marka-koyu:#0d1a4a;--vurgu:#cb9832;--vurgu-basili:#b5852a;--zemin:#f3f5fa;--fis:#ffffff;--cizgi:#e3e7f1;--koparma:#c9d0e3;--ikincil:#5d6688;--soluk:#7f88a8;--iptal:#c2382c;--bant-ikincil:#c9d3f0;--masaustu-zemin:#dfe4f1;--kose:6px;--ease-out:cubic-bezier(0.16,1,0.3,1);font-family:'Titillium Web',system-ui,sans-serif;border:0;margin:0;padding:14px 18px;background:var(--zemin);} .ds-olcek legend{padding:0 0 8px;font-size:15px;font-weight:600;color:var(--ikincil);float:left;width:100%;} .ds-olcek-tuslar{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;clear:both;} .ds-olcek-tus{font-family:'Titillium Web',system-ui,sans-serif;height:50px;border:1px solid var(--koparma);border-radius:var(--kose);background:var(--fis);font-size:20px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--marka);cursor:pointer;} .ds-olcek-tus:active{background:var(--marka);color:#fff;} .ds-olcek-tus:focus-visible{outline:3px solid var(--marka);outline-offset:2px;}"
+    },
+    {
+      "name": "Bant",
+      "kind": "nav",
+      "refersTo": "bant",
+      "description": "Lacivert üst bant, altın alt çizgi, kelime işareti ve tarih.",
+      "html": "<header class=\"ds-bant\"><span class=\"ds-kelime\">yersen</span><time class=\"ds-bant-tarih\">16 Kasım Pazartesi</time></header>",
+      "css": ".ds-bant{--marka:#112a79;--marka-koyu:#0d1a4a;--vurgu:#cb9832;--vurgu-basili:#b5852a;--zemin:#f3f5fa;--fis:#ffffff;--cizgi:#e3e7f1;--koparma:#c9d0e3;--ikincil:#5d6688;--soluk:#7f88a8;--iptal:#c2382c;--bant-ikincil:#c9d3f0;--masaustu-zemin:#dfe4f1;--kose:6px;--ease-out:cubic-bezier(0.16,1,0.3,1);font-family:'Titillium Web',system-ui,sans-serif;display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:14px 18px 12px;background:var(--marka);border-bottom:4px solid var(--vurgu);color:#fff;} .ds-kelime{font-size:26px;font-weight:900;letter-spacing:-0.02em;line-height:1;} .ds-bant-tarih{font-size:15px;font-weight:600;color:var(--bant-ikincil);}"
+    },
+    {
+      "name": "Alt Gezinme",
+      "kind": "nav",
+      "refersTo": "sekme",
+      "description": "Üç sekme; etkin sekmede lacivert ve 3px altın üst çizgi.",
+      "html": "<nav class=\"ds-sekmeler\"><a class=\"ds-sekme\" aria-current=\"page\" href=\"#\"><svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z\"/><path d=\"M16 8h-6\"/><path d=\"M16 12h-6\"/><path d=\"M16 16h-6\"/></svg><span>Bugün</span></a><a class=\"ds-sekme\" href=\"#\"><svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m12 2 10 5-10 5L2 7Z\"/><path d=\"m2 12 10 5 10-5\"/><path d=\"m2 17 10 5 10-5\"/></svg><span>Kaydır</span></a><a class=\"ds-sekme\" href=\"#\"><svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"12\" cy=\"8\" r=\"5\"/><path d=\"M20 21a8 8 0 0 0-16 0\"/></svg><span>Ben</span></a></nav>",
+      "css": ".ds-sekmeler{--marka:#112a79;--marka-koyu:#0d1a4a;--vurgu:#cb9832;--vurgu-basili:#b5852a;--zemin:#f3f5fa;--fis:#ffffff;--cizgi:#e3e7f1;--koparma:#c9d0e3;--ikincil:#5d6688;--soluk:#7f88a8;--iptal:#c2382c;--bant-ikincil:#c9d3f0;--masaustu-zemin:#dfe4f1;--kose:6px;--ease-out:cubic-bezier(0.16,1,0.3,1);font-family:'Titillium Web',system-ui,sans-serif;display:grid;grid-template-columns:repeat(3,1fr);background:var(--fis);border-top:1px solid var(--cizgi);} .ds-sekme{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:64px;font-size:14px;font-weight:600;color:var(--ikincil);text-decoration:none;} .ds-sekme:hover{color:var(--marka);} .ds-sekme[aria-current=page]{color:var(--marka);box-shadow:inset 0 3px 0 var(--vurgu);} .ds-sekme:focus-visible{outline:3px solid var(--marka);outline-offset:-4px;}"
+    },
+    {
+      "name": "Bugünün Fişi",
+      "kind": "card",
+      "refersTo": "fis",
+      "description": "Beyaz fiş: başlık, numara, gün mührü, yemek satırları, kesik koparma hattı.",
+      "html": "<section class=\"ds-fis\"><div class=\"ds-fis-bas\"><h1>Bugünün fişi</h1><span class=\"ds-fis-no\">No 0316</span></div><div class=\"ds-gun-muhru\"><b>7,5</b><small>günün ortalaması</small></div><ol class=\"ds-yemekler\"><li class=\"ds-yemek\"><span class=\"ds-ad\">Düğün çorba</span><span class=\"ds-benim\">8</span><span class=\"ds-puan\">8,1</span><span class=\"ds-oy\">42 kişi puanladı</span></li><li class=\"ds-yemek\"><span class=\"ds-ad\">Yoğurt</span><span class=\"ds-benim ds-yemedim\">yemedim</span><span class=\"ds-puan\" data-az>5,0</span><span class=\"ds-oy\">3 kişi puanladı</span></li></ol><div class=\"ds-fis-alt\"><span>916 kcal, günün toplamı</span><b>Örnek veri</b></div></section>",
+      "css": ".ds-fis{--marka:#112a79;--marka-koyu:#0d1a4a;--vurgu:#cb9832;--vurgu-basili:#b5852a;--zemin:#f3f5fa;--fis:#ffffff;--cizgi:#e3e7f1;--koparma:#c9d0e3;--ikincil:#5d6688;--soluk:#7f88a8;--iptal:#c2382c;--bant-ikincil:#c9d3f0;--masaustu-zemin:#dfe4f1;--kose:6px;--ease-out:cubic-bezier(0.16,1,0.3,1);font-family:'Titillium Web',system-ui,sans-serif;position:relative;background:var(--fis);color:var(--marka-koyu);border-radius:var(--kose);padding:16px 18px 14px;box-shadow:0 1px 0 var(--koparma);max-width:400px;} .ds-fis-bas{min-height:92px;padding-right:104px;} .ds-fis-bas h1{margin:0;font-size:30px;font-weight:700;line-height:1.05;letter-spacing:-0.01em;} .ds-fis-no{font-size:14px;font-weight:600;font-variant-numeric:tabular-nums;color:var(--ikincil);} .ds-gun-muhru{position:absolute;top:12px;right:16px;width:92px;height:92px;display:grid;place-content:center;text-align:center;border:4px solid var(--vurgu);border-radius:50%;transform:rotate(-12deg);box-sizing:border-box;} .ds-gun-muhru b{font-size:32px;font-weight:900;line-height:.95;font-variant-numeric:tabular-nums;} .ds-gun-muhru small{max-width:62px;margin:2px auto 0;font-size:11px;font-weight:700;line-height:1.05;} .ds-yemekler{list-style:none;margin:0;padding:0;} .ds-yemek{display:grid;grid-template-columns:auto 1fr auto;grid-template-areas:'ad muhur puan' 'oy oy puan';align-items:center;column-gap:10px;padding:11px 0 10px;border-top:1px solid var(--cizgi);} .ds-ad{grid-area:ad;font-size:19px;font-weight:600;line-height:1.2;} .ds-puan{grid-area:puan;min-width:2.6ch;text-align:right;font-size:30px;font-weight:900;line-height:1;font-variant-numeric:tabular-nums;color:var(--marka);} .ds-puan[data-az]{font-size:22px;color:var(--soluk);} .ds-oy{grid-area:oy;font-size:13px;color:var(--ikincil);} .ds-benim{grid-area:muhur;justify-self:start;display:inline-grid;place-items:center;min-width:24px;height:23px;padding:0 5px;border:2px solid var(--vurgu);border-radius:999px;font-size:14px;line-height:1;font-weight:900;font-variant-numeric:tabular-nums;transform:rotate(-8deg);animation:ds-damga 280ms var(--ease-out) both;box-sizing:border-box;} .ds-yemedim{border-color:var(--iptal);color:var(--iptal);font-size:12px;font-weight:700;border-radius:4px;} .ds-fis-alt{display:flex;justify-content:space-between;margin-top:6px;padding-top:14px;border-top:2px dashed var(--koparma);font-size:14px;color:var(--ikincil);} @keyframes ds-damga{from{opacity:0;transform:scale(1.9) rotate(-26deg);}60%{opacity:1;}to{opacity:1;transform:scale(1) rotate(-8deg);}} @media (prefers-reduced-motion:reduce){.ds-benim{animation:none;}}"
+    },
+    {
+      "name": "Durum Fişi",
+      "kind": "card",
+      "refersTo": "fis",
+      "description": "Kapalı ya da yayınlanmamış gün: boş ekran yerine eğik lacivert damgalı fiş.",
+      "html": "<section class=\"ds-durum\"><span class=\"ds-durum-muhru\">Kapalı</span><h1>Bugün yemekhane kapalı</h1><p>Evde ne varsa artık. Sıradaki menü aşağıda, kaydırmaya şimdiden başlayabilirsin.</p></section>",
+      "css": ".ds-durum{--marka:#112a79;--marka-koyu:#0d1a4a;--vurgu:#cb9832;--vurgu-basili:#b5852a;--zemin:#f3f5fa;--fis:#ffffff;--cizgi:#e3e7f1;--koparma:#c9d0e3;--ikincil:#5d6688;--soluk:#7f88a8;--iptal:#c2382c;--bant-ikincil:#c9d3f0;--masaustu-zemin:#dfe4f1;--kose:6px;--ease-out:cubic-bezier(0.16,1,0.3,1);font-family:'Titillium Web',system-ui,sans-serif;display:flow-root;background:var(--fis);color:var(--marka-koyu);border-radius:var(--kose);padding:24px 22px 26px;box-shadow:0 1px 0 var(--koparma);max-width:400px;} .ds-durum h1{margin:0;font-size:28px;font-weight:700;line-height:1.1;text-wrap:balance;} .ds-durum p{margin:10px 0 0;font-size:17px;color:var(--ikincil);max-width:34ch;} .ds-durum-muhru{float:right;margin:2px -4px 6px 12px;padding:4px 12px;border:3px solid var(--marka);border-radius:4px;font-size:18px;font-weight:900;color:var(--marka);transform:rotate(-6deg);}"
+    }
+  ],
+  "narrative": {
+    "northStar": "Yemekhane Fişi",
+    "overview": "**Creative North Star: \"Yemekhane Fişi\"**\n\nHer gün tek bir fiş basılır. Bugünün menüsü beyaz bir fişin satırlarıdır, puan o fişe basılan altın bir mühürdür. Sistem bir yemekhane turnikesinin, bir tabldot fişinin, bir kalkış tabelasının dilinden konuşur: sabit hücreli rakamlar, kıl gibi ince çizgiler, kesik koparma hattı, eğik basılmış damgalar. Görselli yemek kartı ızgarası ve yıldız puanı bu dünyanın reddettiği varsayılanlardır.\n\nYoğunluk telefona göre ayarlıdır: boşluk şişirilmez, bir yemek satırı ad, oy sayısı ve puanı tek bakışta verir; birincil eylem başparmak bölgesinde tam genişlikte durur. Renk üniversiteden, ses öğrenciden gelir. Arayüz kullanıcının üniversitesinin sitesine akraba görünür ama asla resmi görünmez: üniversite logosu, amblemi, resmi mührü ya da resmi yazı biçimi hiçbir ekranda kullanılmaz. Uygulamadaki \"mühür\" yersen'in kendi puan damgasıdır, kurumun mührü değildir.\n\nDurumlar kaybolmaz, damgalanır: kapalı gün ya da yayınlanmamış menü boş ekran değil, üstüne \"Kapalı\" ya da \"Bekleniyor\" damgası basılmış bir durum fişidir.",
+    "keyCharacteristics": [
+      "Tek beyaz fiş, lacivert bant ve altın alt çizgi; tek kolon, en fazla 480px.",
+      "Puanlar 900 ağırlıkta, tablo rakamlı, sağa hizalı; az oylu puan küçük ve soluk.",
+      "Tek imza hareketi: puan verilince fişe mühür basılması.",
+      "Bulanık gölge yok; derinlik kıl çizgi ve ton farkıyla.",
+      "Her üniversite aynı token adlarının kendi `[data-uni]` bloğudur."
+    ],
+    "rules": [
+      {
+        "name": "The Üniversite Bloğu Rule",
+        "body": "Her üniversite, `styles.css` içinde aynı token adlarını (`--marka`, `--marka-koyu`, `--vurgu`, `--vurgu-basili`, `--zemin`, `--fis`, `--cizgi`, `--koparma`, `--ikincil`, `--soluk`, `--iptal`, `--bant-ikincil`) taşıyan tek bir `[data-uni=\"<kod>\"]` bloğudur; tema `<html data-uni=\"...\">` ile seçilir. Bileşen CSS'i hiçbir zaman ham renk yazmaz, yalnızca bu token'ları okur. Trakya (`[data-uni=\"trakya\"]`, aynı zamanda `:root` varsayılanı) değerleri trakya.edu.tr'nin lacivert ve altınından türetilmiştir; yeni bir üniversitenin değerleri de kendi sitesinin renk ailesinden türetilir.",
+        "section": "colors"
+      },
+      {
+        "name": "The Logosuz Akrabalık Rule",
+        "body": "Üniversiteye renkle benzenir, işaretle asla. Hiçbir temada üniversite logosu, amblemi, resmi mührü ya da kurumsal yazı biçimi yer almaz.",
+        "section": "colors"
+      },
+      {
+        "name": "The Altın Metin Değildir Rule",
+        "body": "Altın açık zeminde (`--zemin`, `--fis`) asla metin rengi olmaz; orada kontrastı 2,6:1'in altındadır. Altın yalnızca çizgi, çerçeve ve dolgu olur, üstüne koyu lacivert yazılır (6,4:1).",
+        "section": "colors"
+      },
+      {
+        "name": "The Tek Kırmızı Rule",
+        "body": "`--iptal` yalnızca \"yemedim\" damgasına aittir.",
+        "section": "colors"
+      },
+      {
+        "name": "The Kalkış Tabelası Rule",
+        "body": "Puan, oy, fiş numarası ve ölçek tuşları gibi her sayı `font-variant-numeric: tabular-nums` ile basılır; rakamlar sabit hücrede durur, puan değişince satır titremez.",
+        "section": "typography"
+      },
+      {
+        "name": "The Az Oy Rule",
+        "body": "Oy sayısı eşik değerin (`LOW_VOTES = 5`) altındaysa puan rakamı 22px ve `--soluk` renkte basılır. Hiyerarşiyi oy sayısı taşır; az oylu puan, çok oylu puan kadar bağırmaz. Oy sayısı da her zaman satırda yazılı durur.",
+        "section": "typography"
+      },
+      {
+        "name": "The Kıl Çizgi Rule",
+        "body": "Gölgenin bulanıklık değeri her zaman 0'dır. Yükselti gerektiren her şey ton farkı ya da 1–4px dolu çizgiyle ifade edilir; `blur` içeren gölge, `backdrop-filter` ya da cam efekti kullanılmaz.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Tek Damga Rule",
+        "body": "Sistemin tek imza hareketi mührün fişe basılmasıdır. Başka giriş animasyonu, kayma, sıçrama ya da süsleme hareketi eklenmez; diğer geçişler yalnızca 120ms renk değişimidir. `prefers-reduced-motion: reduce` altında tüm animasyon ve geçişler 0.01ms'ye iner, mühür anında basılı görünür.",
+        "section": "components"
+      }
+    ],
+    "dos": [
+      "Do yeni bir üniversiteyi `styles.css` içinde aynı token adlarını taşıyan yeni bir `[data-uni=\"<kod>\"]` bloğu olarak ekle; değerleri o üniversitenin kendi sitesinin renk ailesinden türet.",
+      "Do bileşen CSS'inde yalnızca `var(--marka)`, `var(--vurgu)` gibi token'ları kullan, ham hex yazma.",
+      "Do altını çizgi, çerçeve ve dolgu olarak kullan; üstündeki metni `--marka-koyu` yap.",
+      "Do her puanı, oyu ve numarayı Titillium Web 900 (puan) ile `tabular-nums` olarak bas; ondalıkta Türkçe virgül kullan.",
+      "Do oy sayısı 5'in altındaki puanı 22px ve `--soluk` ile bas, oy sayısını her zaman yaz.",
+      "Do durumları (kapalı, yayınlanmadı) boş ekran yerine damgalı bir durum fişiyle göster.",
+      "Do birincil eylemi başparmak bölgesinde, tam genişlikte ve ekranda tek altın düğme olarak tut.",
+      "Do derinliği ton farkı ve 0 bulanıklıklı kıl çizgilerle ver."
+    ],
+    "donts": [
+      "Don't hiçbir temada üniversite logosu, amblemi, resmi mührü ya da kurumsal yazı biçimi kullanma.",
+      "Don't altını açık zeminde metin rengi olarak kullanma.",
+      "Don't bulanık gölge, `backdrop-filter` ya da cam efekti kullanma.",
+      "Don't mühür dışında bir imza hareketi ekleme; mühür animasyonunu hareket azaltma tercihinde oynatma.",
+      "Don't `--iptal` kırmızısını \"yemedim\" damgası dışında kullanma.",
+      "Don't görselli yemek kartı ızgarası ya da yıldız puanı kullanma; puan 10 üzerinden rakamdır.",
+      "Don't Titillium Web'i Google Fonts ya da başka bir CDN'den yükleme; `@fontsource/titillium-web` ile kendi paketinden gelsin.",
+      "Don't damga dışındaki öğeleri (fiş, düğme, satır) eğme."
+    ]
+  }
+}
