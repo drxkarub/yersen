@@ -30,10 +30,10 @@ Her madde küçük ve tek başına test edilebilir. Bitince `[x]` ile işaretle.
 - [ ] Sunucuda systemd timer kur (07:00 ve 10:00, Europe/Istanbul). Başarı ve hata durumları healthchecks.io'ya ping atsın. Hata durumunda mail gelmeli.
 
 ### Veritabanı ve yetki
-- [ ] Şema migration'ını yaz: `venue`, `menu`, `menu_item`, `dish`, `profile`, `invite_code`, `swipe`, `rating`.
-- [ ] API yetki kuralları: kullanıcı sadece kendi kaydırmasını ve puanını yazabilsin, menüyü giriş yapmış herkes okuyabilsin, banlı kullanıcı hiçbir şey yazamasın. Her kural için bir test olsun.
-- [ ] Puan kuralları: pencere (11:30'dan ertesi gün 11:30'a), "yemem" diyenin puanlayamaması, `user + dish + date` başına tek puan. API'de kontrol edilsin, veritabanında unique ve check kısıtlarıyla da güvenceye alınsın. Testli olsun.
-- [ ] Oran sınırı (saatte 300 kaydırma, 60 puan). Sınır aşılınca yazma reddedilmeli. Testli olsun.
+- [x] Şema migration'ını yaz: `venue`, `menu`, `menu_item`, `dish`, `profile`, `invite_code`, `swipe`, `rating`.
+- [ ] API yetki kuralları (servis katmanı hazır: setSwipe/rateDish banlıyı ve başkasının adına yazmayı reddeder; HTTP rotaları girişle gelecek): kullanıcı sadece kendi kaydırmasını ve puanını yazabilsin, menüyü giriş yapmış herkes okuyabilsin, banlı kullanıcı hiçbir şey yazamasın. Her kural için bir test olsun.
+- [x] Puan kuralları: pencere (11:30'dan ertesi gün 11:30'a), "yemem" diyenin puanlayamaması, `user + dish + date` başına tek puan. API'de kontrol edilsin, veritabanında unique ve check kısıtlarıyla da güvenceye alınsın. Testli olsun.
+- [x] Oran sınırı (saatte 300 kaydırma, 60 puan). Sınır aşılınca yazma reddedilmeli. Testli olsun.
 
 ### Giriş ve davet
 - [ ] Better Auth ile Google girişini kur. Oturum çerezi `HttpOnly`, `Secure` ve `SameSite=Lax` olsun.
