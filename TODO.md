@@ -79,6 +79,15 @@ Her madde küçük ve tek başına test edilebilir. Bitince `[x]` ile işaretle.
 
 ## Faz 2: Yorum ve moderasyon
 
+### Tepsi fotoğrafı (Faz 2'nin ilk işi; "bildir" ve moderatör silmesiyle birlikte açılır)
+- [ ] Günün tepsisinin fotoğrafı: Bugün ekranında fişin en üstünde. Yarının yemeğine fotoğraf yok (Kaydır'da Commons görseli kalır).
+- [ ] Yükleme kuralları: o gün "yerim"/"belki" diyen, puanlama penceresi açıkken (11:30 → ertesi gün 11:30), kişi başına günde 1. Boyut sınırı, oran sınırı.
+- [ ] Gizlilik: sunucuda EXIF/GPS ve cihaz bilgisi silinir, görsel küçültülür (sharp). Yükleyen takma adla görünür. Testli (EXIF'li örnek dosya → çıktıda EXIF yok).
+- [ ] Birden fazla fotoğraf: biri büyük, diğerleri küçük şerit. Başta ilk yüklenen öne çıkar.
+- [ ] "Bildir" ve moderatör/admin kaldırma; kaldırılan fotoğraf diskten de silinir.
+- [ ] Amaç: ertesi sabah puanlarken tepsiyi görüp tadı hatırlamak; "beklenen (Commons) / gelen (tepsi)" karşılaştırması paylaşılabilir.
+
+
 - [ ] İsteğe bağlı okul maili doğrulaması (`@trakya.edu.tr`, mail ile gelen link). Doğrulanan hesaba yorum yetkisi açılır.
 - [ ] Yorum yazma: puana bağlı ya da yemek sayfasında. Sadece doğrulanmış kullanıcılar yazabilsin. Uzunluk ve oran sınırı olsun.
 - [ ] Hafif küfür filtresi: küfre izin verilir. Filtre sadece hedef alan kalıpları (isim ve hakaret birlikte, "aşçı/personel" ve hakaret birlikte) işaretleyip incelemeye düşürür. Testli olsun.
