@@ -21,11 +21,11 @@ Her madde küçük ve tek başına test edilebilir. Bitince `[x]` ile işaretle.
 ## Faz 1: Yemekhane MVP
 
 ### Scraper
-- [ ] Gerçek sayfanın HTML'ini test verisi olarak kaydet. "BUGÜN" hücresi içeren bir örnek de olsun.
-- [ ] Ayrıştırıcı: HTML'den gün listesini çıkar (tarih, yemek satırları, kalori). Test, kaydedilmiş HTML'den beklenen JSON'u üretmeli.
-- [ ] "BUGÜN" hücresinin tarihini Europe/Istanbul saat dilimine göre çöz ve komşu hücrelerle tutarlılığını kontrol et. Testli olsun.
-- [ ] Eşleşme anahtarı fonksiyonu: boşluk temizliği, `(%NN)` silme, `tr-TR` küçük harf. Testlerde en az şu örnekler olsun: "İ"/"ı", "(%50)", çift boşluk, ayraçsız iki yemekli satır.
-- [ ] Yapı kontrolü: beklenen seçiciler bulunamazsa iş hata versin. "Menü henüz yayınlanmadı" durumu ayrı ele alınsın. İki durum da testli olsun.
+- [x] Gerçek sayfanın HTML'ini test verisi olarak kaydet. "BUGÜN" hücresi içeren bir örnek de olsun.
+- [x] Ayrıştırıcı: HTML'den gün listesini çıkar (tarih, yemek satırları, kalori). Test, kaydedilmiş HTML'den beklenen JSON'u üretmeli.
+- [x] "BUGÜN" hücresinin tarihini Europe/Istanbul saat dilimine göre çöz ve komşu hücrelerle tutarlılığını kontrol et. Testli olsun.
+- [x] Eşleşme anahtarı fonksiyonu: boşluk temizliği, `(%NN)` silme, `tr-TR` küçük harf. Testlerde en az şu örnekler olsun: "İ"/"ı", "(%50)", çift boşluk, ayraçsız iki yemekli satır.
+- [x] Yapı kontrolü: beklenen seçiciler bulunamazsa iş hata versin. "Menü henüz yayınlanmadı" durumu ayrı ele alınsın. İki durum da testli olsun.
 - [ ] Veritabanına yazma: menü, menü kalemleri ve yemekler. Aynı gün ikinci kez çalışınca kopya kayıt oluşmamalı.
 - [ ] Sunucuda systemd timer kur (07:00 ve 10:00, Europe/Istanbul). Başarı ve hata durumları healthchecks.io'ya ping atsın. Hata durumunda mail gelmeli.
 

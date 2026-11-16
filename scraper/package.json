@@ -4,5 +4,8 @@
   "type": "module",
   "scripts": {
     "typecheck": "tsc -p ."
+  },
+  "dependencies": {
+    "node-html-parser": "^9.0.7"
   }
 }

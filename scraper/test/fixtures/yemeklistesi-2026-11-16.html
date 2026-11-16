@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="tr">
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta name="description" content="Trakya Üniversitesi Rektörlüğü Web Sayfası" />
+    <meta name="keywords" content="Trakya Üniversitesi" />
+    <title>Trakya Üniversitesi Rektörlüğü</title>
+    <link href="/favicon.ico" rel="shortcut icon">
+    <link href="/images/logo/tr/32.png" rel="apple-touch-icon">
+    <link href="/images/logo/tr/72.png" rel="apple-touch-icon" sizes="72x72">
+    <link href="/images/logo/tr~/images/logo/tr/114.png" rel="apple-touch-icon" sizes="114x114">
+    <link href="/images/logo/tr~/images/logo/tr/144.png" rel="apple-touch-icon" sizes="144x144">
+    <link href="/css/main.min.css?v=LUxsbZREVicmt6dwlAxczQAkZLXfdhoLXdXLpzWiHug" rel="stylesheet" type="text/css" />
+    <link href="/css/mstyle.min.css?v=ZMX_j_QEdnnBEIG6rRUagtudtRQD0WgBHbkvEIzpc7Q" rel="stylesheet" type="text/css" />
+    <link href="/css/calendar/main.min.css?v=5veQuRbWaECuYxwap_IOE_DAwNxgm4ikX7nrgsqYp88" rel="stylesheet" type="text/css" />
+
+    <style>
+        .fc{
+            font-size:10px;
+        }
+        .fc-scroller {
+            overflow-y: hidden !important;
+        }
+        .fc .fc-toolbar.fc-header-toolbar {
+    margin-bottom: 0.5em;
+    margin-top: -15px;
+}
+    </style>
+
+    <style>
+        #calendar {
+            max-width: 350px; /* İstediğin genişlik */
+            margin: 0 auto;
+            height: 334px;
+        }
+
+        .fc-event {
+            background-color: #1c93e3 !important; /* Event olan günlerin arka planı mavi */
+            border: none;
+        }
+
+        #calendarMain .fc-event {
+            background-color: #fff !important; /* Event olan günlerin arka planı mavi */
+            border: none;
+        }
+
+    </style>
+    <link href="/css/tools.min.css?v=Gso1Q_4kpIqod5OoLwskBRPx-5vUGZ4DEdbzksT-rM4" rel="stylesheet" type="text/css">
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LYRG4GQB8T"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-LYRG4GQB8T');
+    </script>
+
+</head>
+<body>
+    <div id="wrapper" class="clearfix">
+        <header id="header" class="header">
+            <div class="header-middle p-0">
+                <div class="container ">
+                    <div class="row">
+                        <div class="col-12 pull-right">
+                            <a href="https://www-en.trakya.edu.tr/" target="" class="mr-15 "><i class="mr-5 fa fa-caret-right lang-en"> ENGLISH</i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="header-nav">
+                <div class="header-nav-wrapper navbar-scrolltofixed bg-theme-colored border-bottom-theme-color-2-4px">
+                    <div class="container">
+                        <div class="logo">
+                            <a href="https://trakya.edu.tr/">
+                                <img src="/images/logo.png" alt="Trakya Üniversitesi">
+                            </a>
+                        </div>
+                        <nav id="menuzord" class="menuzord bg-theme-colored pull-left flip menuzord-responsive">
+                            <ul class="menuzord-menu menuzord-indented scrollable" id="navbar" style="max-height: 400px;">
+                                <li>
+                                    <a href="javascript:void(0);" target="">ÜNİVERSİTE</a>
+                                    <ul class="dropdown border-bottom-theme-color-2-4px" style="right: auto; display: none;">
+                                        <li>
+                                            <a href="javascript:void(0);" target="">Yönetim</a>
+                                            <ul class="dropdown border-bottom-theme-color-2-4px" style="display: none;">
+                                                <li>
+                                                    <a href="javascript:void(0);" target="">Rektör</a>
+                                                    <ul class="dropdown border-bottom-theme-color-2-4px" style="display: none;">
+                                                        <li><a target="_blank" href="/rektor">Prof. Dr. Mustafa HATİPLER</a></li>
+                                                    </ul>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0);" target="">Rektör Yardımcıları</a>
+                                                    <ul class="dropdown border-bottom-theme-color-2-4px" style="display: none;">
+                                                        <li><a href="https://personel.trakya.edu.tr/mdemir" target="_blank">Prof. Dr. Ahmet Muzaffer DEMİR</a></li>
+                                                        <li><a href="https://personel.trakya.edu.tr/mustafatan" target="_blank">Prof. Dr. Mustafa TAN</a></li>
+                                                        <li><a href="https://personel.trakya.edu.tr/eylembayir" target="_blank">Prof. Dr. Eylem BAYIR</a></li>
+                                                        <li><a href="https://personel.trakya.edu.tr/sedatustundag" target="_blank">Prof. Dr. Sedat ÜSTÜNDAĞ</a></li>
+                                                    </ul>
+                                                </li>
+                                                <li><a href="/rektor-yardimcilari-gorev-dagilimi">Rektör Yardımcıları Görev Dağılımı</a></li>
+                                                <li><a target="" href="/staff/senato">Senato</a></li>
+                                                <li><a target="" href="/staff/yonetim-kurulu">Yönetim Kurulu</a></li>
+                                                <li><a target="" href="/danismakurulu">Danışma Kurulu</a></li>
+                                                <li><a target="" href="/gecmis-donem-rektorlerimiz">Geçmiş Dönem Rektörlerimiz</a></li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void(0);" target="">Üniversite Hakkında</a>
+                                            <ul class="dropdown border-bottom-theme-color-2-4px" style="display: none;">
+                                                <li><a href="https://bys.trakya.edu.tr/file/open/65814542/" target="_blank">Organizasyon Şeması </a></li>
+                                                <li><a target="" href="/misyon-ve-vizyon">Misyon ve Vizyon </a></li>
+                                                <li><a target="" href="/temel-degerler">Temel Değerler</a></li>
+                                                <li><a href="https://bys.trakya.edu.tr/file/open/41483448" target="_blank">Etik Davranış İlkelerimiz</a></li>
+                                                <li><a target="" href="/kalite-politikamiz">Kalite Politikamız</a></li>
+                                                <li><a target="" href="/hesap-verilebilirlik-politikasi">Hesap Verebilirlik Politikası</a></li>
+                                                <li><a target="" href="/tarihce">Tarihçe</a></li>
+                                                <li><a href="https://kurumsalkimlik.trakya.edu.tr/" target="_blank">Kurumsal Kimlik</a></li>
+                                                <li><a target="_blank" href="/balkan-kongre-merkezi">Balkan Kongre Merkezi</a></li>
+                                                <li><a href="https://genelsekreterlik.trakya.edu.tr/pages/trakya-universitesi-mevzuat-listesi" target="_blank">Mevzuat</a></li>
+                                                <li>
+                                                    <a href="javascript:void(0);" target="">Stratejik Plan</a>
+                                                    <ul class="dropdown border-bottom-theme-color-2-4px" style="">
+                                                        <li><a href="https://bys.trakya.edu.tr/file/open/55822882" target="_blank">2023 - 2027</a></li>
+                                                        <li><a href="/docs/2018-2022 dönemi stratejik planı.pdf" target="_blank">2018 - 2022</a></li>
+                                                        <li><a href="https://bys.trakya.edu.tr/file/open/91993072/" target="_blank">2013 - 2017</a></li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0);" target="">AKADEMİK</a>
+                                    <div class="megamenu border-bottom-theme-color-2-4px" style="right: 0px; display: block;">
+                                        <div class="megamenu-row">
+                                            <div class="col3 margin-top-50px">
+                                                <div class="text-theme-colored font-weight-700">Enstitüler</div>
+                                                <ul class="list-unstyled list-dashed m-0 ml-5">
+                                                    <li><a class="p-0 pt-5" href="https://bae.trakya.edu.tr/" target="_blank"><i class="fa fa-angle-double-right"></i> Balkan Araştırma Enstitüsü</a></li>
+                                                    <li><a class="p-0 pt-5" href="https://fbe.trakya.edu.tr/" target="_blank"><i class="fa fa-angle-double-right"></i> Fen Bilimleri Enstitüsü</a></li>
+                                                    <li><a class="p-0 pt-5" href="https://rae.trakya.edu.tr" target="_blank"><i class="fa fa-angle-double-right"></i> Roman Dili ve Kültürü Araştırmaları Enstitüsü</a></li>
+                                                    <li><a class="p-0 pt-5" href="https://sbe.trakya.edu.tr/" target="_blank"><i class="fa fa-angle-double-right"></i> Sağlık Bilimleri Enstitüsü</a></li>
+                                                    <li><a class="p-0 pt-5" href="https://sobe.trakya.edu.tr/" target="_blank"><i class="fa fa-angle-double-right"></i> Sosyal Bilimler Enstitüsü</a></li>
+                                                </ul>
+                                            </div>
+                                            <div class="col3">
+                                                <div class="text-theme-colored font-weight-700">Fakülteler</div>
+                                                <ul class="list-unstyled list-dashed m-0 ml-5">
+                                                    <li><a class="p-0 pt-5" href="https://dishekimligi.trakya.edu.tr/" target="_blank"><i class="fa fa-angle-double-right"></i> Diş Hekimliği Fakültesi</a></li>
+                                                    <li><a class="p-0 pt-5" href="https://eczacilik.trakya.edu.tr/" target="_blank"><i class="fa fa-angle-double-right"></i> Eczacılık Fakültesi</a></li>
+                                                    <li><a class="p-0 pt-5" href="https://edebiyat.trakya.edu.tr/" target="_blank"><i class="fa fa-angle-double-right"></i> Edebiyat Fakültesi</a></li>
+                                                    <li><a class="p-0 pt-5" href="https://egitim.trakya.edu.tr/" target="_blank"><i class="fa fa-angle-double-right"></i> Eğitim Fakültesi</a></li>
+                                                    <li><a class="p-0 pt-5" href="https://fen.trakya.edu.tr/" target="_blank"><i class="fa fa-angle-double-right"></i> Fen Fakültesi</a></li>
+                                                    <li><a class="p-0 pt-5" href="https://guzelsanatlar.trakya.edu.tr/" target="_blank"><i class="fa fa-angle-double-right"></i> Güzel Sanatlar Fakültesi</a></li>
+                                                    <li><a class="p-0 pt-5" href="https://iibf.trakya.edu.tr/" target="_blank"><i class="fa fa-angle-double-right"></i> İktisadi ve İdari Bilimler Fakültesi</a></li>
+                                                    <li><a class="p-0 pt-5" href="https://ilahiyat.trakya.edu.tr/" target="_blank"><i class="fa fa-angle-double-right"></i> İlahiyat Fakültesi</a></li>
+                                                    <li><a class="p-0 pt-5" href="https://ksbf.trakya.edu.tr" target="_blank"><i class="fa fa-angle-double-right"></i> Kırkpınar Spor Bilimleri Fakültesi</a></li>
+                                                    <li><a class="p-0 pt-5" href="https://mimfak.trakya.edu.tr" target="_blank"><i class="fa fa-angle-double-right"></i> Mimarlık Fakültesi</a></li>
+                                                    <li><a class="p-0 pt-5" href="https://muhendislik.trakya.edu.tr/" target="_blank"><i class="fa fa-angle-double-right"></i> Mühendislik Fakültesi</a></li>
+                                                    <li><a class="p-0 pt-5" href="https://sbf.trakya.edu.tr/" target="_blank"><i class="fa fa-angle-double-right"></i> Sağlık Bilimleri Fakültesi</a></li>
+                                                    <li><a class="p-0 pt-5" href="https://tip.trakya.edu.tr/" target="_blank"><i class="fa fa-angle-double-right"></i> Tıp Fakültesi</a></li>
+                                                    <li><a class="p-0 pt-5" href="https://ubf.trakya.edu.tr/" target="_blank"><i class="fa fa-angle-double-right"></i> Uygulamalı Bilimler Fakültesi</a></li>
+                                                </ul>
+                                            </div>
+                                            <div class="col3">
+                                                <div class="text-theme-colored font-weight-700">Konservatuvar</div>
+                                                <ul class="list-unstyled list-dashed m-0 ml-5">
+                                                    <li><a class="p-0 pt-5" href="https://konservatuvar.trakya.edu.tr/" target="_blank"><i class="fa fa-angle-double-right"></i> Devlet Konservatuvarı</a></li>
+                                                </ul>
+                                            </div>
+                                            <div class="col3">
+                                                <div class="text-theme-colored font-weight-700">Meslek Yüksekokulları</div>
+                                                <ul class="list-unstyled list-dashed m-0 ml-5">
+                                                    <li><a class="p-0 pt-5" href="https://ardamyo.trakya.edu.tr/" target="_blank"><i class="fa fa-angle-double-right"></i> Arda Meslek Yüksekokulu</a></li>
+                                                    <li><a class="p-0 pt-5" href="https://esbmyo.trakya.edu.tr/" target="_blank"><i class="fa fa-angle-double-right"></i> Edirne Sosyal Bilimler Meslek Yüksekokulu </a></li>
+                                                    <li><a class="p-0 pt-5" href="https://tbmyo.trakya.edu.tr/" target="_blank"><i class="fa fa-angle-double-right"></i> Edirne Teknik Bilimler Meslek Yüksekokulu</a></li>
+                                                    <li><a class="p-0 pt-5" href="https://havsamyo.trakya.edu.tr/" target="_blank"><i class="fa fa-angle-double-right"></i> Havsa Meslek Yüksekokulu</a></li>
+                                                    <li><a class="p-0 pt-5" href="https://ipsalamyo.trakya.edu.tr/" target="_blank"><i class="fa fa-angle-double-right"></i> İpsala Meslek Yüksekokulu</a></li>
+                                                    <li><a class="p-0 pt-5" href="https://kesanmyo.trakya.edu.tr/" target="_blank"><i class="fa fa-angle-double-right"></i> Keşan Meslek Yüksekokulu</a></li>
+                                                    <li><a class="p-0 pt-5" href="https://shmyo.trakya.edu.tr/" target="_blank"><i class="fa fa-angle-double-right"></i> Sağlık Hizmetleri Meslek Yüksekokulu</a></li>
+                                                    <li><a class="p-0 pt-5" href="https://gsmyo.trakya.edu.tr" target="_blank"><i class="fa fa-angle-double-right"></i> Şehit Ressam Hasan Rıza Güzel Sanatlar Meslek Yüksekokulu</a></li>
+                                                    <li><a class="p-0 pt-5" href="https://tuncamyo.trakya.edu.tr/" target="_blank"><i class="fa fa-angle-double-right"></i> Tunca Meslek Yüksekokulu</a></li>
+                                                    <li><a class="p-0 pt-5" href="https://umyo.trakya.edu.tr/" target="_blank"><i class="fa fa-angle-double-right"></i> Uzunköprü Meslek Yüksekokulu</a></li>
+                                                </ul>
+                                            </div>
+                                            <div class="col3 col3Yuksekokullar">
+                                                <div class="text-theme-colored font-weight-700">Yüksekokullar</div>
+                                                <ul class="list-unstyled list-dashed m-0 ml-5">
+                                                    <li><a class="p-0 pt-5" href="https://kesansyo.trakya.edu.tr/" target="_blank"><i class="fa fa-angle-double-right"></i> Keşan Hakkı Yörük Sağlık Yüksekokulu</a></li>
+                                                    <li><a class="p-0 pt-5" href="https://kycubyo.trakya.edu.tr/" target="_blank"><i class="fa fa-angle-double-right"></i> Keşan Yusuf Çapraz Uygulamalı Bilimler Yüksekokulu</a></li>
+                                                    <li><a class="p-0 pt-5" href="https://uubyo.trakya.edu.tr/" target="_blank"><i class="fa fa-angle-double-right"></i> Uzunköprü Uygulamalı Bilimler Yüksekokulu</a></li>
+                                                    <li><a class="p-0 pt-5" href="https://ydyo.trakya.edu.tr/" target="_blank"><i class="fa fa-angle-double-right"></i> Yabancı Diller Yüksekokulu</a></li>
+                                                </ul>
+                                                <div class="mt-30 text-theme-colored font-weight-700">UNESCO Kürsülerimiz</div>
+                                                <ul class="list-unstyled list-dashed m-0 ml-5">
+                                                    <li><a class="p-0 pt-5" href="https://unichair.trakya.edu.tr" target="_blank"><i class="fa fa-angle-double-right"></i> UNESCO Chair of Quality Education &amp; Digital Transformation</a></li>
+                                                </ul>
+                                                <div class="mt-20 font-weight-700"><a href="https://yayinevi.trakya.edu.tr" target="_blank" class="text-theme-colored ">Trakya Üniversitesi Yayınevi</a></div>
+                                            </div>
+                                            <div class="col3 col3lst">
+                                                <div class="text-theme-colored font-weight-700"><a target="_blank" class="text-theme-colored " href="/arastirma-ve-uygulama-merkezleri">Araştırma ve Uygulama Merkezleri</a></div>
+                                            </div>
+                                            <div class="col3" style="top:330px !important;">
+                                                <div class="text-theme-colored font-weight-700"><a href="https://koordinatorluk.trakya.edu.tr" target="_blank" class="text-theme-colored ">Koordinatörlükler</a></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0);" target="">İDARİ</a>
+                                    <ul class="dropdown border-bottom-theme-color-2-4px" style="right: auto; display: none;">
+                                        <li><a href="https://genelsekreterlik.trakya.edu.tr/" target="_blank">Genel Sekreterlik</a></li>
+                                        <li><a href="https://bidb.trakya.edu.tr/" target="_blank">Bilgi İşlem Daire Başkanlığı</a></li>
+                                        <li><a href="https://hukukmusavirligi.trakya.edu.tr/" target="_blank">Hukuk Müşavirliği</a></li>
+                                        <li><a href="https://icdenetim.trakya.edu.tr/" target="_blank">İç Denetim Birimi</a></li>
+                                        <li><a href="https://imdb.trakya.edu.tr/" target="_blank">İdari ve Mali İşler Daire Başkanlığı</a></li>
+                                        <li><a href="https://kutuphane.trakya.edu.tr/" target="_blank">Kütüphane ve Dokümantasyon Daire Başkanlığı</a></li>
+                                        <li><a href="https://oidb.trakya.edu.tr/" target="_blank">Öğrenci İşleri Daire Başkanlığı</a></li>
+                                        <li><a href="https://pdb.trakya.edu.tr/" target="_blank">Personel Daire Başkanlığı</a></li>
+                                        <li><a href="https://sks.trakya.edu.tr/" target="_blank">Sağlık Kültür ve Spor Daire Başkanlığı</a></li>
+                                        <li><a href="https://sgdb.trakya.edu.tr/" target="_blank">Strateji Geliştirme Daire Başkanlığı</a></li>
+                                        <li><a href="https://tuh.trakya.edu.tr" target="_blank">TÜ Hastanesi Başmüdürlüğü</a></li>
+                                        <li><a href="https://yitdb.trakya.edu.tr/" target="_blank">Yapı İşleri ve Teknik Daire Başkanlığı</a></li>
+                                        <li><a href="https://donersermaye.trakya.edu.tr/" target="_blank">Döner Sermaye İşletme Müdürlüğü</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0);" target="">ÖĞRENCİ</a>
+                                    <ul class="dropdown border-bottom-theme-color-2-4px" style="right: auto; display: none;">
+                                        <li><a href="https://aday.trakya.edu.tr/" target="_blank">Aday Öğrenci</a></li>
+                                        <li><a href="https://dosyalar.trakya.edu.tr/bilislem/docs/oidbtanitim/" target="_blank">Öğrenci El Kitabı</a></li>
+                                        <li><a href="https://oidb.trakya.edu.tr/" target="_blank">Öğrenci İşleri Daire Başkanlığı</a></li>
+                                        <li><a href="https://obs.trakya.edu.tr/" target="_blank">Öğrenci Bilgi Sistemi</a></li>
+                                        <li><a href="https://oidb.trakya.edu.tr/pages/ders-bilgi-paketi" target="_blank">Ders Bilgi Paketi</a></li>
+                                        <li><a href="https://student.trakya.edu.tr/" target="_blank">Uluslararası Öğrenci Ofisi</a></li>
+                                        <li><a href="https://erasmus.trakya.edu.tr" target="_blank">Erasmus</a></li>
+                                        <li><a href="https://oidb.trakya.edu.tr/pages/diploma-eki" target="_blank">Diploma Eki</a></li>
+                                        <li><a href="https://sks.trakya.edu.tr/pages/ogrenci-topluluklari" target="_blank">Öğrenci Toplulukları</a></li>
+                                        <li><a href="https://ogrencikonseyi.trakya.edu.tr/" target="_blank">Öğrenci Konseyi</a></li>
+                                        <li><a href="https://kariyer.trakya.edu.tr/" target="_blank">Kariyer Merkezi</a></li>
+                                        <li><a href="https://zosd.trakya.edu.tr/" target="_blank">Zorunlu Ortak Servis Dersleri</a></li>
+                                        <li><a href="https://bkeders.trakya.edu.tr/" target="_blank">BKE Dersi Etkinlikleri</a></li>
+                                        <li><a href="https://engelsiz.trakya.edu.tr/" target="_blank">Engelsiz Trakya Üniversitesi</a></li>
+                                        <li><a href="https://obs.trakya.edu.tr/oibs/kariyer/login.aspx" target="_blank">Mezun Bilgi Sistemi</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="https://e-egitim.trakya.edu.tr/" target="_blank">E-EĞİTİM</a></li>
+                                <li>
+                                    <a href="https://kgs.trakya.edu.tr" target="_blank">KALİTE GÜVENCESİ</a>
+                                </li>
+                                <div class="hidden-lg hidden-md p-20 mb-10">
+                                    <a class="btn-ara" href="/sitede-ara"><i class="fa fa-search m-10" style="font-size:22px;"></i></a>
+                                    <a href="https://kalite.trakya.edu.tr/" target="_blank"><i class="fa fa-line-chart m-10" style="font-size:22px;"></i></a>
+                                    <a href="https://avesis.trakya.edu.tr/" target="_blank"><i class="fa fa-flask m-10" style="font-size:22px;"></i></a>
+                                    <a href="https://tuh.trakya.edu.tr/" target="_blank"><i class="fa fa-h-square m-10" style="font-size:22px;"></i></a>
+                                    <a href="https://kutuphane.trakya.edu.tr/" target="_blank"><i class="fa fa-book m-10" style="font-size:22px;"></i></a>
+                                    <a href="https://akademik.trakya.edu.tr/" target="_blank"><i class="fa fa-calendar m-10" style="font-size:22px;"></i></a>
+                                    <a href="https://ihale.trakya.edu.tr/" target="_blank"><i class="fa fa-gavel m-10" style="font-size:22px;"></i></a>
+                                    <a target="_blank" href="/yemeklistesi"><i class="fa fa-cutlery m-10" style="font-size:22px;"></i></a>
+                                    <a target="_blank" href="/personel"><i class="fa fa-users m-10" style="font-size:22px;"></i></a>
+                                    <a target="_blank" href="/erehber"><i class="fa fa-phone m-10" style="font-size:22px;"></i></a>
+                                </div>
+
+                                <li class="scrollable-fix"></li>
+                            </ul>
+
+                            <ul class="pull-right flip">
+                                <li>
+                                    <a href="https://teknokta.trakya.edu.tr" target="_blank" style="padding-bottom:3px;" class="pull-right bg-theme-color-2 text-white font-14 pr-15 pl-15 text-center">
+                                        <div class="hidden-lg hidden-md" style="margin-top: 12px;height: 34px;"><i class="fa fa-user"></i></div>
+                                        <div class="hidden-sm hidden-xs" style="margin-top: 12px;height: 60px;">Kullanıcı<br>Girişi</div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                        <div class="static-icon-list static-icon-list-left pt-15 hidden-xs">
+                            <a class="item bg-dark-transparent-6 text-white" href="/tum-haberler"><i class="fa fa-newspaper-o"></i><span>Tüm Haberler</span></a>
+                            <a class="item bg-dark-transparent-6 text-white" href="/tum-duyurular"><i class="fa fa-bullhorn"></i><span>Tüm Duyurular</span></a>
+                            <a class="item bg-dark-transparent-6 text-white" href="/tum-etkinlikler"><i class="fa fa-calendar"></i><span>Tüm Etkinlikler</span></a>
+                            <a href="https://meyok.trakya.edu.tr" target="_blank" class="item bg-dark-transparent-6 text-white" style="padding: 10px 1px 10px 23px;">
+                                <i style="margin-left: -9px;margin-right: 8px;">
+                                    <img src="/images/meyok.png" style="height: 25px;width:26px">
+                                </i>
+                                <span style="padding-right: 15px;">MEYOK Koordinatörlüğü</span>
+                            </a>
+                        </div>
+                        <div class="static-icon-list static-icon-list-right pt-15 hidden-xs">
+                            <a href="#" data-lightbox="inline" class="item bg-dark-transparent-6 text-white btn-ara"><i class="fa fa-search"></i><span>Sitede Ara</span></a>
+                            <a href="https://avesis.trakya.edu.tr/" target="_blank" class="item bg-dark-transparent-6 text-white"><i class="fa fa-flask"></i><span>Akademik Veri Yönetim Sistemi</span></a>
+                            <a href="https://tuh.trakya.edu.tr/" target="_blank" class="item bg-dark-transparent-6 text-white"><i class="fa fa-h-square"></i><span>Hastane</span></a>
+                            <a href="https://kutuphane.trakya.edu.tr/" target="_blank" class="item bg-dark-transparent-6 text-white"><i class="fa fa-book"></i><span>Kütüphane</span></a>
+                            <a href="https://akademik.trakya.edu.tr/" target="_blank" class="item bg-dark-transparent-6 text-white"><i class="fa fa-calendar"></i><span>Akademik Takvim</span></a>
+                            <a href="https://ihale.trakya.edu.tr/" target="_blank" class="item bg-dark-transparent-6 text-white"><i class="fa fa-gavel"></i><span>İhale İlanları</span></a>
+                            <a target="_blank" class="item bg-dark-transparent-6 text-white" href="/yemeklistesi"><i class="fa fa-cutlery"></i><span>Yemek Listesi</span></a>
+                            <a target="_blank" class="item bg-dark-transparent-6 text-white" href="/personel"><i class="fa fa-users"></i><span>Personel Web Havuzu</span></a>
+                            <a target="_blank" class="item bg-dark-transparent-6 text-white" href="/erehber"><i class="fa fa-phone"></i><span>E-Rehber</span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="main-content">
+            <div id="ymkl">
+    
+    <section class="inner-header bg-lighter">
+    <div class="container pt-40 pb-0">
+        <div class="section-content">
+            <div class="row">
+                <div class="col-md-12 xs-text-center">
+                    <h2 class="mt-10 text-theme-colored">Aylık Yemek Listesi (Kas&#x131;m 2026)</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 text-right hidden-xs">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="container pt-30 pb-20">
+        <div class="alert alert-success xs-text-center">
+            <div class="mb-5">
+                <i class="fa fa-cutlery fa-lg mr-10" aria-hidden="true"></i>
+                <span class="font-weight-600 font-16">Günün Yemeği</span>
+            </div>
+            <span class="text-nowrap">D&#xDC;&#x11E;&#xDC;N &#xC7;ORBA </span> <span class="text-theme-color-2">|</span>
+            <span class="text-nowrap">ETL&#x130; NOHUT </span> <span class="text-theme-color-2">|</span>
+            <span class="text-nowrap">P&#x130;R&#x130;N&#xC7; P&#x130;LAVI </span> <span class="text-theme-color-2">|</span>
+            <span class="text-nowrap">YO&#x11E;URT </span> <span class="text-theme-color-2">|</span>
+        <span class="font-10 text-theme-color-2 text-nowrap"> » 916 Kal</span>
+
+
+            </div>
+        
+        <div id="ycontent">
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="form-group mb-20">
+                    <div class="input-group position-relative">
+                        <div class="input-group-addon bg-theme-colored text-white font-weight-500" style="border: none;">BİRİM :</div>
+                        <select class="form-control" id="yemekBirim" data-birim="48357578">
+                            <option value="48357578" selected="selected">Merkez Kampüsler </option>
+                            <option value="90992591">Sağlık Araştırma ve Uygulama Merkezi (Hastane)</option>
+                            <option value="42668485">İlçe Kampüsler</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group mb-20">
+                    <div class="input-group position-relative">
+                        <div class="input-group-addon bg-theme-colored text-white font-weight-500" style="border: none;">ARŞİV :</div>
+                        <select class="form-control" id="yemekTarih" data-date="11-2026">
+
+                                    <option value="11-2026">Kas&#x131;m 2026</option>
+                                    <option value="10-2026">Ekim 2026</option>
+                                    <option value="9-2026">Eyl&#xFC;l 2026</option>
+                                    <option value="8-2026">A&#x11F;ustos 2026</option>
+                                    <option value="7-2026">Temmuz 2026</option>
+                                    <option value="6-2026">Haziran 2026</option>
+                                    <option value="5-2026">May&#x131;s 2026</option>
+                                    <option value="4-2026">Nisan 2026</option>
+                                    <option value="3-2026">Mart 2026</option>
+                                    <option value="2-2026">&#x15E;ubat 2026</option>
+                                    <option value="1-2026">Ocak 2026</option>
+                                    <option value="12-2025">Aral&#x131;k 2025</option>
+                                    <option value="11-2025">Kas&#x131;m 2025</option>
+                                    <option value="10-2025">Ekim 2025</option>
+                                    <option value="9-2025">Eyl&#xFC;l 2025</option>
+                                    <option value="8-2025">A&#x11F;ustos 2025</option>
+                                    <option value="7-2025">Temmuz 2025</option>
+                                    <option value="6-2025">Haziran 2025</option>
+                                    <option value="5-2025">May&#x131;s 2025</option>
+                                    <option value="4-2025">Nisan 2025</option>
+                                    <option value="3-2025">Mart 2025</option>
+                                    <option value="2-2025">&#x15E;ubat 2025</option>
+                                    <option value="1-2025">Ocak 2025</option>
+                                    <option value="12-2024">Aral&#x131;k 2024</option>
+                                    <option value="11-2024">Kas&#x131;m 2024</option>
+                                    <option value="10-2024">Ekim 2024</option>
+                                    <option value="9-2024">Eyl&#xFC;l 2024</option>
+                                    <option value="8-2024">A&#x11F;ustos 2024</option>
+                                    <option value="7-2024">Temmuz 2024</option>
+                                    <option value="6-2024">Haziran 2024</option>
+                                    <option value="5-2024">May&#x131;s 2024</option>
+                                    <option value="4-2024">Nisan 2024</option>
+                                    <option value="3-2024">Mart 2024</option>
+                                    <option value="2-2024">&#x15E;ubat 2024</option>
+                                    <option value="1-2024">Ocak 2024</option>
+                                    <option value="12-2023">Aral&#x131;k 2023</option>
+                                    <option value="11-2023">Kas&#x131;m 2023</option>
+                                    <option value="10-2023">Ekim 2023</option>
+                                    <option value="9-2023">Eyl&#xFC;l 2023</option>
+                                    <option value="8-2023">A&#x11F;ustos 2023</option>
+                                    <option value="7-2023">Temmuz 2023</option>
+                                    <option value="6-2023">Haziran 2023</option>
+                                    <option value="5-2023">May&#x131;s 2023</option>
+                                    <option value="4-2023">Nisan 2023</option>
+                                    <option value="3-2023">Mart 2023</option>
+                                    <option value="2-2023">&#x15E;ubat 2023</option>
+                                    <option value="1-2023">Ocak 2023</option>
+                                    <option value="12-2022">Aral&#x131;k 2022</option>
+                                    <option value="11-2022">Kas&#x131;m 2022</option>
+                                    <option value="10-2022">Ekim 2022</option>
+                                    <option value="9-2022">Eyl&#xFC;l 2022</option>
+                                    <option value="8-2022">A&#x11F;ustos 2022</option>
+                                    <option value="7-2022">Temmuz 2022</option>
+                                    <option value="6-2022">Haziran 2022</option>
+                                    <option value="5-2022">May&#x131;s 2022</option>
+                                    <option value="4-2022">Nisan 2022</option>
+                                    <option value="3-2022">Mart 2022</option>
+                                    <option value="2-2022">&#x15E;ubat 2022</option>
+                                    <option value="1-2022">Ocak 2022</option>
+                                    <option value="12-2021">Aral&#x131;k 2021</option>
+                                    <option value="11-2021">Kas&#x131;m 2021</option>
+                                    <option value="10-2021">Ekim 2021</option>
+                                    <option value="9-2021">Eyl&#xFC;l 2021</option>
+                                    <option value="8-2021">A&#x11F;ustos 2021</option>
+                                    <option value="7-2021">Temmuz 2021</option>
+                                    <option value="6-2021">Haziran 2021</option>
+                                    <option value="5-2021">May&#x131;s 2021</option>
+                                    <option value="4-2021">Nisan 2021</option>
+                                    <option value="3-2021">Mart 2021</option>
+                                    <option value="2-2021">&#x15E;ubat 2021</option>
+                                    <option value="1-2021">Ocak 2021</option>
+                                    <option value="12-2020">Aral&#x131;k 2020</option>
+                                    <option value="11-2020">Kas&#x131;m 2020</option>
+                                    <option value="10-2020">Ekim 2020</option>
+                                    <option value="9-2020">Eyl&#xFC;l 2020</option>
+                                    <option value="8-2020">A&#x11F;ustos 2020</option>
+                                    <option value="7-2020">Temmuz 2020</option>
+                                    <option value="6-2020">Haziran 2020</option>
+                                    <option value="5-2020">May&#x131;s 2020</option>
+                                    <option value="4-2020">Nisan 2020</option>
+                                    <option value="3-2020">Mart 2020</option>
+                                    <option value="2-2020">&#x15E;ubat 2020</option>
+                                    <option value="1-2020">Ocak 2020</option>
+                                    <option value="12-2019">Aral&#x131;k 2019</option>
+                                    <option value="11-2019">Kas&#x131;m 2019</option>
+                                    <option value="10-2019">Ekim 2019</option>
+                                    <option value="9-2019">Eyl&#xFC;l 2019</option>
+                                    <option value="8-2019">A&#x11F;ustos 2019</option>
+                                    <option value="7-2019">Temmuz 2019</option>
+                                    <option value="6-2019">Haziran 2019</option>
+                                    <option value="5-2019">May&#x131;s 2019</option>
+                                    <option value="4-2019">Nisan 2019</option>
+                                    <option value="3-2019">Mart 2019</option>
+                                    <option value="2-2019">&#x15E;ubat 2019</option>
+                                    <option value="1-2019">Ocak 2019</option>
+                                    <option value="12-2018">Aral&#x131;k 2018</option>
+                                    <option value="11-2018">Kas&#x131;m 2018</option>
+                                    <option value="10-2018">Ekim 2018</option>
+                                    <option value="9-2018">Eyl&#xFC;l 2018</option>
+                                    <option value="8-2018">A&#x11F;ustos 2018</option>
+                                    <option value="7-2018">Temmuz 2018</option>
+                                    <option value="6-2018">Haziran 2018</option>
+                                    <option value="5-2018">May&#x131;s 2018</option>
+                                    <option value="4-2018">Nisan 2018</option>
+                                    <option value="3-2018">Mart 2018</option>
+                                    <option value="2-2018">&#x15E;ubat 2018</option>
+                                    <option value="1-2018">Ocak 2018</option>
+                                    <option value="12-2017">Aral&#x131;k 2017</option>
+                                    <option value="11-2017">Kas&#x131;m 2017</option>
+                                    <option value="10-2017">Ekim 2017</option>
+                                    <option value="9-2017">Eyl&#xFC;l 2017</option>
+                                    <option value="8-2017">A&#x11F;ustos 2017</option>
+                                    <option value="7-2017">Temmuz 2017</option>
+                                    <option value="6-2017">Haziran 2017</option>
+                                    <option value="5-2017">May&#x131;s 2017</option>
+                                    <option value="4-2017">Nisan 2017</option>
+                                    <option value="3-2017">Mart 2017</option>
+                                    <option value="2-2017">&#x15E;ubat 2017</option>
+                                    <option value="1-2017">Ocak 2017</option>
+                                    <option value="12-2016">Aral&#x131;k 2016</option>
+                                    <option value="11-2016">Kas&#x131;m 2016</option>
+                                    <option value="10-2016">Ekim 2016</option>
+                                    <option value="9-2016">Eyl&#xFC;l 2016</option>
+                                    <option value="8-2016">A&#x11F;ustos 2016</option>
+                                    <option value="7-2016">Temmuz 2016</option>
+                                    <option value="6-2016">Haziran 2016</option>
+                                    <option value="5-2016">May&#x131;s 2016</option>
+                                    <option value="4-2016">Nisan 2016</option>
+                                    <option value="3-2016">Mart 2016</option>
+                                    <option value="2-2016">&#x15E;ubat 2016</option>
+                                    <option value="1-2016">Ocak 2016</option>
+                                    <option value="12-2015">Aral&#x131;k 2015</option>
+                                    <option value="11-2015">Kas&#x131;m 2015</option>
+                                    <option value="10-2015">Ekim 2015</option>
+                                    <option value="9-2015">Eyl&#xFC;l 2015</option>
+                                    <option value="8-2015">A&#x11F;ustos 2015</option>
+                                    <option value="7-2015">Temmuz 2015</option>
+                                    <option value="6-2015">Haziran 2015</option>
+                                    <option value="5-2015">May&#x131;s 2015</option>
+                                    <option value="4-2015">Nisan 2015</option>
+                                    <option value="3-2015">Mart 2015</option>
+                                    <option value="2-2015">&#x15E;ubat 2015</option>
+                                    <option value="1-2015">Ocak 2015</option>
+                                    <option value="12-2014">Aral&#x131;k 2014</option>
+                                    <option value="11-2014">Kas&#x131;m 2014</option>
+                                    <option value="10-2014">Ekim 2014</option>
+                                    <option value="9-2014">Eyl&#xFC;l 2014</option>
+                                    <option value="8-2014">A&#x11F;ustos 2014</option>
+                                    <option value="7-2014">Temmuz 2014</option>
+                                    <option value="6-2014">Haziran 2014</option>
+                                    <option value="5-2014">May&#x131;s 2014</option>
+                                    <option value="4-2014">Nisan 2014</option>
+                                    <option value="3-2014">Mart 2014</option>
+                                    <option value="2-2014">&#x15E;ubat 2014</option>
+                                    <option value="1-2014">Ocak 2014</option>
+                                    <option value="12-2013">Aral&#x131;k 2013</option>
+                                    <option value="11-2013">Kas&#x131;m 2013</option>
+                                    <option value="10-2013">Ekim 2013</option>
+                                    <option value="9-2013">Eyl&#xFC;l 2013</option>
+                                    <option value="8-2013">A&#x11F;ustos 2013</option>
+                                    <option value="7-2013">Temmuz 2013</option>
+                                    <option value="6-2013">Haziran 2013</option>
+                                    <option value="5-2013">May&#x131;s 2013</option>
+                                    <option value="4-2013">Nisan 2013</option>
+                                    <option value="3-2013">Mart 2013</option>
+
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+            <div id="ylist-table">
+            <div class="row ml-0 mr-0 bg-theme-colored" style="border-radius: 4px 4px 0px 0px;">
+                <div class="col-md-5c hidden-xs hidden-sm"><div class="pt-15 pb-15 text-center text-white">PAZARTESİ</div></div>
+                <div class="col-md-5c hidden-xs hidden-sm"><div class="pt-15 pb-15 text-center text-white">SALI</div></div>
+                <div class="col-md-5c hidden-xs hidden-sm"><div class="pt-15 pb-15 text-center text-white">ÇARŞAMBA</div></div>
+                <div class="col-md-5c hidden-xs hidden-sm"><div class="pt-15 pb-15 text-center text-white">PERŞEMBE</div></div>
+                <div class="col-md-5c hidden-xs hidden-sm"><div class="pt-15 pb-15 text-center text-white">CUMA</div></div>
+            </div>
+            <div class="row ml-0 mr-0" id="ylistTable">
+
+
+                    <div class="mitem col-md-5c men-item" ;>
+                        <div class="text-center font-13 p-10">
+                            <h4 class="m-0 mb-5 text-theme-color-2">02.11.2026</h4>
+                            DÜĞÜN ÇORBA <br> ETLİ NOHUT <br> BULGUR PİLAVI <br> MEVSİM SALATA
+                            <br><small class="text-theme-color-2">872 Kal</small>
+                        </div>
+                    </div>
+                    <div class="mitem col-md-5c men-item" ;>
+                        <div class="text-center font-13 p-10">
+                            <h4 class="m-0 mb-5 text-theme-color-2">03.11.2026</h4>
+                            EZOGELİN ÇORBA <br> TAVUKLU ÇÖKERTME KEBABI <br> ERİŞTE <br> TULUMBA TATLISI
+                            <br><small class="text-theme-color-2">1134 Kal</small>
+                        </div>
+                    </div>
+                    <div class="mitem col-md-5c men-item" ;>
+                        <div class="text-center font-13 p-10">
+                            <h4 class="m-0 mb-5 text-theme-color-2">04.11.2026</h4>
+                            SÜZME MERCİMEK ÇORBA <br> HAMBURGER KÖFTE <br> PATATES KIZARTMASI <br> SPAGETTİ NAPOLİTEN <br> AYRAN
+                            <br><small class="text-theme-color-2">911 Kal</small>
+                        </div>
+                    </div>
+                    <div class="mitem col-md-5c men-item" ;>
+                        <div class="text-center font-13 p-10">
+                            <h4 class="m-0 mb-5 text-theme-color-2">05.11.2026</h4>
+                            YOĞURT ÇORBA <br> KIYMALI KARNABAHAR <br> ŞEHRİYELİ PİRİNÇ PİLAVI <br> MEYVE
+                            <br><small class="text-theme-color-2">786 Kal</small>
+                        </div>
+                    </div>
+                    <div class="mitem col-md-5c men-item" ;>
+                        <div class="text-center font-13 p-10">
+                            <h4 class="m-0 mb-5 text-theme-color-2">06.11.2026</h4>
+                            DOMATES ÇORBA <br> ŞEHRİYELİ GÜVEÇ  <br> ZEYTİNYAĞLI PIRASA <br> YOĞURT
+                            <br><small class="text-theme-color-2">910 Kal</small>
+                        </div>
+                    </div>
+                    <div class="mitem col-md-5c men-item" ;>
+                        <div class="text-center font-13 p-10">
+                            <h4 class="m-0 mb-5 text-theme-color-2">09.11.2026</h4>
+                            MERCİMEK ÇORBA <br> TAVUK DÖNER PATATES KIZARTMASI <br> PİRİNÇ PİLAVI <br> KIRMIZI LAHANA HAVUÇ SALATA
+                            <br><small class="text-theme-color-2">905 Kal</small>
+                        </div>
+                    </div>
+                    <div class="mitem col-md-5c men-item" ;>
+                        <div class="text-center font-13 p-10">
+                            <h4 class="m-0 mb-5 text-theme-color-2">10.11.2026</h4>
+                            ŞEHRİYE ÇORBA <br> KIYMALI TÜRLÜ <br> PEYNİRLİ BÖREK <br> ÜZÜM KOMPOSTO
+                            <br><small class="text-theme-color-2">852 Kal</small>
+                        </div>
+                    </div>
+                    <div class="mitem col-md-5c men-item" ;>
+                        <div class="text-center font-13 p-10">
+                            <h4 class="m-0 mb-5 text-theme-color-2">11.11.2026</h4>
+                            EZOGELİN ÇORBA <br> ET TANTUNİ <br> ZEYTİNYAĞLI ISPANAK <br> AYRAN
+                            <br><small class="text-theme-color-2">1092 Kal</small>
+                        </div>
+                    </div>
+                    <div class="mitem col-md-5c men-item" ;>
+                        <div class="text-center font-13 p-10">
+                            <h4 class="m-0 mb-5 text-theme-color-2">12.11.2026</h4>
+                            DOMATES ÇORBA <br> ETLİ KURU FASULYE <br> BULGUR PİLAVI <br> MEYVE
+                            <br><small class="text-theme-color-2">799 Kal</small>
+                        </div>
+                    </div>
+                    <div class="mitem col-md-5c men-item" ;>
+                        <div class="text-center font-13 p-10">
+                            <h4 class="m-0 mb-5 text-theme-color-2">13.11.2026</h4>
+                            TARHANA ÇORBA <br> BODRUM KÖFTE <br> SOSLU MAKARNA <br> REVANİ
+                            <br><small class="text-theme-color-2">1077 Kal</small>
+                        </div>
+                    </div>
+                    <div class="mitem col-md-5c men-item" style=background-color:#d9edf7;>
+                        <div class="text-center font-13 p-10">
+                            <h4 class="m-0 mb-5 text-theme-color-2">BUG&#xDC;N</h4>
+                            DÜĞÜN ÇORBA <br> ETLİ NOHUT <br> PİRİNÇ PİLAVI <br> YOĞURT
+                            <br><small class="text-theme-color-2">916 Kal</small>
+                        </div>
+                    </div>
+                    <div class="mitem col-md-5c men-item" ;>
+                        <div class="text-center font-13 p-10">
+                            <h4 class="m-0 mb-5 text-theme-color-2">17.11.2026</h4>
+                            BROKOLİ ÇORBA <br> TAVUK SOTE <br> BULGUR PİLAVI <br> AYRAN
+                            <br><small class="text-theme-color-2">899 Kal</small>
+                        </div>
+                    </div>
+                    <div class="mitem col-md-5c men-item" ;>
+                        <div class="text-center font-13 p-10">
+                            <h4 class="m-0 mb-5 text-theme-color-2">18.11.2026</h4>
+                            EZOGELİN ÇORBA <br> İZMİR KÖFTE <br> PEYNİRLİ MAKARNA <br> MEVSİM SALATA
+                            <br><small class="text-theme-color-2">953 Kal</small>
+                        </div>
+                    </div>
+                    <div class="mitem col-md-5c men-item" ;>
+                        <div class="text-center font-13 p-10">
+                            <h4 class="m-0 mb-5 text-theme-color-2">19.11.2026</h4>
+                            ŞEHRİYE ÇORBA <br> ÇARDAK KEBABI <br> ZEYTİNYAĞLI TAZE FASULYE <br> ÇİKOLATALI PUDİNG
+                            <br><small class="text-theme-color-2">1001 Kal</small>
+                        </div>
+                    </div>
+                    <div class="mitem col-md-5c men-item" ;>
+                        <div class="text-center font-13 p-10">
+                            <h4 class="m-0 mb-5 text-theme-color-2">20.11.2026</h4>
+                            SÜZME MERCİMEK ÇORBA <br> SEBZE GRATEN <br> SPAGETTİ NAPOLİTEN <br> MEYVE
+                            <br><small class="text-theme-color-2">985 Kal</small>
+                        </div>
+                    </div>
+                    <div class="mitem col-md-5c men-item" ;>
+                        <div class="text-center font-13 p-10">
+                            <h4 class="m-0 mb-5 text-theme-color-2">23.11.2026</h4>
+                            MERCİMEK ÇORBA <br> BAZLAMALI YOĞURTLU KEBAP <br> ZEYTİNYAĞLI BEZELYE <br> MEYVE
+                            <br><small class="text-theme-color-2">960 Kal</small>
+                        </div>
+                    </div>
+                    <div class="mitem col-md-5c men-item" ;>
+                        <div class="text-center font-13 p-10">
+                            <h4 class="m-0 mb-5 text-theme-color-2">24.11.2026</h4>
+                            EZOGELİN ÇORBA <br> ÇİFTLİK KÖFTE <br> SOSLU MAKARNA <br> YOĞURT
+                            <br><small class="text-theme-color-2">929 Kal</small>
+                        </div>
+                    </div>
+                    <div class="mitem col-md-5c men-item" ;>
+                        <div class="text-center font-13 p-10">
+                            <h4 class="m-0 mb-5 text-theme-color-2">25.11.2026</h4>
+                            DOMATES ÇORBA <br> PATATES OTURTMA <br> CEVİZLİ ERİŞTE <br> AYRAN
+                            <br><small class="text-theme-color-2">987 Kal</small>
+                        </div>
+                    </div>
+                    <div class="mitem col-md-5c men-item" ;>
+                        <div class="text-center font-13 p-10">
+                            <h4 class="m-0 mb-5 text-theme-color-2">26.11.2026</h4>
+                            TARHANA ÇORBA <br> PİLİÇ BAGET SEBZE SOTE <br> MISIRLI PİRİNÇ PİLAVI <br> FINDIKLI KEŞKÜL
+                            <br><small class="text-theme-color-2">993 Kal</small>
+                        </div>
+                    </div>
+                    <div class="mitem col-md-5c men-item" ;>
+                        <div class="text-center font-13 p-10">
+                            <h4 class="m-0 mb-5 text-theme-color-2">27.11.2026</h4>
+                            YAYLA ÇORBA <br> ETLİ KURU FASULYE <br> BULGUR PİLAVI <br> MEVSİM SALATA
+                            <br><small class="text-theme-color-2">813 Kal</small>
+                        </div>
+                    </div>
+                    <div class="mitem col-md-5c men-item" ;>
+                        <div class="text-center font-13 p-10">
+                            <h4 class="m-0 mb-5 text-theme-color-2">30.11.2026</h4>
+                            DÜĞÜN ÇORBA <br> ETLİ NOHUT <br> ŞEHRİYELİ PİRİNÇ PİLAVI <br> YOĞURT
+                            <br><small class="text-theme-color-2">910 Kal</small>
+                        </div>
+                    </div>
+            </div>
+
+            <div class="col-md-5c mb-10 hidden-xs hidden-sm"></div>
+            <div class="col-md-5c mb-10 hidden-xs hidden-sm"></div>
+            <div class="col-md-5c mb-10 hidden-xs hidden-sm"></div>
+            <div class="col-md-5c mb-10 hidden-xs hidden-sm"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+</div>
+
+
+
+
+
+            <footer id="footer" class="footer divider layer-overlay overlay-dark-9" data-bg-img="../images/footer.jpg" style="">
+                <div class="container pb-20">
+                    <div class="row border-bottom">
+                        <div class="col-sm-12 col-md-3" style="color:#fafafa">
+                            <div class="widget dark">
+                                <img class="mt-5 mb-20" alt="" src="/images/white.png">
+                                <p>Trakya Üniversitesi Rektörlüğü<br>22030 Balkan Yerleşkesi / EDİRNE</p>
+                                <ul class="list-inline mt-5">
+                                    <li class="m-0 pl-10 pr-10 text-nowrap"><i class="fa fa-phone text-theme-color-2 mr-5"></i> +90 (284) 223 42 10-11-12-13</li>
+                                    <li class="m-0 pl-10 pr-10 text-nowrap"><i class="fa fa-phone text-theme-color-2 mr-5"></i> +90 (284) 236 49 81-82-84</li>
+                                    <li class="m-0 pl-10 pr-10 text-nowrap"><i class="fa fa-print text-theme-color-2 mr-5"></i> +90 (284) 223 33 14</li>
+                                    <li class="m-0 pl-10 pr-10 text-nowrap"><i class="fa fa-envelope-o text-theme-color-2 mr-5"></i> genelsekreterlik@trakya.edu.tr</li>
+                                    <li class="m-0 pl-10 pr-10 text-nowrap"><i class="fa fa-globe text-theme-color-2 mr-5"></i> trakyauni@hs01.kep.tr</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-4">
+                            <div class="widget dark">
+                                <h4 class="widget-title">Bağlantılar</h4>
+                                <ul class="list angle-double-right list-border">
+                                    <li><i class="fa fa-star" style="color:#cb9832; padding-right:3px"></i><a href="https://obs.trakya.edu.tr/" target="_blank" style="color:#fafafa">Akademisyen Bilgi Sistemi</a></li>
+                                    <li><i class="fa fa-star" style="color:#cb9832; padding-right:3px"></i><a href="https://akademiktesvik.trakya.edu.tr/" target="_blank" style="color:#fafafa">Akademik Teşvik</a></li>
+                                    <li><i class="fa fa-star" style="color:#cb9832; padding-right:3px"></i><a href="https://oyp.trakya.edu.tr/" target="_blank" style="color:#fafafa">Öğretim Üyesi Yetiştirme Programı</a></li>
+                                    <li><i class="fa fa-star" style="color:#cb9832; padding-right:3px"></i><a href="https://bap.trakya.edu.tr" target="_blank" style="color:#fafafa">TÜBAP</a></li>
+                                    <li><i class="fa fa-star" style="color:#cb9832; padding-right:3px"></i><a href="https://ekders.trakya.edu.tr/" target="_blank" style="color:#fafafa">Ek Ders Modülü</a></li>
+                                    <li><i class="fa fa-star" style="color:#cb9832; padding-right:3px"></i><a href="https://bologna.trakya.edu.tr/" target="_blank" style="color:#fafafa">Bologna</a></li>
+                                    <li><i class="fa fa-star" style="color:#cb9832; padding-right:3px"></i><a href="https://eduroam.trakya.edu.tr/" target="_blank" style="color:#fafafa">Eduroam</a></li>
+                                    <li><i class="fa fa-star" style="color:#cb9832; padding-right:3px"></i><a href="https://disiliskiler.trakya.edu.tr/" target="_blank" style="color:#fafafa">Dış İlişkiler Uygulama ve Araştırma Merkezi</a></li>
+                                    <li><i class="fa fa-star" style="color:#cb9832; padding-right:3px"></i><a href="https://donersermaye.trakya.edu.tr/" target="_blank" style="color:#fafafa">Döner Sermaye İşletme Müdürlüğü</a></li>
+                                    <li><i class="fa fa-star" style="color:#cb9832; padding-right:3px"></i><a href="https://kurumsaliletisim.trakya.edu.tr/" target="_blank" style="color:#fafafa">Kurumsal İletişim Koordinatörlüğü</a></li>
+
+                                    <li><i class="fa fa-star" style="color:#cb9832; padding-right:3px"></i><a href="https://engelsiz.trakya.edu.tr" target="_blank" style="color:#fafafa">Engelsiz Üniversite Birimi</a></li>
+                                    <li><i class="fa fa-star" style="color:#cb9832; padding-right:3px"></i><a href="https://vakif.trakya.edu.tr/" target="_blank" style="color:#fafafa">Trakya Üniversitesi Vakfı</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-4">
+                            <div class="widget dark">
+                                <h4 class="widget-title hidden-xs">&nbsp;</h4>
+                                <ul class="list angle-double-right list-border">
+                                    <li><i class="fa fa-star" style="color:#cb9832; padding-right:3px"></i><a href="https://balkanarboretumu.trakya.edu.tr/" target="_blank" style="color:#fafafa">Balkan Arboretumu</a></li>
+                                    <li><i class="fa fa-star" style="color:#cb9832; padding-right:3px"></i><a href="https://herbaryum.trakya.edu.tr" target="_blank" style="color:#fafafa">EDTU Herbaryumu</a></li>
+                                    <li><i class="fa fa-star" style="color:#cb9832; padding-right:3px"></i><a href="https://yesil.trakya.edu.tr" target="_blank" style="color:#fafafa"><strong><span style="color: #008000;">Yeşil Trakya</span></strong></a></li>
+                                    <li><i class="fa fa-star" style="color:#cb9832; padding-right:3px"></i><a href="https://edirnekirmizisi.trakya.edu.tr" target="_blank" style="color:#fafafa"><strong><span style="color: #a91101;">Edirne Kırmızısı</span></strong></a></li>
+                                    <li><i class="fa fa-star" style="color:#cb9832; padding-right:3px"></i><a href="https://edirnegulu.trakya.edu.tr/" target="_blank" style="color:#fafafa"><strong><span style="color: #bf005f;">Edirne Gülü</span></strong></a></li>
+                                    <li><i class="fa fa-star" style="color:#cb9832; padding-right:3px"></i><a href="https://merkezlab.trakya.edu.tr" target="_blank" style="color:#fafafa"><strong><span style="color: #3366ff;">Merkez Laboratuvarı (TÜTAGEM)</span></strong></a></li>
+                                    <li><i class="fa fa-star" style="color:#cb9832; padding-right:3px"></i><a href="https://obs.trakya.edu.tr/oibs/kariyer/login.aspx" target="_blank" style="color:#fafafa">Mezun Bilgi Sistemi</a></li>
+                                    <li><i class="fa fa-star" style="color:#cb9832; padding-right:3px"></i><a href="https://kvk.trakya.edu.tr/" target="_blank" style="color:#fafafa">Kişisel Verilerin Korunması</a></li>
+                                    <li><i class="fa fa-star" style="color:#cb9832; padding-right:3px"></i><a href="https://yayinevi.trakya.edu.tr" target="_blank" style="color:#fafafa">Trakya Üniversitesi Yayınevi</a></li>
+                                    <li><i class="fa fa-star" style="color:#cb9832; padding-right:3px"></i><a href="https://genelsekreterlik.trakya.edu.tr/pages/bilgi-edinme" target="_blank" style="color:#fafafa">Bilgi Edinme</a></li>
+                                    <li><i class="fa fa-star" style="color:#cb9832; padding-right:3px"></i><a href="https://www.cimer.gov.tr/" target="_blank" style="color:#fafafa">CİMER</a></li>
+                                    <li><i class="fa fa-star" style="color:#cb9832; padding-right:3px"></i><a href="https://dilekoneri.trakya.edu.tr/" target="_blank" style="color:#fafafa">Öneri ve Şikayet</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div id="facebook-div"></div>
+                    </div>
+                    <div class="row mt-30">
+                        <div class="col-md-2">
+                            <div class="widget dark">
+                                <h5 class="widget-title mb-10">Toplam Görüntüleme</h5>
+                                <div class="text-gray" id="displayCount">
+                                    171.241.725
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="widget dark">
+                                <h5 class="widget-title mb-10">Sosyal Medya</h5>
+                                <div class="row">
+                                    <a href="https://facebook.com/trakyauniversitesirektorlugu" target="_blank"><i class="fa-brands fa-facebook fa-2x"></i></a>
+                                    <a href="https://twitter.com/trakya_univ" target="_blank"><i class="fa-brands fa-x-twitter fa-2x"></i></a>
+                                    <a href="https://youtube.com/trakya_univ" target="_blank"><i class="fa-brands fa-youtube fa-2x"></i></a>
+                                    <a href="https://instagram.com/trakya.univ/" target="_blank"><i class="fa-brands fa-instagram fa-2x"></i></a>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="widget dark">
+                                <h5 class="widget-title mb-10">Günün Yemeği</h5>
+                                <div class="font-16">
+                                    <div>
+                                        <i class="text-theme-color-2 fa fa-cutlery fa-lg mr-10" aria-hidden="true"></i>
+                                                    <span class="text-nowrap">D&#xDC;&#x11E;&#xDC;N &#xC7;ORBA </span> <span class="text-theme-color-2">|</span>
+            <span class="text-nowrap">ETL&#x130; NOHUT </span> <span class="text-theme-color-2">|</span>
+            <span class="text-nowrap">P&#x130;R&#x130;N&#xC7; P&#x130;LAVI </span> <span class="text-theme-color-2">|</span>
+            <span class="text-nowrap">YO&#x11E;URT </span> <span class="text-theme-color-2">|</span>
+        <span class="font-10 text-theme-color-2 text-nowrap"> » 916 Kal</span>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-bottom bg-black-333">
+                    <div class="container pt-20 pb-20">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p class="font-11 text-black-777 m-0 sm-text-center">Copyright © 2022 <a href="https://bidb.trakya.edu.tr" target="_blank">Bilgi İşlem Daire Başkanlığı</a>. Tüm Hakları Saklıdır.</p>
+                            </div>
+                            <div class="col-md-6 text-right">
+                                <div class="widget no-border m-0">
+                                    <ul class="list-inline sm-text-center mt-5 font-12">
+                                        <li><a href="https://www.trakya.edu.tr/erehber/" target="_blank">E-Rehber</a></li>
+                                        <li>|</li>
+                                        <li><a href="https://goo.gl/maps/RWR7FkoTYXXwYNfA6" target="_blank">Ulaşım</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a class="scrollToTop" href="#"><i class="fa fa-angle-up"></i></a>
+            </footer>
+        </div>
+    </div>
+    <div id="search-modal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="Sitede ara...">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <form class="text-center" id="form-search" method="get" action="/arama">
+                    <div class="input-group col-sm-10">
+                        <input type="text" class="form-control" placeholder="Arama..." name="keyword">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" style="padding:12px 22px" type="submit"><i class="fa fa-search"></i> Ara</button>
+                        </span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+      <script src="/js/calendar/main.min.js?v=8zGl1o5eBi5GlH83Pa8o85CNRxkgaoJxw8kOucZpc3Q">
+                    </script>
+    <script src="/js/main.js?v=YBznWy-akcJUQIx1MIMqlS4A6hYAdl0az5p9w3bx1Qo"></script>
+    <script src="/js/plugin.js?v=McUpD4JmURp8ItrKO8thFbuIv004L09WssFOgkD1Pac"></script>
+    <script src="/js/custom-no-obf-used-functions.js?v=sSEDvyQDCT9qYD86z6UyYwMy2iyDf4TdkIr6-2aRaGw"></script>
+     <script src="/js/calendar/calendarmain.js?v=-OjMx-SZCRCAG4xbthJyOaN5gUelC3Lq3BKU5Eebo8Y">
+                    </script>
+   
+    
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</body>
+</html>
