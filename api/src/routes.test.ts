@@ -141,3 +141,34 @@ describe("/api/auth/*", () => {
     expect(await res.text()).toBe("auth");
   });
 });
+
+describe("GET /api/menu/today ve /api/menu/upcoming", () => {
+  it("bugünün menüsünü kullanıcının kararlarıyla döner", async () => {
+    const res = await req("/api/menu/today", { user: "u1" });
+    expect(res.status).toBe(200);
+    const body = await res.json();
+    expect(body.today).toMatchObject({ date: "2026-11-16", ratingOpen: true });
+    expect(body.today.items).toHaveLength(2);
+  });
+
+  it("bugün menü yoksa today null ve sıradaki menülü gün", async () => {
+    const sunday = createApp({ db, auth: fakeAuth, now: () => new Date("2026-11-15T22:00:00Z") });
+    // 16 Kasım 01:00 İstanbul: bugün 16'sı, menü var; 21 Kasım için deneyelim:
+    const saturday = createApp({ db, auth: fakeAuth, now: () => new Date("2026-11-21T09:00:00Z") });
+    const body = await (await saturday.request("/api/menu/today", { headers: { "x-test-user": "u1" } })).json();
+    expect(body.today).toBeNull();
+    expect(body.next).toBeNull(); // 21'inden sonra kayıtlı menü yok
+    const b2 = await (await sunday.request("/api/menu/today", { headers: { "x-test-user": "u1" } })).json();
+    expect(b2.today?.date).toBe("2026-11-16");
+  });
+
+  it("önümüzdeki günler", async () => {
+    const body = await (await req("/api/menu/upcoming", { user: "u1" })).json();
+    expect(body.days.map((d: { date: string }) => d.date)).toEqual(["2026-11-16", "2026-11-17"]);
+  });
+
+  it("profili yoksa 403, oturum yoksa 401", async () => {
+    expect((await req("/api/menu/today", { user: "profilsiz" })).status).toBe(403);
+    expect((await req("/api/menu/today")).status).toBe(401);
+  });
+});

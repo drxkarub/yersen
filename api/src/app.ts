@@ -9,6 +9,8 @@ import type { HealthResponse } from "@yersen/shared";
 import type { Db } from "./db/client.ts";
 import { profile } from "./db/schema.ts";
 import { claimInvite, myInvites } from "./domain/invites.ts";
+import { getDayMenu, getUpcoming } from "./domain/menuQueries.ts";
+import { istanbulDate } from "./domain/time.ts";
 import { rateDish } from "./domain/rating.ts";
 import { setSwipe } from "./domain/swipe.ts";
 
@@ -99,10 +101,25 @@ export function createApp({ db, auth, staticDir, now = () => new Date() }: AppDe
       return r.ok ? c.body(null, 201) : fail(c, r.error);
     });
 
-    api.get("/invites", requireUser, async (c) => {
+    const requireProfile: MiddlewareHandler<Env> = async (c, next) => {
       const [p] = await db.select({ id: profile.id }).from(profile).where(eq(profile.id, c.get("userId")));
       if (!p) return c.json({ error: "no_profile" }, 403);
-      return c.json(await myInvites(db, c.get("userId")));
+      await next();
+    };
+
+    api.get("/invites", requireUser, requireProfile, async (c) => c.json(await myInvites(db, c.get("userId"))));
+
+    api.get("/menu/today", requireUser, requireProfile, async (c) => {
+      const t = now();
+      const today = await getDayMenu(db, { date: istanbulDate(t), userId: c.get("userId"), now: t });
+      // Bugün menü yoksa (hafta sonu, tatil, yayınlanmamış): sıradaki menülü gün.
+      const next = today ? null : ((await getUpcoming(db, { userId: c.get("userId"), now: t }))[0] ?? null);
+      return c.json({ today, next });
+    });
+
+    api.get("/menu/upcoming", requireUser, requireProfile, async (c) => {
+      const t = now();
+      return c.json({ days: await getUpcoming(db, { userId: c.get("userId"), now: t }) });
     });
 
     api.post("/swipes", requireJson, requireUser, async (c) => {
