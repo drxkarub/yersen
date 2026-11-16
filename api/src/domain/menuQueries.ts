@@ -1,6 +1,6 @@
 import { and, asc, avg, count, eq, gte, inArray, sql, type SQL } from "drizzle-orm";
 import type { DbOrTx } from "../db/client.ts";
-import { menu, menuItem, rating, swipe, venue } from "../db/schema.ts";
+import { dish, menu, menuItem, rating, swipe, venue } from "../db/schema.ts";
 import { istanbulDate, isRatingOpen, ratingWindow } from "./time.ts";
 
 export type { DayMenuView, MenuItemView } from "@yersen/shared";
@@ -38,6 +38,8 @@ async function loadDays(db: DbOrTx, where: SQL, userId: string, now: Date): Prom
       menuItemId: menuItem.id,
       dishId: menuItem.dishId,
       rawName: menuItem.rawName,
+      imageUrl: dish.imageUrl,
+      imageCredit: dish.imageCredit,
       average: stats.average,
       votes: stats.votes,
       myChoice: swipe.choice,
@@ -45,6 +47,7 @@ async function loadDays(db: DbOrTx, where: SQL, userId: string, now: Date): Prom
     })
     .from(menuItem)
     .innerJoin(menu, eq(menu.id, menuItem.menuId))
+    .innerJoin(dish, eq(dish.id, menuItem.dishId))
     .leftJoin(stats, eq(stats.dishId, menuItem.dishId))
     .leftJoin(swipe, and(eq(swipe.menuItemId, menuItem.id), eq(swipe.userId, userId)))
     .leftJoin(rating, and(eq(rating.dishId, menuItem.dishId), eq(rating.date, menu.date), eq(rating.userId, userId)))
@@ -65,6 +68,8 @@ async function loadDays(db: DbOrTx, where: SQL, userId: string, now: Date): Prom
           menuItemId: r.menuItemId,
           dishId: r.dishId,
           rawName: r.rawName,
+          imageUrl: r.imageUrl,
+          imageCredit: r.imageCredit,
           average: r.average === null ? null : Math.round(Number(r.average) * 100) / 100,
           votes: Number(r.votes ?? 0),
           myChoice: r.myChoice ?? null,

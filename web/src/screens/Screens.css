@@ -134,29 +134,128 @@ button:disabled {
   cursor: pointer;
 }
 
-/* --- Kaydırma destesi --- */
+/* --- Tam ekran kaydırma (reels gibi) --- */
 
-.deste {
+.tam-ekran {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  width: min(100%, 480px);
+  margin: 0 auto;
   display: grid;
+  grid-template-rows: auto 1fr auto auto;
   gap: 12px;
+  padding: max(10px, env(safe-area-inset-top)) 12px max(12px, env(safe-area-inset-bottom));
+  background: var(--marka);
+  overscroll-behavior: contain;
 }
 
-.deste-sayac {
+.tam-ust {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #fff;
+}
+
+.tam-sayac {
   font-size: 14px;
   font-weight: 600;
-  color: var(--ikincil);
+  color: var(--bant-ikincil);
+  font-variant-numeric: tabular-nums;
 }
 
-.kart {
-  position: relative;
-  min-height: 260px;
+.ikon-dugme {
   display: grid;
-  align-content: center;
-  gap: 8px;
-  padding: 28px 22px;
-  touch-action: none; /* yatay ve aşağı sürükleme kartın; sayfa kartın dışından kayar */
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: var(--kose);
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+}
+
+.ikon-dugme:focus-visible {
+  outline-color: var(--vurgu);
+}
+
+.kart-alan {
+  position: relative;
+  min-height: 0;
+  display: grid;
+}
+
+.fis.kart {
+  position: relative;
+  min-height: 0;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  overflow: hidden;
+  padding: 0;
+  touch-action: none; /* yatay ve aşağı sürükleme kartın */
   user-select: none;
   cursor: grab;
+  border-bottom: 4px solid var(--vurgu);
+}
+
+.kart[data-hint="yes"] {
+  box-shadow: inset 0 0 0 4px var(--marka);
+}
+
+.kart[data-hint="no"] {
+  box-shadow: inset 0 0 0 4px var(--iptal);
+}
+
+.kart[data-hint="maybe"] {
+  box-shadow: inset 0 0 0 4px var(--ikincil);
+}
+
+.gorsel {
+  position: relative;
+  margin: 0;
+  min-height: 0;
+  background: var(--zemin);
+}
+
+.gorsel img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  pointer-events: none;
+}
+
+.gorsel figcaption {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.gorsel figcaption span {
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: rgb(13 26 74 / 0.78);
+  color: #fff;
+}
+
+.gorsel-ikon {
+  display: grid;
+  place-items: center;
+  color: var(--koparma);
+}
+
+.kart-govde {
+  display: grid;
+  gap: 4px;
+  padding: 16px 20px 48px;
+  border-top: 2px dashed var(--koparma);
 }
 
 .kart-gun {
@@ -178,35 +277,56 @@ button:disabled {
   font-variant-numeric: tabular-nums;
 }
 
-/* Sürüklerken karta basılan karar damgası. */
-.kart-damga {
+/* Yön işaretleri: hep görünür, sürüklenen yön belirginleşir. */
+.yon {
   position: absolute;
-  top: 18px;
-  padding: 4px 12px;
-  border: 3px solid currentColor;
-  border-radius: 4px;
-  font-size: 24px;
-  font-weight: 900;
-  transform: rotate(-10deg);
-}
-
-.kart-damga-yes {
-  left: 18px;
-  color: var(--marka);
-}
-
-.kart-damga-maybe {
-  left: 50%;
-  top: auto;
-  bottom: 18px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.92);
+  font-size: 14px;
+  font-weight: 700;
   color: var(--ikincil);
-  transform: translateX(-50%) rotate(-4deg);
+  transition: transform 120ms var(--ease-out), background-color 120ms var(--ease-out);
 }
 
-.kart-damga-no {
-  right: 18px;
-  color: var(--iptal);
-  transform: rotate(10deg);
+.yon-sol {
+  left: 10px;
+  top: 12px;
+  z-index: 1;
+}
+
+.yon-sag {
+  right: 10px;
+  top: 12px;
+  z-index: 1;
+}
+
+.yon-alt {
+  left: 50%;
+  bottom: 12px;
+  transform: translateX(-50%);
+  z-index: 1;
+}
+
+.yon-sag[data-on] {
+  background: var(--marka);
+  color: #fff;
+  transform: scale(1.12);
+}
+
+.yon-sol[data-on] {
+  background: var(--iptal);
+  color: #fff;
+  transform: scale(1.12);
+}
+
+.yon-alt[data-on] {
+  background: var(--marka-koyu);
+  color: #fff;
+  transform: translateX(-50%) scale(1.12);
 }
 
 .deste-tuslar {
@@ -215,9 +335,18 @@ button:disabled {
   gap: 8px;
 }
 
-.deste-tuslar .dugme {
-  min-height: 54px;
+.tam-ekran .dugme {
+  min-height: 52px;
   font-size: 19px;
+}
+
+.tam-ekran .dugme-ikincil {
+  border-color: #fff;
+  color: #fff;
+}
+
+.tam-ekran .hata {
+  margin: 0;
 }
 
 /* --- Kararlarım --- */

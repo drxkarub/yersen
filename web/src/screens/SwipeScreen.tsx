@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState, type PointerEvent } from "react";
+import { ArrowDown, ArrowLeft, ArrowRight, ListChecks, X } from "lucide-react";
 import type { DayMenuView, MenuItemView, SwipeChoice } from "@yersen/shared";
 import { api, errorText } from "../api.ts";
+import { DishVisual } from "../DishVisual.tsx";
 import { displayName } from "../format.ts";
 import { formatDay, formatScore } from "./Today.tsx";
 import "./Screens.css";
@@ -10,10 +12,14 @@ type Card = MenuItemView & { date: string };
 const THRESHOLD = 90;
 const CHOICE_LABEL: Record<SwipeChoice, string> = { yes: "Yerim", maybe: "Belki", no: "Yemem" };
 
-/** Önümüzdeki günlerin yemekleri: önce kararı verilmemiş deste, altında kararlarım. */
+/**
+ * Kaydır sekmesi. Karar bekleyen yemek varsa tam ekran deste (reels gibi), yoksa ya da
+ * "Kararlarım"a geçilince liste. Puanlaması açık gün (bugün) Bugün ekranındadır, destede yer almaz.
+ */
 export function SwipeScreen() {
   const [days, setDays] = useState<DayMenuView[] | "error" | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [view, setView] = useState<"deste" | "liste">("deste");
 
   useEffect(() => {
     api.upcoming().then((r) => setDays(r.days), () => setDays("error"));
@@ -46,10 +52,24 @@ export function SwipeScreen() {
     }
   };
 
+  if (view === "deste" && deck.length > 0) {
+    return (
+      <FullScreenDeck
+        card={deck[0]!}
+        remaining={deck.length}
+        error={error}
+        onDecide={(c, ch) => void decide(c, ch)}
+        onList={() => setView("liste")}
+      />
+    );
+  }
+
   return (
     <main className="bugun">
       {deck.length > 0 ? (
-        <Deck card={deck[0]!} remaining={deck.length} onDecide={(c, ch) => void decide(c, ch)} />
+        <button type="button" className="dugme" onClick={() => setView("deste")}>
+          Kaydırmaya dön ({deck.length} yemek bekliyor)
+        </button>
       ) : (
         <section className="fis fis-durum">
           <span className="durum-muhru" aria-hidden="true">
@@ -81,12 +101,7 @@ export function SwipeScreen() {
                       <span>{displayName(i.rawName)}</span>
                       <span className="karar-tuslar" role="group" aria-label={`${displayName(i.rawName)} kararı`}>
                         {(["yes", "maybe", "no"] as const).map((ch) => (
-                          <button
-                            key={ch}
-                            type="button"
-                            aria-pressed={i.myChoice === ch}
-                            onClick={() => void decide({ ...i, date: d.date }, ch)}
-                          >
+                          <button key={ch} type="button" aria-pressed={i.myChoice === ch} onClick={() => void decide({ ...i, date: d.date }, ch)}>
                             {CHOICE_LABEL[ch]}
                           </button>
                         ))}
@@ -103,13 +118,25 @@ export function SwipeScreen() {
   );
 }
 
-function Deck({ card, remaining, onDecide }: { card: Card; remaining: number; onDecide: (c: Card, ch: SwipeChoice) => void }) {
+function FullScreenDeck({
+  card,
+  remaining,
+  error,
+  onDecide,
+  onList,
+}: {
+  card: Card;
+  remaining: number;
+  error: string | null;
+  onDecide: (c: Card, ch: SwipeChoice) => void;
+  onList: () => void;
+}) {
   const [d, setD] = useState({ x: 0, y: 0 });
   const start = useRef<{ x: number; y: number } | null>(null);
 
   const down = (e: PointerEvent) => {
     start.current = { x: e.clientX, y: e.clientY };
-    (e.target as Element).setPointerCapture?.(e.pointerId);
+    (e.currentTarget as Element).setPointerCapture?.(e.pointerId);
   };
   const move = (e: PointerEvent) => {
     if (start.current) setD({ x: e.clientX - start.current.x, y: Math.max(0, e.clientY - start.current.y) });
@@ -126,32 +153,61 @@ function Deck({ card, remaining, onDecide }: { card: Card; remaining: number; on
   };
 
   const hint = choiceFor(THRESHOLD / 2);
+  const name = displayName(card.rawName);
 
   return (
-    <section className="deste" aria-labelledby="kart-ad">
-      <p className="deste-sayac">{remaining} yemek kararını bekliyor. Sağa yerim, sola yemem, aşağı belki.</p>
+    <div className="tam-ekran" role="dialog" aria-modal="true" aria-labelledby="kart-ad">
+      <div className="tam-ust">
+        <a href="#bugun" className="ikon-dugme" aria-label="Kaydırmayı kapat">
+          <X size={24} aria-hidden="true" />
+        </a>
+        <span className="tam-sayac">{remaining} yemek bekliyor</span>
+        <button type="button" className="ikon-dugme" onClick={onList} aria-label="Kararlarım">
+          <ListChecks size={24} aria-hidden="true" />
+        </button>
+      </div>
+
+      <div className="kart-alan">
       <div
         className="kart fis"
+        data-hint={hint ?? undefined}
         style={{ transform: `translate(${d.x}px, ${d.y}px) rotate(${d.x / 30}deg)` }}
         onPointerDown={down}
         onPointerMove={move}
         onPointerUp={up}
         onPointerCancel={up}
       >
-        <span className="kart-gun">{formatDay(card.date)}</span>
-        <h1 id="kart-ad" className="kart-ad">
-          {displayName(card.rawName)}
-        </h1>
-        <p className="kart-puan">
-          {card.average === null ? "Henüz puanlanmadı" : `${formatScore(card.average)} ortalama, ${card.votes} kişi`}
-        </p>
-        {hint && (
-          <span className={`kart-damga kart-damga-${hint}`} aria-hidden="true">
-            {CHOICE_LABEL[hint]}
-          </span>
-        )}
+        <DishVisual name={card.rawName} imageUrl={card.imageUrl} imageCredit={card.imageCredit} />
+        <div className="kart-govde">
+          <span className="kart-gun">{formatDay(card.date)}</span>
+          <h1 id="kart-ad" className="kart-ad">
+            {name}
+          </h1>
+          <p className="kart-puan">
+            {card.average === null ? "Henüz puanlanmadı" : `${formatScore(card.average)} ortalama, ${card.votes} kişi`}
+          </p>
+        </div>
       </div>
-      <div className="deste-tuslar">
+
+        {/* Yönler ekranın kenarlarında sabit, hep görünür; sürüklenen yön belirginleşir. */}
+        <span className="yon yon-sol" data-on={hint === "no" || undefined} aria-hidden="true">
+          <ArrowLeft size={18} /> Yemem
+        </span>
+        <span className="yon yon-sag" data-on={hint === "yes" || undefined} aria-hidden="true">
+          Yerim <ArrowRight size={18} />
+        </span>
+        <span className="yon yon-alt" data-on={hint === "maybe" || undefined} aria-hidden="true">
+          <ArrowDown size={18} /> Belki
+        </span>
+      </div>
+
+      {error && (
+        <p className="hata" role="alert">
+          {error}
+        </p>
+      )}
+
+      <div className="deste-tuslar" aria-label={`${name} için karar`}>
         <button type="button" className="dugme dugme-ikincil" onClick={() => onDecide(card, "no")}>
           Yemem
         </button>
@@ -162,6 +218,6 @@ function Deck({ card, remaining, onDecide }: { card: Card; remaining: number; on
           Yerim
         </button>
       </div>
-    </section>
+    </div>
   );
 }

@@ -6,6 +6,8 @@ export type MenuItemView = {
   menuItemId: number;
   dishId: number;
   rawName: string; // menüde yazdığı gibi
+  imageUrl: string | null; // temsili görsel (yoksa ön yüz ikon gösterir)
+  imageCredit: string | null; // "Fotoğrafçı / Pexels"
   average: number | null; // yemeğin tüm günlerdeki ortalaması (tek havuz)
   votes: number;
   myChoice: SwipeChoice | null;
