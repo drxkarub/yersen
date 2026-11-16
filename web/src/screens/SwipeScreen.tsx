@@ -6,7 +6,8 @@ import { formatDay, formatScore } from "./Today.tsx";
 import "./Screens.css";
 
 type Card = MenuItemView & { date: string };
-const THRESHOLD = 90; // px: bu kadar sürüklenince karar verilir
+// Sağa: yerim, sola: yemem, aşağı: belki. Bu kadar px sürüklenince karar verilir.
+const THRESHOLD = 90;
 const CHOICE_LABEL: Record<SwipeChoice, string> = { yes: "Yerim", maybe: "Belki", no: "Yemem" };
 
 /** Önümüzdeki günlerin yemekleri: önce kararı verilmemiş deste, altında kararlarım. */
@@ -103,31 +104,35 @@ export function SwipeScreen() {
 }
 
 function Deck({ card, remaining, onDecide }: { card: Card; remaining: number; onDecide: (c: Card, ch: SwipeChoice) => void }) {
-  const [dx, setDx] = useState(0);
-  const start = useRef<number | null>(null);
+  const [d, setD] = useState({ x: 0, y: 0 });
+  const start = useRef<{ x: number; y: number } | null>(null);
 
   const down = (e: PointerEvent) => {
-    start.current = e.clientX;
+    start.current = { x: e.clientX, y: e.clientY };
     (e.target as Element).setPointerCapture?.(e.pointerId);
   };
   const move = (e: PointerEvent) => {
-    if (start.current !== null) setDx(e.clientX - start.current);
+    if (start.current) setD({ x: e.clientX - start.current.x, y: Math.max(0, e.clientY - start.current.y) });
+  };
+  const choiceFor = (limit: number): SwipeChoice | null => {
+    if (Math.abs(d.x) >= d.y) return d.x > limit ? "yes" : d.x < -limit ? "no" : null;
+    return d.y > limit ? "maybe" : null;
   };
   const up = () => {
-    if (dx > THRESHOLD) onDecide(card, "yes");
-    else if (dx < -THRESHOLD) onDecide(card, "no");
+    const choice = choiceFor(THRESHOLD);
+    if (choice) onDecide(card, choice);
     start.current = null;
-    setDx(0);
+    setD({ x: 0, y: 0 });
   };
 
-  const hint = dx > THRESHOLD / 2 ? "yes" : dx < -THRESHOLD / 2 ? "no" : null;
+  const hint = choiceFor(THRESHOLD / 2);
 
   return (
     <section className="deste" aria-labelledby="kart-ad">
-      <p className="deste-sayac">{remaining} yemek kararını bekliyor</p>
+      <p className="deste-sayac">{remaining} yemek kararını bekliyor. Sağa yerim, sola yemem, aşağı belki.</p>
       <div
         className="kart fis"
-        style={{ transform: `translateX(${dx}px) rotate(${dx / 30}deg)` }}
+        style={{ transform: `translate(${d.x}px, ${d.y}px) rotate(${d.x / 30}deg)` }}
         onPointerDown={down}
         onPointerMove={move}
         onPointerUp={up}

@@ -154,7 +154,7 @@ button:disabled {
   align-content: center;
   gap: 8px;
   padding: 28px 22px;
-  touch-action: pan-y;
+  touch-action: none; /* yatay ve aşağı sürükleme kartın; sayfa kartın dışından kayar */
   user-select: none;
   cursor: grab;
 }
@@ -193,6 +193,14 @@ button:disabled {
 .kart-damga-yes {
   left: 18px;
   color: var(--marka);
+}
+
+.kart-damga-maybe {
+  left: 50%;
+  top: auto;
+  bottom: 18px;
+  color: var(--ikincil);
+  transform: translateX(-50%) rotate(-4deg);
 }
 
 .kart-damga-no {

@@ -44,7 +44,7 @@ Her madde küçük ve tek başına test edilebilir. Bitince `[x]` ile işaretle.
 
 ### Arayüz
 - [ ] PWA manifest'i, ikonlar ve service worker. Android'de ve iOS'ta ana ekrana eklenebilmeli.
-- [x] Kaydırma ekranı (butonlar + yatay sürükleme; yukarı kaydırma yok, 'Belki' butonla): gelecek günlerin henüz işaretlenmemiş yemekleri kart olarak gelsin. Sağa kaydırma "yerim", sola "yemem", yukarı "belki". Butonla da seçilebilsin.
+- [x] Kaydırma ekranı: gelecek günlerin işaretlenmemiş yemekleri kart olarak gelir. Sağa yerim, sola yemem, aşağı belki; butonlarla da seçilebilir.
 - [x] Kararlarım listesi: kullanıcı verdiği kararları görüp değiştirebilsin.
 - [x] Bugün ekranını gerçek API'ye bağla; yükleniyor ve hata durumları.
 - [x] Ana ekranda "Bugün yedin mi, puanla" kartı. Puanlama penceresi açıkken ve kullanıcının "yerim" ya da "belki" dediği bir yemek varsa en üstte görünsün.
