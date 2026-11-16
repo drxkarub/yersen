@@ -188,3 +188,15 @@ describe("DELETE /api/me", () => {
     expect((await req("/api/me", { user: "u1", method: "DELETE", body: { confirmNickname: "u1" } })).status).toBe(409);
   });
 });
+
+describe("ban: davet ve yönetim", () => {
+  it("banlı kullanıcı davet kodlarını göremez (403)", async () => {
+    // u2 fixture'da banlı
+    expect((await req("/api/invites", { user: "u2" })).status).toBe(403);
+  });
+
+  it("banlı moderatör yönetim rotalarına giremez (403)", async () => {
+    await db.update(profile).set({ role: "moderator" }).where(eq(profile.id, "u2"));
+    expect((await req("/api/admin/overview", { user: "u2" })).status).toBe(403);
+  });
+});

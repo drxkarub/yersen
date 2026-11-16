@@ -73,6 +73,11 @@ export async function claimInvite(
         .where(eq(inviteCode.code, normalizeCode(input.code)))
         .for("update");
       if (!invite) return { ok: false, error: "invalid_code" };
+      // Banlı kullanıcının kodları geçersiz: ban, kukla hesap davet ederek aşılamasın.
+      if (invite.createdBy) {
+        const [inviter] = await tx.select({ bannedAt: profile.bannedAt }).from(profile).where(eq(profile.id, invite.createdBy));
+        if (inviter?.bannedAt) return { ok: false, error: "invalid_code" };
+      }
       if (invite.usedBy || invite.usedAt) return { ok: false, error: "used_code" }; // silinen hesabın kodu da harcanmış sayılır
 
       const [taken] = await tx

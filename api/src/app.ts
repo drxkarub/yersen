@@ -130,8 +130,9 @@ export function createApp({ db, auth, staticDir, imageDir, publicOrigin, now = (
     });
 
     const requireProfile: MiddlewareHandler<Env> = async (c, next) => {
-      const [p] = await db.select({ id: profile.id }).from(profile).where(eq(profile.id, c.get("userId")));
+      const [p] = await db.select({ bannedAt: profile.bannedAt }).from(profile).where(eq(profile.id, c.get("userId")));
       if (!p) return c.json({ error: "no_profile" }, 403);
+      if (p.bannedAt) return c.json({ error: "banned" }, 403);
       await next();
     };
 
@@ -171,8 +172,8 @@ export function createApp({ db, auth, staticDir, imageDir, publicOrigin, now = (
       // Başka siteden gelen istekler (CSRF) reddedilir; SameSite=Lax çereze ek kat.
       const origin = c.req.header("origin");
       if (origin && publicOrigin && origin !== publicOrigin) return c.json({ error: "forbidden" }, 403);
-      const [p] = await db.select({ role: profile.role }).from(profile).where(eq(profile.id, c.get("userId")));
-      if (p?.role !== "admin" && p?.role !== "moderator") return c.json({ error: "forbidden" }, 403);
+      const [p] = await db.select({ role: profile.role, bannedAt: profile.bannedAt }).from(profile).where(eq(profile.id, c.get("userId")));
+      if (p?.bannedAt || (p?.role !== "admin" && p?.role !== "moderator")) return c.json({ error: "forbidden" }, 403);
       c.set("role", p.role);
       await next();
     });

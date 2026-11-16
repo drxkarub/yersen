@@ -120,4 +120,12 @@ describe("myInvites", () => {
     await db.update(profile).set({ inviteQuota: 2 }).where(eq(profile.id, "u1"));
     expect((await myInvites(db, "u1")).codes).toHaveLength(2);
   });
+
+  it("banlı kullanıcının ürettiği kodla kayıt olunamaz (bandan kaçış)", async () => {
+    const [root] = await adminCreateCodes(db, 1);
+    await claimInvite(db, { userId: "u1", code: root!, nickname: "ali", now: NOW });
+    const [mine] = (await myInvites(db, "u1")).codes;
+    await db.update(profile).set({ bannedAt: NOW }).where(eq(profile.id, "u1"));
+    expect(await claimInvite(db, { userId: "kukla", code: mine!.code, nickname: "kukla", now: NOW })).toEqual({ ok: false, error: "invalid_code" });
+  });
 });
