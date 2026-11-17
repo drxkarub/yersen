@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type PointerEvent } from "react";
-import { ArrowDown, ArrowLeft, ArrowRight, ListChecks, X } from "lucide-react";
+import { ArrowDown, ArrowLeft, ArrowRight, Hand, ListChecks, X } from "lucide-react";
 import { CATEGORY_LABEL, type DayMenuView, type MenuItemView, type SwipeChoice } from "@yersen/shared";
 import { api, errorText } from "../api.ts";
 import { DishVisual } from "../DishVisual.tsx";
@@ -11,6 +11,24 @@ type Card = MenuItemView & { date: string };
 // Sağa: yerim, sola: yemem, aşağı: belki. Bu kadar px sürüklenince karar verilir.
 const THRESHOLD = 90;
 const CHOICE_LABEL: Record<SwipeChoice, string> = { yes: "Yerim", maybe: "Belki", no: "Yemem" };
+
+// Kaydırma gösterimi (Reels'teki gibi): kişi bir kez kendisi kaydırana kadar ilk kartta oynar.
+// Sadece bu tarayıcıda hatırlanır; okunamazsa gösterim yine oynar, zararı yok.
+const LEARNED_KEY = "yersen.kaydirmaOgrenildi";
+function swipeLearned(): boolean {
+  try {
+    return localStorage.getItem(LEARNED_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
+function markSwipeLearned() {
+  try {
+    localStorage.setItem(LEARNED_KEY, "1");
+  } catch {
+    // gizli pencere vb.: bir dahaki sefer yine gösterilir
+  }
+}
 
 /**
  * Kaydır sekmesi. Karar bekleyen yemek varsa tam ekran deste (reels gibi), yoksa ya da
@@ -141,9 +159,11 @@ function FullScreenDeck({
   onList: () => void;
 }) {
   const [d, setD] = useState({ x: 0, y: 0 });
+  const [demo, setDemo] = useState(() => !swipeLearned());
   const start = useRef<{ x: number; y: number } | null>(null);
 
   const down = (e: PointerEvent) => {
+    setDemo(false); // dokununca gösterim durur, kart kişinin elinde
     start.current = { x: e.clientX, y: e.clientY };
     (e.currentTarget as Element).setPointerCapture?.(e.pointerId);
   };
@@ -156,7 +176,10 @@ function FullScreenDeck({
   };
   const up = () => {
     const choice = choiceFor(THRESHOLD);
-    if (choice) onDecide(card, choice);
+    if (choice) {
+      markSwipeLearned();
+      onDecide(card, choice);
+    }
     start.current = null;
     setD({ x: 0, y: 0 });
   };
@@ -165,7 +188,7 @@ function FullScreenDeck({
   const name = displayName(card.rawName);
 
   return (
-    <div className="tam-ekran" role="dialog" aria-modal="true" aria-labelledby="kart-ad">
+    <div className="tam-ekran" role="dialog" aria-modal="true" aria-labelledby="kart-ad" data-demo={demo || undefined}>
       <div className="tam-ust">
         <a href="#bugun" className="ikon-dugme" aria-label="Kaydırmayı kapat">
           <X size={24} aria-hidden="true" />
@@ -210,6 +233,13 @@ function FullScreenDeck({
         <span className="yon yon-alt" data-on={hint === "maybe" || undefined} aria-hidden="true">
           <ArrowDown size={18} /> Belki
         </span>
+
+        {demo && (
+          <div className="demo-el" aria-hidden="true">
+            <Hand size={44} strokeWidth={1.75} />
+            <span>Kartı kaydır</span>
+          </div>
+        )}
       </div>
 
       {error && (

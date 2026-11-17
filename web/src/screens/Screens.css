@@ -616,3 +616,88 @@ button:disabled {
 .dugme.dugme-tehlike:active {
   background: #9d2c22;
 }
+
+/* --- Kaydırma gösterimi (ilk açılış): kart sağa, sola, aşağı itilir; o anki yön yanar --- */
+
+.tam-ekran[data-demo] .kart {
+  animation: demo-kart 5.4s var(--ease-out) 600ms infinite;
+}
+
+.tam-ekran[data-demo] .yon-sag { animation: demo-yon-sag 5.4s linear 600ms infinite; }
+.tam-ekran[data-demo] .yon-sol { animation: demo-yon-sol 5.4s linear 600ms infinite; }
+.tam-ekran[data-demo] .yon-alt { animation: demo-yon-alt 5.4s linear 600ms infinite; }
+
+.demo-el {
+  position: absolute;
+  left: 50%;
+  top: 38%;
+  z-index: 2;
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  margin-left: -60px;
+  width: 120px;
+  pointer-events: none;
+  color: var(--marka);
+  animation: demo-el 5.4s var(--ease-out) 600ms infinite;
+}
+
+.demo-el svg {
+  padding: 10px;
+  border-radius: 50%;
+  background: rgb(255 255 255 / 0.92);
+}
+
+.demo-el span {
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--marka);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+@keyframes demo-kart {
+  0%, 8% { transform: none; }
+  20%, 26% { transform: translateX(72px) rotate(2.4deg); }
+  34%, 40% { transform: none; }
+  52%, 58% { transform: translateX(-72px) rotate(-2.4deg); }
+  66%, 72% { transform: none; }
+  84%, 90% { transform: translateY(64px); }
+  100% { transform: none; }
+}
+
+@keyframes demo-el {
+  0%, 8% { transform: none; }
+  20%, 26% { transform: translateX(72px); }
+  34%, 40% { transform: none; }
+  52%, 58% { transform: translateX(-72px); }
+  66%, 72% { transform: none; }
+  84%, 90% { transform: translateY(64px); }
+  100% { transform: none; }
+}
+
+@keyframes demo-yon-sag {
+  0%, 14%, 30%, 100% { background: rgb(255 255 255 / 0.92); color: var(--ikincil); }
+  17%, 27% { background: var(--marka); color: #fff; }
+}
+
+@keyframes demo-yon-sol {
+  0%, 46%, 62%, 100% { background: rgb(255 255 255 / 0.92); color: var(--ikincil); }
+  49%, 59% { background: var(--iptal); color: #fff; }
+}
+
+@keyframes demo-yon-alt {
+  0%, 78%, 94%, 100% { background: rgb(255 255 255 / 0.92); color: var(--ikincil); }
+  81%, 91% { background: var(--marka-koyu); color: #fff; }
+}
+
+/* Hareket azaltılmışsa: kart oynamaz, yalnızca el ve "Kartı kaydır" durur; yön etiketleri zaten görünür. */
+@media (prefers-reduced-motion: reduce) {
+  .tam-ekran[data-demo] .kart,
+  .tam-ekran[data-demo] .yon,
+  .demo-el {
+    animation: none;
+  }
+}
