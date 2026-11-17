@@ -41,6 +41,8 @@ export function SwipeScreen() {
   const [error, setError] = useState<string | null>(null);
   const [view, setView] = useState<"deste" | "liste">("deste");
   const [more, setMore] = useState(false); // "Sonraki günlere devam et" basıldı mı
+  // "Baştan kaydır": bu turda yeniden karar verilen kartlar. null: normal deste (sadece kararsızlar).
+  const [redo, setRedo] = useState<Set<number> | null>(null);
 
   useEffect(() => {
     api.upcoming().then((r) => setDays(r.days), () => setDays("error"));
@@ -66,11 +68,12 @@ export function SwipeScreen() {
   const deckDays = more ? pending : pending.filter(isNear);
   const toCards = (ds: DayMenuView[]): Card[] => ds.flatMap((d) => d.items.filter((i) => i.inDeck).map((i) => ({ ...i, date: d.date })));
   const cards = toCards(deckDays);
-  const deck = cards.filter((c) => c.myChoice === null);
+  const deck = redo ? cards.filter((c) => !redo.has(c.menuItemId)) : cards.filter((c) => c.myChoice === null);
   const laterWaiting = more ? 0 : toCards(pending.filter((d) => !isNear(d))).filter((c) => c.myChoice === null).length;
 
   const decide = async (card: Card, choice: SwipeChoice) => {
     setError(null);
+    if (redo) setRedo(new Set(redo).add(card.menuItemId));
     const prev = days;
     setDays(days.map((d) => ({ ...d, items: d.items.map((i) => (i.menuItemId === card.menuItemId ? { ...i, myChoice: choice } : i)) })));
     try {
@@ -109,12 +112,26 @@ export function SwipeScreen() {
         </section>
       )}
 
+      {deck.length === 0 && cards.length > 0 && (
+        <button
+          type="button"
+          className="dugme dugme-ikincil"
+          onClick={() => {
+            setRedo(new Set());
+            setView("deste");
+          }}
+        >
+          Baştan kaydır ({cards.length} yemek)
+        </button>
+      )}
+
       {deck.length === 0 && laterWaiting > 0 && (
         <button
           type="button"
           className="dugme"
           onClick={() => {
             setMore(true);
+            setRedo(null);
             setView("deste");
           }}
         >
@@ -237,6 +254,11 @@ function FullScreenDeck({
           <h1 id="kart-ad" className="kart-ad">
             {name}
           </h1>
+          {card.myChoice && (
+            <p className="kart-karar">
+              Şu anki kararın: <b>{CHOICE_LABEL[card.myChoice]}</b>
+            </p>
+          )}
           <p className="kart-puan">
             {card.average === null ? "Henüz puanlanmadı" : `${formatScore(card.average)} ortalama, ${card.votes} kişi`}
           </p>

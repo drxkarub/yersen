@@ -701,3 +701,10 @@ button:disabled {
     animation: none;
   }
 }
+
+/* Baştan kaydırırken: kartın mevcut kararı. */
+.kart-karar {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--marka-koyu);
+}
