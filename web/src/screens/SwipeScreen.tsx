@@ -11,6 +11,7 @@ type Card = MenuItemView & { date: string };
 // Sağa: yerim, sola: yemem, aşağı: belki. Bu kadar px sürüklenince karar verilir.
 const THRESHOLD = 90;
 const CHOICE_LABEL: Record<SwipeChoice, string> = { yes: "Yerim", maybe: "Belki", no: "Yemem" };
+const NEAR_DAYS = 3; // destenin ilk bölümü: sıradaki kaç yemekhane günü
 
 // Kaydırma gösterimi (Reels'teki gibi): kişi bir kez kendisi kaydırana kadar ilk kartta oynar.
 // Sadece bu tarayıcıda hatırlanır; okunamazsa gösterim yine oynar, zararı yok.
@@ -33,11 +34,13 @@ function markSwipeLearned() {
 /**
  * Kaydır sekmesi. Karar bekleyen yemek varsa tam ekran deste (reels gibi), yoksa ya da
  * "Kararlarım"a geçilince liste. Puanlaması açık gün (bugün) Bugün ekranındadır, destede yer almaz.
+ * Deste önce yakın günleri verir; bitince ayın kalanına devam edilebilir.
  */
 export function SwipeScreen() {
   const [days, setDays] = useState<DayMenuView[] | "error" | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [view, setView] = useState<"deste" | "liste">("deste");
+  const [more, setMore] = useState(false); // "Sonraki günlere devam et" basıldı mı
 
   useEffect(() => {
     api.upcoming().then((r) => setDays(r.days), () => setDays("error"));
@@ -54,13 +57,17 @@ export function SwipeScreen() {
       </main>
     );
 
-  // Deste: bugün (puanlama açılmadıysa) ve sıradaki yemekhane günü; sadece ana yemek ve tatlı.
-  // İleriki günler Bugün ekranında ileri okla görülür.
+  // Deste: puanlaması açılmamış günler, sadece ana yemek ve tatlı. Önce yakın günler
+  // (bugün 11:30'a kadar + sıradaki NEAR_DAYS yemekhane günü); bitince istenirse ayın kalanı.
   const today = istanbulToday(new Date());
-  const firstAfter = days.find((d) => d.date > today)?.date;
-  const deckDays = days.filter((d) => !d.ratingOpen && (d.date === today || d.date === firstAfter));
-  const cards: Card[] = deckDays.flatMap((d) => d.items.filter((i) => i.inDeck).map((i) => ({ ...i, date: d.date })));
+  const pending = days.filter((d) => !d.ratingOpen);
+  const nearDates = new Set(pending.filter((d) => d.date > today).slice(0, NEAR_DAYS).map((d) => d.date));
+  const isNear = (d: DayMenuView) => d.date === today || nearDates.has(d.date);
+  const deckDays = more ? pending : pending.filter(isNear);
+  const toCards = (ds: DayMenuView[]): Card[] => ds.flatMap((d) => d.items.filter((i) => i.inDeck).map((i) => ({ ...i, date: d.date })));
+  const cards = toCards(deckDays);
   const deck = cards.filter((c) => c.myChoice === null);
+  const laterWaiting = more ? 0 : toCards(pending.filter((d) => !isNear(d))).filter((c) => c.myChoice === null).length;
 
   const decide = async (card: Card, choice: SwipeChoice) => {
     setError(null);
@@ -97,9 +104,22 @@ export function SwipeScreen() {
           <span className="durum-muhru" aria-hidden="true">
             Tamam
           </span>
-          <h1>Hepsini kaydırdın</h1>
-          <p>{cards.length === 0 ? "Önümüzdeki günlerin menüsü henüz yok." : "Fikrin değişirse aşağıdan düzeltebilirsin."}</p>
+          <h1>{laterWaiting > 0 ? "Yakın günler bitti" : "Hepsini kaydırdın"}</h1>
+          <p>{cards.length === 0 && laterWaiting === 0 ? "Önümüzdeki günlerin menüsü henüz yok." : "Fikrin değişirse aşağıdan düzeltebilirsin."}</p>
         </section>
+      )}
+
+      {deck.length === 0 && laterWaiting > 0 && (
+        <button
+          type="button"
+          className="dugme"
+          onClick={() => {
+            setMore(true);
+            setView("deste");
+          }}
+        >
+          Sonraki günlere devam et ({laterWaiting} yemek)
+        </button>
       )}
 
       {error && (
