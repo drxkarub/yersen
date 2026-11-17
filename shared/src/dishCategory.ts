@@ -21,3 +21,14 @@ export function dishCategory(rawName: string, position: number): DishCategory {
   for (const [category, re] of RULES) if (re.test(name)) return category;
   return position <= 0 ? "corba" : position === 1 ? "ana" : position === 2 ? "pilav" : "yan";
 }
+
+// Kaydırma destesi: sadece karar verilmeye değer kalemler. Çorba, pilav, salata, ayran neredeyse her gün aynı tip.
+const DESSERT = /tatlı|baklava|revani|tulumba|sütlaç|kazandibi|puding|helva|kek\b|kadayıf|irmik|profiterol|muhallebi|keşkül|aşure|güllaç/;
+const SIDE_ONLY = /^(patates kızartması|patates püresi|püre)$/; // ana yemeğin yanı, kendi başına kart olmaz
+
+export function inDeck(rawName: string, position: number): boolean {
+  const name = rawName.trim().toLocaleLowerCase("tr-TR");
+  const category = dishCategory(rawName, position);
+  if (category === "ana") return !SIDE_ONLY.test(name);
+  return category === "yan" && DESSERT.test(name);
+}

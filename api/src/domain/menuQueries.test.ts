@@ -3,7 +3,7 @@ import { eq } from "drizzle-orm";
 import { createTestDb, type Db } from "../db/client.ts";
 import { menuItem, profile } from "../db/schema.ts";
 import { NOW, setupWorld } from "../test/fixtures.ts";
-import { getDayMenu, getUpcoming } from "./menuQueries.ts";
+import { getDayMenu, getDayNav, getUpcoming } from "./menuQueries.ts";
 import { rateDish } from "./rating.ts";
 import { setSwipe } from "./swipe.ts";
 
@@ -28,6 +28,7 @@ describe("getDayMenu", () => {
     expect(day).toMatchObject({ date: "2026-11-16", kcal: 916, ratingOpen: true });
     expect(day!.items.map((i) => i.rawName)).toEqual(["DÜĞÜN ÇORBA", "ETLİ NOHUT"]);
     expect(day!.items.map((i) => i.category)).toEqual(["corba", "ana"]);
+    expect(day!.items.map((i) => i.inDeck)).toEqual([false, true]);
     expect(day!.items[0]).toMatchObject({ average: null, votes: 0, myChoice: null, myScore: null });
   });
 
@@ -67,5 +68,23 @@ describe("getUpcoming", () => {
     const days = await getUpcoming(db, { userId: "u1", now: NOW });
     expect(days.map((d) => d.date)).toEqual(["2026-11-16", "2026-11-17"]);
     expect(days[1]!.items.find((i) => i.rawName === "TAVUK SOTE")?.myChoice).toBe("no");
+  });
+});
+
+describe("getDayNav", () => {
+  it("günün menüsünü ve menülü komşu günleri döner", async () => {
+    const nav = await getDayNav(db, { date: "2026-11-16", userId: "u1", now: NOW });
+    expect(nav).toMatchObject({ date: "2026-11-16", today: "2026-11-16", prevDate: "2026-11-15", nextDate: "2026-11-17" });
+    expect(nav.day?.items).toHaveLength(2);
+  });
+
+  it("ilk günde geri, son günde ileri yok", async () => {
+    expect(await getDayNav(db, { date: "2026-11-15", userId: "u1", now: NOW })).toMatchObject({ prevDate: null, nextDate: "2026-11-16" });
+    expect(await getDayNav(db, { date: "2026-11-17", userId: "u1", now: NOW })).toMatchObject({ prevDate: "2026-11-16", nextDate: null });
+  });
+
+  it("menüsüz günde (hafta sonu) day null; komşular menülü günlerden, aradaki boş günler atlanır", async () => {
+    const nav = await getDayNav(db, { date: "2026-11-21", userId: "u1", now: NOW });
+    expect(nav).toMatchObject({ day: null, prevDate: "2026-11-17", nextDate: null });
   });
 });

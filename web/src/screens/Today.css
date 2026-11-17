@@ -382,3 +382,86 @@
   background: var(--marka);
   color: #fff;
 }
+
+/* --- Gün gezgini: geri / ileri, bugünün olduğu tarafta "Bugün" --- */
+
+.gezgin {
+  display: flex;
+  gap: 8px;
+}
+
+.gezgin button {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  border: 1px solid var(--koparma);
+  border-radius: var(--kose);
+  background: var(--fis);
+  color: var(--marka);
+  font: inherit;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.gezgin-ok {
+  flex: 1;
+  justify-content: flex-start;
+  padding: 0 12px 0 6px;
+}
+
+.gezgin-ok-ileri {
+  justify-content: flex-end;
+  padding: 0 6px 0 12px;
+}
+
+.gezgin-ok:disabled {
+  color: var(--soluk);
+  border-style: dashed;
+  cursor: default;
+}
+
+/* "Bugün": dönüş kısayolu, altın. */
+.gezgin .gezgin-bugun {
+  padding: 0 14px;
+  border-color: var(--vurgu);
+  background: var(--vurgu);
+  color: var(--marka-koyu);
+}
+
+.gezgin button:not(:disabled):active {
+  background: var(--marka);
+  color: #fff;
+}
+
+/* --- Dokunulabilir satır (puanlama açık) --- */
+
+.yemek-satir-dokun {
+  width: 100%;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.puanla-ipucu {
+  grid-area: muhur;
+  justify-self: start;
+  padding: 1px 8px;
+  border: 1px dashed var(--vurgu);
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--marka-koyu); /* altın yalnızca çerçevede: küçük puntoda altın metin AA tutmaz */
+}
+
+/* Kaydırmadaki karar (ileriki gün): yazılı küçük mühür. */
+.benim-muhur-metin {
+  font-size: 12px;
+  font-weight: 700;
+}

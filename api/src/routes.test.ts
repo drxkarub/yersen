@@ -175,6 +175,25 @@ describe("GET /api/menu/today ve /api/menu/upcoming", () => {
   });
 });
 
+describe("GET /api/menu/day", () => {
+  it("tarih verilmezse bugün; komşu günlerle", async () => {
+    const body = await (await req("/api/menu/day", { user: "u1" })).json();
+    expect(body).toMatchObject({ date: "2026-11-16", today: "2026-11-16", prevDate: "2026-11-15", nextDate: "2026-11-17" });
+    expect(body.day.date).toBe("2026-11-16");
+  });
+
+  it("geçmiş bir gün", async () => {
+    const body = await (await req("/api/menu/day?date=2026-11-15", { user: "u1" })).json();
+    expect(body).toMatchObject({ date: "2026-11-15", today: "2026-11-16", prevDate: null });
+  });
+
+  it("bozuk tarih 400, profil yoksa 403", async () => {
+    expect((await req("/api/menu/day?date=2026-13-45", { user: "u1" })).status).toBe(400);
+    expect((await req("/api/menu/day?date=dun", { user: "u1" })).status).toBe(400);
+    expect((await req("/api/menu/day", { user: "profilsiz" })).status).toBe(403);
+  });
+});
+
 describe("DELETE /api/me", () => {
   it("takma ad onayıyla hesabı siler (204), sonra profil yok", async () => {
     const res = await req("/api/me", { user: "u1", method: "DELETE", body: { confirmNickname: "u1" } });

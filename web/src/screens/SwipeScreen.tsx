@@ -36,9 +36,13 @@ export function SwipeScreen() {
       </main>
     );
 
-  const cards: Card[] = days.flatMap((d) => d.items.map((i) => ({ ...i, date: d.date })));
-  const openDays = new Set(days.filter((d) => d.ratingOpen).map((d) => d.date));
-  const deck = cards.filter((c) => c.myChoice === null && !openDays.has(c.date));
+  // Deste: bugün (puanlama açılmadıysa) ve sıradaki yemekhane günü; sadece ana yemek ve tatlı.
+  // İleriki günler Bugün ekranında ileri okla görülür.
+  const today = istanbulToday(new Date());
+  const firstAfter = days.find((d) => d.date > today)?.date;
+  const deckDays = days.filter((d) => !d.ratingOpen && (d.date === today || d.date === firstAfter));
+  const cards: Card[] = deckDays.flatMap((d) => d.items.filter((i) => i.inDeck).map((i) => ({ ...i, date: d.date })));
+  const deck = cards.filter((c) => c.myChoice === null);
 
   const decide = async (card: Card, choice: SwipeChoice) => {
     setError(null);
@@ -89,8 +93,8 @@ export function SwipeScreen() {
       {cards.some((c) => c.myChoice !== null) && (
         <section className="ek" aria-labelledby="kararlar-baslik">
           <h2 id="kararlar-baslik">Kararlarım</h2>
-          {days.map((d) => {
-            const decided = d.items.filter((i) => i.myChoice !== null);
+          {deckDays.map((d) => {
+            const decided = d.items.filter((i) => i.myChoice !== null && i.inDeck);
             if (decided.length === 0) return null;
             return (
               <div key={d.date} className="karar-gun">
@@ -116,6 +120,11 @@ export function SwipeScreen() {
       )}
     </main>
   );
+}
+
+/** İstanbul'da bugünün tarihi (YYYY-MM-DD). */
+function istanbulToday(now: Date): string {
+  return new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Istanbul" }).format(now);
 }
 
 function FullScreenDeck({

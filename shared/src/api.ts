@@ -7,6 +7,7 @@ export type MenuItemView = {
   dishId: number;
   rawName: string; // menüde yazdığı gibi
   category: "corba" | "ana" | "pilav" | "yan"; // bkz. dishCategory
+  inDeck: boolean; // kaydırma destesine girer mi (ana yemek, tatlı); bkz. inDeck
   imageUrl: string | null; // temsili görsel (yoksa ön yüz ikon gösterir)
   imageCredit: string | null; // "Yazar, lisans"
   imageSourceUrl: string | null; // atıf bağlantısı
@@ -31,6 +32,8 @@ export type MeResponse = {
 };
 
 export type TodayResponse = { today: DayMenuView | null; next: DayMenuView | null };
+/** Bir gün ve menülü komşu günleri (geri/ileri gezinme için). */
+export type DayNavResponse = { date: string; today: string; day: DayMenuView | null; prevDate: string | null; nextDate: string | null };
 export type UpcomingResponse = { days: DayMenuView[] };
 export type InvitesResponse = { codes: { code: string; usedBy: string | null }[] };
 export type ApiError = { error: string };

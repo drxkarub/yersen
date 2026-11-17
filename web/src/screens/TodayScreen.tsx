@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { TodayResponse } from "@yersen/shared";
+import type { DayNavResponse } from "@yersen/shared";
 import { api, errorText } from "../api.ts";
 import { Today, type TodayActions } from "./Today.tsx";
 
@@ -24,10 +24,19 @@ const actions: TodayActions = {
 };
 
 export function TodayScreen() {
-  const [data, setData] = useState<TodayResponse | "error" | null>(null);
+  const [data, setData] = useState<DayNavResponse | "error" | null>(null);
+  const [date, setDate] = useState<string | undefined>(undefined); // undefined: bugün
   useEffect(() => {
-    api.today().then(setData, () => setData("error"));
-  }, []);
+    let current = true;
+    // Önceki gün yeni gün gelene kadar ekranda kalır (boş ekran yanıp sönmesin).
+    api.day(date).then(
+      (r) => current && setData(r),
+      () => current && setData("error"),
+    );
+    return () => {
+      current = false;
+    };
+  }, [date]);
 
   if (data === null) return <main className="bugun" aria-busy="true" />;
   if (data === "error")
@@ -39,5 +48,6 @@ export function TodayScreen() {
         </section>
       </main>
     );
-  return <Today day={data.today} next={data.next} now={new Date()} actions={actions} />;
+  // key: gün değişince fişin iç durumu (açık satır, basılan mühürler) sıfırlanır.
+  return <Today key={data.date} nav={data} now={new Date()} actions={actions} onGo={setDate} />;
 }

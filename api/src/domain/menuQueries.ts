@@ -1,10 +1,10 @@
-import { and, asc, avg, count, eq, gte, inArray, sql, type SQL } from "drizzle-orm";
+import { and, asc, avg, count, desc, eq, gt, gte, inArray, lt, sql, type SQL } from "drizzle-orm";
 import type { DbOrTx } from "../db/client.ts";
 import { dish, menu, menuItem, rating, swipe, venue } from "../db/schema.ts";
 import { istanbulDate, isRatingOpen, ratingWindow } from "./time.ts";
 
 export type { DayMenuView, MenuItemView } from "@yersen/shared";
-import { dishCategory, type DayMenuView } from "@yersen/shared";
+import { dishCategory, inDeck, type DayMenuView, type DayNavResponse } from "@yersen/shared";
 
 const DEFAULT_VENUE = "trakya-merkez";
 
@@ -71,6 +71,7 @@ async function loadDays(db: DbOrTx, where: SQL, userId: string, now: Date): Prom
           dishId: r.dishId,
           rawName: r.rawName,
           category: dishCategory(r.rawName, r.position),
+          inDeck: inDeck(r.rawName, r.position),
           imageUrl: r.imageUrl,
           imageCredit: r.imageCredit,
           imageSourceUrl: r.imageSourceUrl,
@@ -95,4 +96,27 @@ export async function getDayMenu(
 /** Bugün (İstanbul) ve sonrasındaki menülü günler. */
 export function getUpcoming(db: DbOrTx, input: { userId: string; now: Date }): Promise<DayMenuView[]> {
   return loadDays(db, sql`${menu.date} >= ${istanbulDate(input.now)}`, input.userId, input.now);
+}
+
+/** Bir gün ve ondan önceki/sonraki menülü gün (menüsüz günler atlanır). */
+export async function getDayNav(
+  db: DbOrTx,
+  input: { date: string; userId: string; now: Date },
+): Promise<DayNavResponse> {
+  const neighbour = async (where: SQL, order: SQL) => {
+    const [row] = await db
+      .select({ date: menu.date })
+      .from(menu)
+      .innerJoin(venue, eq(venue.id, menu.venueId))
+      .where(and(where, eq(venue.slug, DEFAULT_VENUE), eq(menu.mealSlot, "daily"), eq(menu.status, "published")))
+      .orderBy(order)
+      .limit(1);
+    return row?.date ?? null;
+  };
+  const [day, prevDate, nextDate] = await Promise.all([
+    getDayMenu(db, input),
+    neighbour(lt(menu.date, input.date), desc(menu.date)),
+    neighbour(gt(menu.date, input.date), asc(menu.date)),
+  ]);
+  return { date: input.date, today: istanbulDate(input.now), day, prevDate, nextDate };
 }

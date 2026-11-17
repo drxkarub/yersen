@@ -1,4 +1,5 @@
 import type {
+  DayNavResponse,
   InvitesResponse,
   MeResponse,
   SwipeChoice,
@@ -36,6 +37,7 @@ export const api = {
   onboarding: (code: string, nickname: string) => call<void>("/onboarding", { body: { code, nickname } }),
   invites: () => call<InvitesResponse>("/invites"),
   today: () => call<TodayResponse>("/menu/today"),
+  day: (date?: string) => call<DayNavResponse>(date ? `/menu/day?date=${date}` : "/menu/day"),
   upcoming: () => call<UpcomingResponse>("/menu/upcoming"),
   swipe: (menuItemId: number, choice: SwipeChoice) => call<void>("/swipes", { body: { menuItemId, choice } }),
   rate: (menuItemId: number, score: number) => call<{ ratingId: number }>("/ratings", { body: { menuItemId, score } }),

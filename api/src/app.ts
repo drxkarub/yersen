@@ -19,7 +19,7 @@ import {
 } from "./domain/admin.ts";
 import { deleteAccount } from "./domain/account.ts";
 import { claimInvite, myInvites } from "./domain/invites.ts";
-import { getDayMenu, getUpcoming } from "./domain/menuQueries.ts";
+import { getDayMenu, getDayNav, getUpcoming } from "./domain/menuQueries.ts";
 import { istanbulDate } from "./domain/time.ts";
 import { rateDish } from "./domain/rating.ts";
 import { setSwipe } from "./domain/swipe.ts";
@@ -146,6 +146,13 @@ export function createApp({ db, auth, staticDir, imageDir, publicOrigin, now = (
       return c.json({ today, next });
     });
 
+    api.get("/menu/day", requireUser, requireProfile, async (c) => {
+      const t = now();
+      const date = c.req.query("date") ?? istanbulDate(t);
+      if (!isCalendarDate(date)) return c.json({ error: "bad_request" }, 400);
+      return c.json(await getDayNav(db, { date, userId: c.get("userId"), now: t }));
+    });
+
     api.get("/menu/upcoming", requireUser, requireProfile, async (c) => {
       const t = now();
       return c.json({ days: await getUpcoming(db, { userId: c.get("userId"), now: t }) });
@@ -262,4 +269,11 @@ function cacheControl(value: string): MiddlewareHandler {
     await next();
     if (c.res.status === 200) c.res.headers.set("Cache-Control", value);
   };
+}
+
+/** YYYY-MM-DD ve gerçekten var olan bir gün mü (2026-13-45 değil). */
+function isCalendarDate(s: string): boolean {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(s)) return false;
+  const d = new Date(`${s}T00:00:00Z`);
+  return !Number.isNaN(d.getTime()) && d.toISOString().slice(0, 10) === s;
 }

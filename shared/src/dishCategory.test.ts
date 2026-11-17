@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { CATEGORY_LABEL, dishCategory } from "./dishCategory.ts";
+import { CATEGORY_LABEL, dishCategory, inDeck } from "./dishCategory.ts";
 
 describe("dishCategory (gerçek Kasım 2026 menülerinden)", () => {
   it.each([
@@ -38,5 +38,26 @@ describe("dishCategory (gerçek Kasım 2026 menülerinden)", () => {
 
   it("etiketler", () => {
     expect(CATEGORY_LABEL).toEqual({ corba: "Çorba", ana: "Ana yemek", pilav: "Pilav/makarna", yan: "Tatlı/salata/içecek" });
+  });
+});
+
+describe("inDeck (kaydırma destesine sadece ana yemek ve tatlı girer)", () => {
+  it.each([
+    ["ETLİ NOHUT", 1, true],
+    ["HAMBURGER KÖFTE", 1, true],
+    ["TAVUK DÖNER PATATES KIZARTMASI", 1, true],
+    ["TULUMBA TATLISI", 3, true],
+    ["SÜTLAÇ", 3, true],
+    ["KAZANDİBİ", 3, true],
+    ["DÜĞÜN ÇORBA", 0, false],
+    ["BULGUR PİLAVI", 2, false],
+    ["SPAGETTİ NAPOLİTEN", 3, false],
+    ["PATATES KIZARTMASI", 2, false], // ana yemeğin yanı, ayrı kart olmaz
+    ["MEVSİM SALATA", 3, false],
+    ["AYRAN", 4, false],
+    ["YOĞURT", 3, false],
+    ["MEYVE", 3, false],
+  ])("%s (sıra %i) → %s", (name, position, expected) => {
+    expect(inDeck(name, position)).toBe(expected);
   });
 });
