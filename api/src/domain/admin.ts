@@ -6,7 +6,6 @@ import { alias } from "drizzle-orm/pg-core";
 import { dishKey } from "@yersen/shared";
 import type { Db, DbOrTx } from "../db/client.ts";
 import { adminAction, dish, profile, scrapeRun } from "../db/schema.ts";
-import { adminCreateCodes } from "./invites.ts";
 
 // Yetki kuralları (CLAUDE.md "Yönetim ve roller"):
 // - Moderatör atama/alma ve davet kodu üretme: yalnızca admin.
@@ -61,17 +60,6 @@ export async function setModerator(
     }
     return { ok: true } as const;
   });
-}
-
-export async function adminCreateInvites(
-  db: Db,
-  input: { actorId: string; count: number },
-): Promise<{ ok: true; codes: string[] } | Forbidden | { ok: false; error: "bad_count" }> {
-  if ((await roleOf(db, input.actorId)) !== "admin") return { ok: false, error: "forbidden" };
-  if (!Number.isInteger(input.count) || input.count < 1 || input.count > 20) return { ok: false, error: "bad_count" };
-  const codes = await adminCreateCodes(db, input.count);
-  await log(db, { actorId: input.actorId, action: "create_invites", targetType: "invite", detail: { count: input.count } });
-  return { ok: true, codes };
 }
 
 export async function listDishes(db: Db, input: { q?: string }) {

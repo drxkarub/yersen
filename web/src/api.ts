@@ -57,7 +57,6 @@ export const api = {
         "/admin/users",
       ),
     setModerator: (id: string, moderator: boolean) => call<void>(`/admin/users/${encodeURIComponent(id)}/moderator`, { body: { moderator } }),
-    invites: (count: number) => call<{ codes: string[] }>("/admin/invites", { body: { count } }),
     dishes: (q: string) =>
       call<{ dishes: { id: number; displayName: string; imageUrl: string | null; imageCredit: string | null; imageSourceUrl: string | null; imageLocked: boolean }[] }>(
         `/admin/dishes?q=${encodeURIComponent(q)}`,

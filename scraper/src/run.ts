@@ -29,7 +29,7 @@ export async function runScrape(deps: {
       const last = parsed.days.at(-1)!.date;
       result = {
         exitCode: 0,
-        message: `${stored.menus} gün kaydedildi (${first} – ${last}), ${stored.items} kalem, ${stored.newDishes} yeni yemek.`,
+        message: `${stored.menus} gün kaydedildi (${first} – ${last}), ${stored.items} kalem${stored.newDishes > 0 ? `, ${stored.newDishes} yeni yemek` : ""}.`,
       };
     }
   } catch (err) {

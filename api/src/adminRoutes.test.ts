@@ -52,20 +52,17 @@ describe("/api/admin yetkileri", () => {
     expect(o.role).toBe("moderator");
     expect((await call("/api/admin/dishes?q=erişte", "mod")).status).toBe(200);
     expect((await call("/api/admin/users", "mod")).status).toBe(403);
-    expect((await call("/api/admin/invites", "mod", { json: { count: 1 } })).status).toBe(403);
+    expect((await call("/api/admin/users/u1/moderator", "mod", { json: { moderator: true } })).status).toBe(403);
   });
 
-  it("yönetici kullanıcıları görür, moderatör atar, kod üretir", async () => {
+  it("yönetici kullanıcıları görür, moderatör atar", async () => {
     const users = await (await call("/api/admin/users", "adm")).json();
     expect(users.users).toHaveLength(3);
     expect((await call("/api/admin/users/u1/moderator", "adm", { json: { moderator: true } })).status).toBe(204);
-    const r = await call("/api/admin/invites", "adm", { json: { count: 2 } });
-    expect(r.status).toBe(201);
-    expect((await r.json()).codes).toHaveLength(2);
   });
 
   it("başka siteden gelen istek (Origin uyuşmaz) 403", async () => {
-    const r = await call("/api/admin/invites", "adm", { json: { count: 1 }, origin: "https://kotu.example" });
+    const r = await call("/api/admin/users/u1/moderator", "adm", { json: { moderator: true }, origin: "https://kotu.example" });
     expect(r.status).toBe(403);
   });
 });

@@ -131,11 +131,6 @@ button:disabled {
   margin-top: 14px;
 }
 
-.kod-kim {
-  font-size: 14px;
-  color: var(--ikincil);
-}
-
 .kod-paylas {
   min-height: 40px;
   padding: 0 14px;
@@ -720,4 +715,24 @@ button:disabled {
   font-size: 15px;
   font-weight: 600;
   color: var(--marka-koyu);
+}
+
+.metin-dugme {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-weight: 700;
+  color: var(--marka);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+  /* 44px dokunma alanı, satırı büyütmeden */
+  position: relative;
+}
+
+.metin-dugme::after {
+  content: "";
+  position: absolute;
+  inset: -12px -6px;
 }

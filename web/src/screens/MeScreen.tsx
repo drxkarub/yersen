@@ -3,11 +3,14 @@ import type { InvitesResponse, MeResponse } from "@yersen/shared";
 import { api, errorText } from "../api.ts";
 import "./Screens.css";
 
+const SHOW_USED = 5; // fazlası "ve N kişi daha"
+
 const pretty = (code: string) => `${code.slice(0, 4)}-${code.slice(4)}`;
 
 export function MeScreen({ me }: { me: MeResponse }) {
   const [invites, setInvites] = useState<InvitesResponse | null>(null);
   const [busy, setBusy] = useState(false);
+  const [allUsed, setAllUsed] = useState(false);
   const [note, setNote] = useState<string | null>(null);
 
   useEffect(() => {
@@ -77,7 +80,17 @@ export function MeScreen({ me }: { me: MeResponse }) {
         )}
         {used.length > 0 && (
           <p className="davet-edilenler">
-            <span>Davet ettiklerin ({used.length}):</span> {used.join(", ")}
+            <span>Davet ettiklerin ({used.length}):</span>{" "}
+            {allUsed || used.length <= SHOW_USED ? (
+              used.join(", ")
+            ) : (
+              <>
+                {used.slice(-SHOW_USED).reverse().join(", ")} ve {used.length - SHOW_USED} kişi daha.{" "}
+                <button type="button" className="metin-dugme" onClick={() => setAllUsed(true)}>
+                  Hepsini gör
+                </button>
+              </>
+            )}
           </p>
         )}
         {invites && free.length === 0 && isAdmin && (
@@ -110,6 +123,7 @@ function DeleteAccount({ me }: { me: MeResponse }) {
   const [confirm, setConfirm] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [allUsed, setAllUsed] = useState(false);
   const nickname = me.profile?.nickname ?? "";
 
   if (me.profile?.role === "admin")

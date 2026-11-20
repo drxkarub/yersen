@@ -9,7 +9,6 @@ import type { HealthResponse } from "@yersen/shared";
 import type { Db } from "./db/client.ts";
 import { profile } from "./db/schema.ts";
 import {
-  adminCreateInvites,
   listDishes,
   listUsers,
   recentScrapeRuns,
@@ -206,13 +205,6 @@ export function createApp({ db, auth, staticDir, imageDir, publicOrigin, now = (
       if (!b) return c.json({ error: "bad_request" }, 400);
       const r = await setModerator(db, { actorId: c.get("userId"), targetId: c.req.param("id"), moderator: b.moderator });
       return r.ok ? c.body(null, 204) : fail(c, r.error);
-    });
-
-    admin.post("/invites", requireJson, async (c) => {
-      const b = await body(c, z.object({ count: z.number() }));
-      if (!b) return c.json({ error: "bad_request" }, 400);
-      const r = await adminCreateInvites(db, { actorId: c.get("userId"), count: b.count });
-      return r.ok ? c.json({ codes: r.codes }, 201) : fail(c, r.error);
     });
 
     admin.get("/dishes", async (c) => c.json({ dishes: await listDishes(db, { q: c.req.query("q") }) }));

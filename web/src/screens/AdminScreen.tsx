@@ -8,11 +8,10 @@ type Overview = Awaited<ReturnType<typeof api.admin.overview>>;
 type User = Awaited<ReturnType<typeof api.admin.users>>["users"][number];
 type Dish = Awaited<ReturnType<typeof api.admin.dishes>>["dishes"][number];
 
-const pretty = (code: string) => `${code.slice(0, 4)}-${code.slice(4)}`;
 const when = (iso: string) =>
   new Intl.DateTimeFormat("tr-TR", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit", timeZone: "Europe/Istanbul" }).format(new Date(iso));
 
-/** Yönetim: moderatör yemek görsellerini görür; admin ayrıca kullanıcıları ve davet kodlarını. */
+/** Yönetim: moderatör yemek görsellerini görür; admin ayrıca kullanıcıları. Kök davet kodları sunucu CLI'ından. */
 export function AdminScreen() {
   const [overview, setOverview] = useState<Overview | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -34,68 +33,33 @@ export function AdminScreen() {
   return (
     <main className="bugun yonetim">
       <ScraperRuns runs={overview.scrapeRuns} />
-      {overview.role === "admin" && <Invites />}
       {overview.role === "admin" && <Users />}
       <DishImages />
     </main>
   );
 }
 
+// "0 yeni yemek" gibi her gün aynı olan satırlar gürültü: son çalışma tek satır,
+// öncekilerden yalnızca hata verenler ya da yeni yemek getirenler.
+const newDishes = (message: string) => Number(/(\d+) yeni yemek/.exec(message)?.[1] ?? 0);
+const tidy = (message: string) => message.replace(/, 0 yeni yemek\./, ".");
+
 function ScraperRuns({ runs }: { runs: Overview["scrapeRuns"] }) {
+  const [last, ...older] = runs;
+  const notable = older.filter((r) => !r.ok || newDishes(r.message) > 0);
   return (
     <section className="fis" aria-labelledby="scraper-baslik">
       <h2 id="scraper-baslik" className="alt-baslik">
         Scraper
       </h2>
-      {runs.length === 0 ? (
+      {!last ? (
         <p className="form-aciklama">Henüz çalışma kaydı yok. Zamanlayıcı her gün 07:00 ve 10:00'da çalışır.</p>
       ) : (
         <ul className="kayitlar">
-          {runs.map((r) => (
+          {[last, ...notable].map((r) => (
             <li key={r.id} data-hata={!r.ok || undefined}>
               <span className="kayit-zaman">{when(r.at)}</span>
-              <span>{r.ok ? r.message : `Hata: ${r.message}`}</span>
-            </li>
-          ))}
-        </ul>
-      )}
-    </section>
-  );
-}
-
-function Invites() {
-  const [count, setCount] = useState(3);
-  const [codes, setCodes] = useState<string[]>([]);
-  const [error, setError] = useState<string | null>(null);
-  const create = async (e: FormEvent) => {
-    e.preventDefault();
-    setError(null);
-    try {
-      setCodes((await api.admin.invites(count)).codes);
-    } catch (err) {
-      setError(errorText(err));
-    }
-  };
-  return (
-    <section className="fis" aria-labelledby="davet-uret-baslik">
-      <h2 id="davet-uret-baslik" className="alt-baslik">
-        Davet kodu üret
-      </h2>
-      <form className="satir-form" onSubmit={(e) => void create(e)}>
-        <label className="alan alan-kisa">
-          <span>Kaç tane</span>
-          <input type="number" min={1} max={20} value={count} onChange={(e) => setCount(Number(e.target.value))} />
-        </label>
-        <button type="submit" className="dugme">
-          Üret
-        </button>
-      </form>
-      {error && <p className="hata">{error}</p>}
-      {codes.length > 0 && (
-        <ul className="kodlar">
-          {codes.map((c) => (
-            <li key={c}>
-              <span className="kod">{pretty(c)}</span>
+              <span>{r.ok ? tidy(r.message) : `Hata: ${r.message}`}</span>
             </li>
           ))}
         </ul>

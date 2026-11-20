@@ -7,7 +7,6 @@ import { eq } from "drizzle-orm";
 import { createTestDb, type Db } from "../db/client.ts";
 import { adminAction, dish, inviteCode, profile } from "../db/schema.ts";
 import {
-  adminCreateInvites,
   listDishes,
   listUsers,
   recordScrapeRun,
@@ -66,22 +65,6 @@ describe("setModerator", () => {
 
   it("olmayan kullanıcı not_found", async () => {
     expect(await setModerator(db, { actorId: "adm", targetId: "yok", moderator: true })).toEqual({ ok: false, error: "not_found" });
-  });
-});
-
-describe("adminCreateInvites", () => {
-  it("yönetici kök davet kodu üretir ve kaydeder", async () => {
-    const r = await adminCreateInvites(db, { actorId: "adm", count: 3 });
-    expect(r.ok && r.codes).toHaveLength(3);
-    const codes = await db.select().from(inviteCode);
-    expect(codes.every((c) => c.createdBy === null)).toBe(true);
-    expect((await actions())[0]).toMatchObject({ action: "create_invites", detail: { count: 3 } });
-  });
-
-  it("moderatör kod üretemez; sayı 1-20 arası", async () => {
-    expect(await adminCreateInvites(db, { actorId: "mod", count: 1 })).toEqual({ ok: false, error: "forbidden" });
-    expect(await adminCreateInvites(db, { actorId: "adm", count: 0 })).toEqual({ ok: false, error: "bad_count" });
-    expect(await adminCreateInvites(db, { actorId: "adm", count: 21 })).toEqual({ ok: false, error: "bad_count" });
   });
 });
 
