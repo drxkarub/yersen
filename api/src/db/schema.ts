@@ -244,3 +244,18 @@ export const scrapeRun = pgTable("scrape_run", {
   ok: boolean("ok").notNull(),
   message: text("message").notNull(),
 });
+
+/** Günün tepsisinin gerçek fotoğrafı. Yalnızca moderatör/admin yükler; yoksa ön yüzde hiç görünmez. */
+export const trayPhoto = pgTable(
+  "tray_photo",
+  {
+    id: serial("id").primaryKey(),
+    menuId: integer("menu_id")
+      .notNull()
+      .references(() => menu.id, { onDelete: "cascade" }),
+    file: text("file").notNull(), // IMAGE_DIR içindeki dosya adı; /img/<file> olarak sunulur
+    uploadedBy: text("uploaded_by").references(() => profile.id, { onDelete: "set null" }), // hesap silinirse fotoğraf kalır
+    createdAt: createdAt(),
+  },
+  (t) => [index("tray_photo_menu").on(t.menuId)],
+);

@@ -43,6 +43,13 @@
       "when": 1794851204640,
       "tag": "0005_admin_tables",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1795179889638,
+      "tag": "0006_tray_photo",
+      "breakpoints": true
     }
   ]
 }

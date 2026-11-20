@@ -69,6 +69,14 @@ export const api = {
       return (await res.json()) as { imageUrl: string };
     },
     removeDishImage: (id: number) => call<void>(`/admin/dishes/${id}/image`, { method: "DELETE" }),
+    uploadTrayPhoto: async (date: string, file: File) => {
+      const form = new FormData();
+      form.set("file", file);
+      const res = await fetch(`/api/admin/days/${date}/tray`, { method: "POST", body: form, credentials: "same-origin" });
+      if (!res.ok) throw new ApiError(res.status, ((await res.json().catch(() => ({}))) as { error?: string }).error ?? `http_${res.status}`);
+      return (await res.json()) as { id: number; url: string };
+    },
+    removeTrayPhoto: (id: number) => call<void>(`/admin/tray/${id}`, { method: "DELETE" }),
   },
 };
 
@@ -92,6 +100,8 @@ export function errorText(err: unknown): string {
     cannot_change_admin: "Yöneticinin rolü panelden değiştirilemez.",
     invalid_image: "Bu dosya bir fotoğraf değil ya da bozuk.",
     too_large: "Fotoğraf çok büyük (en fazla 10 MB).",
+    future_day: "Bu günün tepsisi daha çıkmadı.",
+    too_many_photos: "Bu güne 6 fotoğraf yeter. Birini kaldırıp yenisini ekle.",
     confirm_mismatch: "Takma adın tutmadı. Aynen yaz.",
     admin_cannot_delete: "Yönetici hesabı silinemez.",
     network: "Bağlantı yok gibi. İnternetini kontrol edip tekrar dene.",

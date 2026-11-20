@@ -74,11 +74,11 @@ Her madde küçük ve tek başına test edilebilir. Bitince `[x]` ile işaretle.
 ## Faz 2: Yorum ve moderasyon
 
 ### Tepsi fotoğrafı (Faz 2'nin ilk işi; "bildir" ve moderatör silmesiyle birlikte açılır)
-- [ ] Günün tepsisinin fotoğrafı: Bugün ekranında fişin en üstünde. Yarının yemeğine fotoğraf yok (Kaydır'da Commons görseli kalır).
-- [ ] Yükleme kuralları: YALNIZCA moderatör ve admin yükler (geliştirici kararı; moderasyon yükü yok). Puanlama penceresi açıkken (11:30 → ertesi gün 11:30). Boyut sınırı. Altyapı hazır: setDishImage (sharp, EXIF silme, rol kontrolü).
-- [ ] Gizlilik: EXIF/GPS silinir, görsel küçültülür (yemek görselinde yapıldı ve testli; tepsi için aynı yol). Yükleyen takma adla görünür.
-- [ ] Birden fazla fotoğraf: biri büyük, diğerleri küçük şerit. Başta ilk yüklenen öne çıkar.
-- [ ] Moderatör/admin kaldırma; kaldırılan fotoğraf diskten de silinir.
+- [x] Günün tepsisinin fotoğrafı: Bugün ekranında menünün hemen altında; yüklenmemişse hiç görünmez. Yarının yemeğine fotoğraf yok (Kaydır'da Commons görseli kalır).
+- [x] Yükleme kuralları: YALNIZCA moderatör ve admin yükler (geliştirici kararı; moderasyon yükü yok). Bugüne ve geçmiş günlere (ileriki güne değil), günde en fazla 6. Boyut sınırı. Altyapı hazır: setDishImage (sharp, EXIF silme, rol kontrolü).
+- [x] Gizlilik: EXIF/GPS silinir, görsel küçültülür (yemek görselinde yapıldı ve testli; tepsi için aynı yol). Yükleyen takma adla görünür.
+- [x] Birden fazla fotoğraf: biri büyük, diğerleri küçük şerit. Başta ilk yüklenen öne çıkar.
+- [x] Moderatör/admin kaldırma; kaldırılan fotoğraf diskten de silinir.
 - [ ] Amaç: ertesi sabah puanlarken tepsiyi görüp tadı hatırlamak; "beklenen (Commons) / gelen (tepsi)" karşılaştırması paylaşılabilir.
 
 

@@ -20,6 +20,7 @@ import {
 import { deleteAccount } from "./domain/account.ts";
 import { claimInvite, myInvites } from "./domain/invites.ts";
 import { getDayMenu, getDayNav, getUpcoming } from "./domain/menuQueries.ts";
+import { addTrayPhoto, removeTrayPhoto } from "./domain/trayPhotos.ts";
 import { istanbulDate } from "./domain/time.ts";
 import { rateDish } from "./domain/rating.ts";
 import { setSwipe } from "./domain/swipe.ts";
@@ -52,6 +53,8 @@ const STATUS: Record<string, ContentfulStatusCode> = {
   cannot_change_admin: 409,
   bad_count: 400,
   invalid_image: 400,
+  future_day: 400,
+  too_many_photos: 409,
   confirm_mismatch: 400,
   admin_cannot_delete: 409,
   invalid_score: 400,
@@ -226,6 +229,30 @@ export function createApp({ db, auth, staticDir, imageDir, publicOrigin, now = (
 
     admin.delete("/dishes/:id/image", async (c) => {
       const r = await removeDishImage(db, { actorId: c.get("userId"), dishId: Number(c.req.param("id")) });
+      return r.ok ? c.body(null, 204) : fail(c, r.error);
+    });
+
+    admin.post("/days/:date/tray", async (c) => {
+      if (!imageDir) return c.json({ error: "images_disabled" }, 503);
+      const date = c.req.param("date");
+      if (!isCalendarDate(date)) return c.json({ error: "bad_request" }, 400);
+      const form = await c.req.parseBody().catch(() => null);
+      const file = form?.["file"];
+      if (!(file instanceof File)) return c.json({ error: "bad_request" }, 400);
+      if (file.size > 10 * 1024 * 1024) return c.json({ error: "too_large" }, 413);
+      const r = await addTrayPhoto(db, {
+        actorId: c.get("userId"),
+        date,
+        bytes: new Uint8Array(await file.arrayBuffer()),
+        dir: imageDir,
+        now: now(),
+      });
+      return r.ok ? c.json({ id: r.id, url: r.url }, 201) : fail(c, r.error);
+    });
+
+    admin.delete("/tray/:id", async (c) => {
+      if (!imageDir) return c.json({ error: "images_disabled" }, 503);
+      const r = await removeTrayPhoto(db, { actorId: c.get("userId"), photoId: Number(c.req.param("id")), dir: imageDir });
       return r.ok ? c.body(null, 204) : fail(c, r.error);
     });
 

@@ -23,9 +23,10 @@ const actions: TodayActions = {
   },
 };
 
-export function TodayScreen() {
+export function TodayScreen({ staff }: { staff: boolean }) {
   const [data, setData] = useState<DayNavResponse | "error" | null>(null);
   const [date, setDate] = useState<string | undefined>(undefined); // undefined: bugün
+  const [version, setVersion] = useState(0); // tepsi fotoğrafı eklenince/kaldırılınca yeniden yükle
   useEffect(() => {
     let current = true;
     // Önceki gün yeni gün gelene kadar ekranda kalır (boş ekran yanıp sönmesin).
@@ -36,7 +37,7 @@ export function TodayScreen() {
     return () => {
       current = false;
     };
-  }, [date]);
+  }, [date, version]);
 
   if (data === null) return <main className="bugun" aria-busy="true" />;
   if (data === "error")
@@ -49,5 +50,5 @@ export function TodayScreen() {
       </main>
     );
   // key: gün değişince fişin iç durumu (açık satır, basılan mühürler) sıfırlanır.
-  return <Today key={data.date} nav={data} now={new Date()} actions={actions} onGo={setDate} />;
+  return <Today key={data.date} nav={data} now={new Date()} actions={actions} onGo={setDate} staff={staff} onTrayChange={() => setVersion((v) => v + 1)} />;
 }

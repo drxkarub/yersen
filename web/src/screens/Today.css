@@ -465,3 +465,100 @@
   font-size: 12px;
   font-weight: 700;
 }
+
+/* --- Tepsi fotoğrafı: menünün hemen altında; yoksa hiç yok --- */
+
+.tepsi {
+  display: grid;
+  gap: 8px;
+}
+
+.tepsi-buyuk {
+  margin: 0;
+  overflow: hidden;
+  border-radius: var(--kose);
+  background: var(--fis);
+  border-bottom: 4px solid var(--vurgu);
+}
+
+.tepsi-buyuk img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  background: var(--cizgi);
+}
+
+.tepsi-buyuk figcaption {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ikincil);
+}
+
+.tepsi-kaldir {
+  min-height: 36px;
+  padding: 0 12px;
+  border: 1px solid var(--koparma);
+  border-radius: var(--kose);
+  background: none;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--marka-koyu); /* kırmızı yalnızca "yemem" damgası */
+  cursor: pointer;
+}
+
+.tepsi-serit {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+}
+
+.tepsi-serit button {
+  flex: none;
+  width: 64px;
+  height: 64px;
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: var(--kose);
+  overflow: hidden;
+  background: var(--cizgi);
+  cursor: pointer;
+}
+
+.tepsi-serit button[aria-pressed="true"] {
+  border-color: var(--vurgu);
+}
+
+.tepsi-serit img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.tepsi-ekle {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.tepsi-ekle input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.tepsi-ekle:focus-within {
+  outline: 2px solid var(--vurgu);
+  outline-offset: 2px;
+}

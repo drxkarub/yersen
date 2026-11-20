@@ -3,9 +3,10 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import sharp from "sharp";
 import { beforeEach, describe, expect, it } from "vitest";
+import { eq } from "drizzle-orm";
 import { createApp, type AuthPort } from "./app.ts";
 import { createTestDb, type Db } from "./db/client.ts";
-import { dish, profile } from "./db/schema.ts";
+import { dish, menu, profile, venue } from "./db/schema.ts";
 
 const fakeAuth: AuthPort = {
   handler: async () => new Response("auth"),
@@ -90,5 +91,35 @@ describe("/api/admin/dishes/:id/image", () => {
 
   it("görseli kaldırır (204)", async () => {
     expect((await call(`/api/admin/dishes/${dishId}/image`, "mod", { method: "DELETE" })).status).toBe(204);
+  });
+});
+
+describe("/api/admin/days/:date/tray ve /api/admin/tray/:id", () => {
+  const traySetup = async () => {
+    const [v] = await db.select({ id: venue.id }).from(venue).where(eq(venue.slug, "trakya-merkez"));
+    await db.insert(menu).values({ venueId: v!.id, date: "2026-11-16", source: "scraper" });
+  };
+  const jpeg = async () => new Uint8Array(await sharp({ create: { width: 900, height: 600, channels: 3, background: "#aa8844" } }).jpeg().toBuffer());
+  const upload = async (user: string, date = "2026-11-16") => {
+    const form = new FormData();
+    form.set("file", new Blob([Buffer.from(await jpeg())], { type: "image/jpeg" }), "tepsi.jpg");
+    return call(`/api/admin/days/${date}/tray`, user, { body: form, origin: "https://yersen.aegis.net.tr" });
+  };
+
+  it("moderatör yükler (201) ve kaldırır (204); normal kullanıcı 403", async () => {
+    await traySetup();
+    expect((await upload("u1")).status).toBe(403);
+    const r = await upload("mod");
+    expect(r.status).toBe(201);
+    const body = await r.json();
+    expect(body.url).toMatch(/^\/img\/tray-/);
+    expect((await call(`/api/admin/tray/${body.id}`, "u1", { method: "DELETE", origin: "https://yersen.aegis.net.tr" })).status).toBe(403);
+    expect((await call(`/api/admin/tray/${body.id}`, "mod", { method: "DELETE", origin: "https://yersen.aegis.net.tr" })).status).toBe(204);
+  });
+
+  it("bozuk tarih 400, menüsüz gün 404", async () => {
+    await traySetup();
+    expect((await upload("mod", "dun")).status).toBe(400);
+    expect((await upload("mod", "2026-11-21")).status).toBe(404);
   });
 });

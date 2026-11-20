@@ -2,6 +2,7 @@ import { useState, type ReactNode } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { CATEGORY_LABEL, type DayNavResponse, type MenuItemView, type SwipeChoice } from "@yersen/shared";
 import { displayName } from "../format.ts";
+import { TrayPhotos } from "./TrayPhotos.tsx";
 import "./Today.css";
 import "./Screens.css";
 
@@ -24,11 +25,15 @@ export function Today({
   now,
   actions,
   onGo,
+  staff = false,
+  onTrayChange = () => {},
 }: {
   nav: DayNavResponse;
   now: Date;
   actions: TodayActions;
   onGo: (date: string) => void;
+  staff?: boolean; // moderatör/admin: tepsi fotoğrafı ekleyip kaldırabilir
+  onTrayChange?: () => void;
 }) {
   const day = nav.day;
   const [mine, setMine] = useState<Record<number, MyRating>>(() =>
@@ -139,6 +144,14 @@ export function Today({
           <span>{day.kcal ? `${day.kcal} kcal, günün toplamı` : "Kalori bilgisi yok"}</span>
         </div>
       </section>
+
+      <TrayPhotos
+        date={day.date}
+        photos={day.trayPhotos}
+        canUpload={staff && day.date <= nav.today}
+        canRemove={staff}
+        onChange={onTrayChange}
+      />
 
       {error && (
         <p className="hata" role="alert">

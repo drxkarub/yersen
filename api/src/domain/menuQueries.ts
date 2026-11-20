@@ -2,6 +2,7 @@ import { and, asc, avg, count, desc, eq, gt, gte, inArray, lt, sql, type SQL } f
 import type { DbOrTx } from "../db/client.ts";
 import { dish, menu, menuItem, rating, swipe, venue } from "../db/schema.ts";
 import { istanbulDate, isRatingOpen, ratingWindow } from "./time.ts";
+import { trayPhotosByMenu } from "./trayPhotos.ts";
 
 export type { DayMenuView, MenuItemView } from "@yersen/shared";
 import { dishCategory, inDeck, type DayMenuView, type DayNavResponse } from "@yersen/shared";
@@ -56,6 +57,8 @@ async function loadDays(db: DbOrTx, where: SQL, userId: string, now: Date): Prom
     .where(and(inArray(menuItem.menuId, menus.map((m) => m.id)), visibleItems()))
     .orderBy(asc(menu.date), asc(menuItem.position));
 
+  const trays = await trayPhotosByMenu(db, menus.map((m) => m.id));
+
   return menus.map((m) => {
     const { opensAt, closesAt } = ratingWindow(m.date);
     return {
@@ -80,6 +83,7 @@ async function loadDays(db: DbOrTx, where: SQL, userId: string, now: Date): Prom
           myChoice: r.myChoice ?? null,
           myScore: r.myScore ?? null,
         })),
+      trayPhotos: trays.get(m.id) ?? [],
     };
   });
 }

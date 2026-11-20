@@ -17,6 +17,9 @@ export type MenuItemView = {
   myScore: number | null; // bu günün puanı
 };
 
+/** Günün tepsisinin gerçek fotoğrafı (moderatör/admin yükler). */
+export type TrayPhotoView = { id: number; url: string; uploadedBy: string | null };
+
 export type DayMenuView = {
   date: string; // YYYY-MM-DD
   kcal: number | null;
@@ -24,6 +27,7 @@ export type DayMenuView = {
   opensAt: string; // ISO
   closesAt: string; // ISO
   items: MenuItemView[];
+  trayPhotos: TrayPhotoView[]; // yoksa boş: ön yüz hiçbir şey göstermez
 };
 
 export type MeResponse = {
