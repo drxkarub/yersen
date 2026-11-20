@@ -80,7 +80,7 @@ export function App() {
   const staff = gate.me.profile?.role === "admin" || gate.me.profile?.role === "moderator";
   return (
     <Shell date={now} active={tab} staff={staff}>
-      {tab === "bugun" && <TodayScreen staff={staff} />}
+      {tab === "bugun" && <TodayScreen staff={staff} admin={gate.me.profile?.role === "admin"} />}
       {tab === "kaydir" && <SwipeScreen />}
       {tab === "ben" && <MeScreen me={gate.me} />}
       {tab === "yonetim" && (staff ? <AdminScreen /> : <TodayScreen staff={false} />)}

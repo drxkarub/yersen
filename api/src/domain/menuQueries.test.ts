@@ -32,13 +32,29 @@ describe("getDayMenu", () => {
     expect(day!.items[0]).toMatchObject({ average: null, votes: 0, myChoice: null, myScore: null });
   });
 
-  it("ortalama ve oy sayısı yemek bazında tüm günlerin puanlarından gelir", async () => {
+  it("ortalama ve oy sayısı o günün puanlarından gelir", async () => {
     const nohut = await world.item("2026-11-16", "ETLİ NOHUT");
     await rateDish(db, { userId: "u1", menuItemId: nohut.id, score: 8, now: NOW });
     await rateDish(db, { userId: "u3", menuItemId: nohut.id, score: 6, now: NOW });
     const day = await getDayMenu(db, { date: "2026-11-16", userId: "u1", now: NOW });
     const item = day!.items.find((i) => i.rawName === "ETLİ NOHUT")!;
     expect(item).toMatchObject({ average: 7, votes: 2, myChoice: "yes", myScore: 8 });
+  });
+
+  it("aynı yemek başka gün çıkınca o günün puanı boş başlar; önceki çıkışlar ayrı alanda", async () => {
+    const { storeMenuDays } = await import("./menuStore.ts");
+    await storeMenuDays(db, "trakya-merkez", [{ date: "2026-11-18", dishes: ["ARPA ŞEHRİYE ÇORBA", "ETLİ NOHUT"], kcal: 900 }]);
+    const nohut = await world.item("2026-11-16", "ETLİ NOHUT");
+    await rateDish(db, { userId: "u1", menuItemId: nohut.id, score: 10, now: NOW });
+    await rateDish(db, { userId: "u3", menuItemId: nohut.id, score: 6, now: NOW });
+
+    const later = await getDayMenu(db, { date: "2026-11-18", userId: "u1", now: NOW });
+    const again = later!.items.find((i) => i.rawName === "ETLİ NOHUT")!;
+    expect(again).toMatchObject({ average: null, votes: 0, myScore: null, pastAverage: 8, pastVotes: 2 });
+    expect(again.dishId).toBe(nohut.dishId); // görsel ortak kalır
+
+    const today = await getDayMenu(db, { date: "2026-11-16", userId: "u1", now: NOW });
+    expect(today!.items.find((i) => i.rawName === "ETLİ NOHUT")).toMatchObject({ average: 8, votes: 2, pastAverage: null, pastVotes: 0 });
   });
 
   it("başka kullanıcının kararı ve puanı görünmez", async () => {

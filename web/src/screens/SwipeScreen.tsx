@@ -263,7 +263,7 @@ function FullScreenDeck({
             </p>
           )}
           <p className="kart-puan">
-            {card.average === null ? "Henüz puanlanmadı" : `${formatScore(card.average)} ortalama, ${card.votes} kişi`}
+            {card.pastAverage === null ? "Henüz puanı yok" : `Önceki çıkışlarda ${formatScore(card.pastAverage)}, ${card.pastVotes} kişi`}
           </p>
         </div>
       </div>

@@ -562,3 +562,12 @@
   outline: 2px solid var(--vurgu);
   outline-offset: 2px;
 }
+
+/* Yalnızca admin: kim kaç verdi */
+.puanlayanlar {
+  margin: 4px 0 0;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--marka-koyu);
+  overflow-wrap: anywhere;
+}

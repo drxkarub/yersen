@@ -11,8 +11,10 @@ export type MenuItemView = {
   imageUrl: string | null; // temsili görsel (yoksa ön yüz ikon gösterir)
   imageCredit: string | null; // "Yazar, lisans"
   imageSourceUrl: string | null; // atıf bağlantısı
-  average: number | null; // yemeğin tüm günlerdeki ortalaması (tek havuz)
+  average: number | null; // yalnızca bu günün puanları (aynı yemek başka gün sıfırdan başlar)
   votes: number;
+  pastAverage: number | null; // aynı yemeğin bu günden önceki çıkışları (kaydırırken fikir verir)
+  pastVotes: number;
   myChoice: SwipeChoice | null;
   myScore: number | null; // bu günün puanı
 };
@@ -37,6 +39,8 @@ export type MeResponse = {
 
 export type TodayResponse = { today: DayMenuView | null; next: DayMenuView | null };
 /** Bir gün ve menülü komşu günleri (geri/ileri gezinme için). */
+export type DayRatersResponse = { dishes: { dishId: number; raters: { nickname: string | null; score: number }[] }[] };
+
 export type DayNavResponse = { date: string; today: string; day: DayMenuView | null; prevDate: string | null; nextDate: string | null };
 export type UpcomingResponse = { days: DayMenuView[] };
 export type InvitesResponse = { codes: { code: string; usedBy: string | null }[] };

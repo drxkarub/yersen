@@ -23,7 +23,7 @@ const actions: TodayActions = {
   },
 };
 
-export function TodayScreen({ staff }: { staff: boolean }) {
+export function TodayScreen({ staff, admin = false }: { staff: boolean; admin?: boolean }) {
   const [data, setData] = useState<DayNavResponse | "error" | null>(null);
   const [date, setDate] = useState<string | undefined>(undefined); // undefined: bugün
   const [version, setVersion] = useState(0); // tepsi fotoğrafı eklenince/kaldırılınca yeniden yükle
@@ -50,5 +50,5 @@ export function TodayScreen({ staff }: { staff: boolean }) {
       </main>
     );
   // key: gün değişince fişin iç durumu (açık satır, basılan mühürler) sıfırlanır.
-  return <Today key={data.date} nav={data} now={new Date()} actions={actions} onGo={setDate} staff={staff} onTrayChange={() => setVersion((v) => v + 1)} />;
+  return <Today key={data.date} nav={data} now={new Date()} actions={actions} onGo={setDate} staff={staff} admin={admin} onTrayChange={() => setVersion((v) => v + 1)} />;
 }

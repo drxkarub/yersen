@@ -1,4 +1,4 @@
-import { and, asc, avg, count, desc, eq, gt, gte, inArray, lt, sql, type SQL } from "drizzle-orm";
+import { and, asc, count, desc, eq, gt, gte, inArray, lt, sql, type SQL } from "drizzle-orm";
 import type { DbOrTx } from "../db/client.ts";
 import { dish, menu, menuItem, rating, swipe, venue } from "../db/schema.ts";
 import { istanbulDate, isRatingOpen, ratingWindow } from "./time.ts";
@@ -26,12 +26,6 @@ async function loadDays(db: DbOrTx, where: SQL, userId: string, now: Date): Prom
     .orderBy(asc(menu.date));
   if (menus.length === 0) return [];
 
-  const stats = db
-    .select({ dishId: rating.dishId, average: avg(rating.score).as("average"), votes: count().as("votes") })
-    .from(rating)
-    .groupBy(rating.dishId)
-    .as("stats");
-
   const rows = await db
     .select({
       menuId: menuItem.menuId,
@@ -43,21 +37,45 @@ async function loadDays(db: DbOrTx, where: SQL, userId: string, now: Date): Prom
       imageUrl: dish.imageUrl,
       imageCredit: dish.imageCredit,
       imageSourceUrl: dish.imageSourceUrl,
-      average: stats.average,
-      votes: stats.votes,
       myChoice: swipe.choice,
       myScore: rating.score,
     })
     .from(menuItem)
     .innerJoin(menu, eq(menu.id, menuItem.menuId))
     .innerJoin(dish, eq(dish.id, menuItem.dishId))
-    .leftJoin(stats, eq(stats.dishId, menuItem.dishId))
     .leftJoin(swipe, and(eq(swipe.menuItemId, menuItem.id), eq(swipe.userId, userId)))
     .leftJoin(rating, and(eq(rating.dishId, menuItem.dishId), eq(rating.date, menu.date), eq(rating.userId, userId)))
     .where(and(inArray(menuItem.menuId, menus.map((m) => m.id)), visibleItems()))
     .orderBy(asc(menu.date), asc(menuItem.position));
 
   const trays = await trayPhotosByMenu(db, menus.map((m) => m.id));
+
+  // Puanlar güne aittir: aynı yemek başka gün çıkınca o günün puanı boş başlar.
+  // Önceki çıkışların ortalaması ayrı alan (kaydırırken karar vermeye yarar).
+  const dishIds = [...new Set(rows.map((r) => r.dishId))];
+  const perDay =
+    dishIds.length === 0
+      ? []
+      : await db
+          .select({ dishId: rating.dishId, date: rating.date, sum: sql<string>`sum(${rating.score})`, votes: count() })
+          .from(rating)
+          .where(inArray(rating.dishId, dishIds))
+          .groupBy(rating.dishId, rating.date);
+  const statsOf = (dishId: number, date: string) => {
+    let daySum = 0, dayVotes = 0, pastSum = 0, pastVotes = 0;
+    for (const p of perDay) {
+      if (p.dishId !== dishId) continue;
+      if (p.date === date) {
+        daySum += Number(p.sum);
+        dayVotes += p.votes;
+      } else if (p.date < date) {
+        pastSum += Number(p.sum);
+        pastVotes += p.votes;
+      }
+    }
+    const mean = (sum: number, n: number) => (n === 0 ? null : Math.round((sum / n) * 100) / 100);
+    return { average: mean(daySum, dayVotes), votes: dayVotes, pastAverage: mean(pastSum, pastVotes), pastVotes };
+  };
 
   return menus.map((m) => {
     const { opensAt, closesAt } = ratingWindow(m.date);
@@ -78,8 +96,7 @@ async function loadDays(db: DbOrTx, where: SQL, userId: string, now: Date): Prom
           imageUrl: r.imageUrl,
           imageCredit: r.imageCredit,
           imageSourceUrl: r.imageSourceUrl,
-          average: r.average === null ? null : Math.round(Number(r.average) * 100) / 100,
-          votes: Number(r.votes ?? 0),
+          ...statsOf(r.dishId, r.date),
           myChoice: r.myChoice ?? null,
           myScore: r.myScore ?? null,
         })),

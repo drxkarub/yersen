@@ -1,6 +1,7 @@
 import { useState, type ReactNode } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { CATEGORY_LABEL, type DayNavResponse, type MenuItemView, type SwipeChoice } from "@yersen/shared";
+import { CATEGORY_LABEL, type DayNavResponse, type DayRatersResponse, type MenuItemView, type SwipeChoice } from "@yersen/shared";
+import { api, errorText } from "../api.ts";
 import { displayName } from "../format.ts";
 import { TrayPhotos } from "./TrayPhotos.tsx";
 import "./Today.css";
@@ -26,6 +27,7 @@ export function Today({
   actions,
   onGo,
   staff = false,
+  admin = false,
   onTrayChange = () => {},
 }: {
   nav: DayNavResponse;
@@ -33,6 +35,7 @@ export function Today({
   actions: TodayActions;
   onGo: (date: string) => void;
   staff?: boolean; // moderatör/admin: tepsi fotoğrafı ekleyip kaldırabilir
+  admin?: boolean; // yalnızca admin: kimin kaç puan verdiğini görebilir
   onTrayChange?: () => void;
 }) {
   const day = nav.day;
@@ -42,6 +45,16 @@ export function Today({
   const [items, setItems] = useState<MenuItemView[]>(day?.items ?? []);
   const [activeId, setActiveId] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [raters, setRaters] = useState<Map<number, DayRatersResponse["dishes"][number]["raters"]> | null>(null);
+
+  const loadRaters = async (date: string) => {
+    try {
+      const r = await api.admin.dayRaters(date);
+      setRaters(new Map(r.dishes.map((d) => [d.dishId, d.raters])));
+    } catch (err) {
+      setError(errorText(err));
+    }
+  };
 
   const gezgin = <DayNav nav={nav} onGo={onGo} />;
   if (!day) return <StatusTicket nav={nav} gezgin={gezgin} onGo={onGo} />;
@@ -64,6 +77,7 @@ export function Today({
       // Kendi puanın ortalamaya ve oy sayısına hemen yansısın.
       const old = typeof before[item.menuItemId] === "number" ? (before[item.menuItemId] as number) : null;
       setItems((list) => list.map((i) => (i.menuItemId === item.menuItemId ? withMyScore(i, old, value) : i)));
+      if (raters) void loadRaters(day.date);
     }
   };
 
@@ -117,8 +131,22 @@ export function Today({
                       {formatScore(item.average)}
                     </span>
                   )}
-                  <span className="yemek-oy">{item.votes === 0 ? "Henüz puanlayan yok" : `${item.votes} kişi puanladı`}</span>
+                  <span className="yemek-oy">
+                    {item.votes > 0
+                      ? `${item.votes} kişi puanladı`
+                      : waiting && item.pastAverage !== null
+                        ? `Önceki çıkışlarda ${formatScore(item.pastAverage)}, ${item.pastVotes} kişi`
+                        : "Henüz puanlayan yok"}
+                  </span>
                 </Row>
+                {raters && (raters.get(item.dishId)?.length ?? 0) > 0 && (
+                  <p className="puanlayanlar">
+                    {raters
+                      .get(item.dishId)!
+                      .map((r) => `${r.nickname ?? "silinmiş hesap"} ${r.score}`)
+                      .join(" · ")}
+                  </p>
+                )}
 
                 {isActive && (
                   <fieldset className="olcek">
@@ -142,6 +170,16 @@ export function Today({
 
         <div className="fis-alt">
           <span>{day.kcal ? `${day.kcal} kcal, günün toplamı` : "Kalori bilgisi yok"}</span>
+          {admin && items.some((i) => i.votes > 0) && (
+            <button
+              type="button"
+              className="metin-dugme"
+              aria-pressed={raters !== null}
+              onClick={() => (raters ? setRaters(null) : void loadRaters(day.date))}
+            >
+              {raters ? "Puanlayanları gizle" : "Kim puanladı?"}
+            </button>
+          )}
         </div>
       </section>
 

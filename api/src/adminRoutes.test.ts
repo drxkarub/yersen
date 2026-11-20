@@ -61,6 +61,14 @@ describe("/api/admin yetkileri", () => {
     expect((await call("/api/admin/users/u1/moderator", "adm", { json: { moderator: true } })).status).toBe(204);
   });
 
+  it("kim puanladı: yalnızca yönetici; geçersiz tarih 400", async () => {
+    expect((await call("/api/admin/days/2026-11-16/ratings", "mod")).status).toBe(403);
+    const r = await call("/api/admin/days/2026-11-16/ratings", "adm");
+    expect(r.status).toBe(200);
+    expect(await r.json()).toEqual({ dishes: [] });
+    expect((await call("/api/admin/days/2026-13-45/ratings", "adm")).status).toBe(400);
+  });
+
   it("başka siteden gelen istek (Origin uyuşmaz) 403", async () => {
     const r = await call("/api/admin/users/u1/moderator", "adm", { json: { moderator: true }, origin: "https://kotu.example" });
     expect(r.status).toBe(403);

@@ -18,6 +18,7 @@ import {
 } from "./domain/admin.ts";
 import { deleteAccount } from "./domain/account.ts";
 import { claimInvite, grantMoreInvites, myInvites } from "./domain/invites.ts";
+import { dayRaters } from "./domain/raters.ts";
 import { getDayMenu, getDayNav, getUpcoming } from "./domain/menuQueries.ts";
 import { addTrayPhoto, removeTrayPhoto } from "./domain/trayPhotos.ts";
 import { istanbulDate } from "./domain/time.ts";
@@ -194,6 +195,14 @@ export function createApp({ db, auth, staticDir, imageDir, publicOrigin, now = (
     });
 
     admin.get("/overview", async (c) => c.json({ role: c.get("role"), scrapeRuns: await recentScrapeRuns(db, 5) }));
+
+    // Yalnızca admin: o günün yemeklerini kim kaç puanladı (hata avı).
+    admin.get("/days/:date/ratings", async (c) => {
+      const date = c.req.param("date");
+      if (!isCalendarDate(date)) return c.json({ error: "bad_request" }, 400);
+      const r = await dayRaters(db, { actorId: c.get("userId"), date });
+      return r.ok ? c.json({ dishes: r.dishes }) : fail(c, r.error);
+    });
 
     admin.get("/users", async (c) => {
       if (c.get("role") !== "admin") return fail(c, "forbidden");

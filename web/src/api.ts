@@ -1,5 +1,6 @@
 import type {
   DayNavResponse,
+  DayRatersResponse,
   InvitesResponse,
   MeResponse,
   SwipeChoice,
@@ -52,6 +53,7 @@ export const api = {
   deleteAccount: (confirmNickname: string) => call<void>("/me", { method: "DELETE", body: { confirmNickname } }),
   admin: {
     overview: () => call<{ role: "admin" | "moderator"; scrapeRuns: { id: number; at: string; ok: boolean; message: string }[] }>("/admin/overview"),
+    dayRaters: (date: string) => call<DayRatersResponse>(`/admin/days/${date}/ratings`),
     users: () =>
       call<{ users: { id: string; nickname: string; role: "user" | "moderator" | "admin"; invitedBy: string | null; banned: boolean }[] }>(
         "/admin/users",
