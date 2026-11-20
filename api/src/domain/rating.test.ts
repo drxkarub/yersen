@@ -41,6 +41,15 @@ describe("rateDish", () => {
     expect((await rate(it.id, 8)).ok).toBe(true);
   });
 
+  it("puan verdikten sonra 'yemedim/yemem' denirse puan geri çekilir; 'belki' puanı silmez", async () => {
+    const it = await world.item("2026-11-16", "ETLİ NOHUT");
+    expect((await rate(it.id, 3)).ok).toBe(true);
+    await setSwipe(db, { userId: "u1", menuItemId: it.id, choice: "maybe", now: NOW });
+    expect(await db.$count(rating)).toBe(1);
+    await setSwipe(db, { userId: "u1", menuItemId: it.id, choice: "no", now: NOW });
+    expect(await db.$count(rating)).toBe(0);
+  });
+
   it("kaydırmamış kullanıcı puanlarsa kaydırması 'yerim' yazılır", async () => {
     const it = await world.item("2026-11-16", "ETLİ NOHUT");
     expect((await rate(it.id, 6)).ok).toBe(true);

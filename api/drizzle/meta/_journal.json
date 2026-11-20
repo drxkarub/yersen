@@ -50,6 +50,13 @@
       "when": 1795179889638,
       "tag": "0006_tray_photo",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1795204357465,
+      "tag": "0007_rating_said_no_cleanup",
+      "breakpoints": true
     }
   ]
 }

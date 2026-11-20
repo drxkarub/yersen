@@ -1,6 +1,6 @@
 import { and, eq, gte, sql } from "drizzle-orm";
 import type { Db, Tx } from "../db/client.ts";
-import { menu, menuItem, profile, swipe } from "../db/schema.ts";
+import { menu, menuItem, profile, rating, swipe } from "../db/schema.ts";
 import { consumeRate } from "./rateLimit.ts";
 import { istanbulDate, isRatingOpen } from "./time.ts";
 
@@ -35,6 +35,12 @@ export async function setSwipe(
     }
     if (!(await consumeRate(tx, input.userId, "swipe", input.now))) return { ok: false, error: "rate_limited" };
     await upsertSwipe(tx, input.userId, input.menuItemId, input.choice);
+    // "Yemem/yemedim" ile puan bir arada durmaz: varsa o günün puanı geri çekilir.
+    if (input.choice === "no") {
+      await tx
+        .delete(rating)
+        .where(and(eq(rating.userId, input.userId), eq(rating.dishId, ctx.item.dishId), eq(rating.date, ctx.item.date)));
+    }
     return { ok: true };
   });
 }

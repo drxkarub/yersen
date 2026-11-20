@@ -40,7 +40,11 @@ export function Today({
 }) {
   const day = nav.day;
   const [mine, setMine] = useState<Record<number, MyRating>>(() =>
-    Object.fromEntries((day?.items ?? []).filter((i) => i.myScore !== null).map((i) => [i.menuItemId, i.myScore!])),
+    Object.fromEntries(
+      (day?.items ?? []).flatMap((i): [number, MyRating][] =>
+        i.myScore !== null ? [[i.menuItemId, i.myScore]] : day?.ratingOpen && i.myChoice === "no" ? [[i.menuItemId, "yemedim"]] : [],
+      ),
+    ),
   );
   const [items, setItems] = useState<MenuItemView[]>(day?.items ?? []);
   const [activeId, setActiveId] = useState<number | null>(null);
@@ -73,10 +77,19 @@ export function Today({
       setMine(before);
       setActiveId(item.menuItemId);
       setError(err);
-    } else if (typeof value === "number") {
-      // Kendi puanın ortalamaya ve oy sayısına hemen yansısın.
+    } else {
+      // Kendi puanın ortalamaya ve oy sayısına hemen yansısın; "yemedim" puanını geri çeker
+      // (sunucu da siler). Karar da güncellenir: sonra puanlarsa önce "yerim"e çevrilsin.
       const old = typeof before[item.menuItemId] === "number" ? (before[item.menuItemId] as number) : null;
-      setItems((list) => list.map((i) => (i.menuItemId === item.menuItemId ? withMyScore(i, old, value) : i)));
+      setItems((list) =>
+        list.map((i) =>
+          i.menuItemId !== item.menuItemId
+            ? i
+            : value === "yemedim"
+              ? { ...withoutMyScore(i, old), myChoice: "no" }
+              : { ...withMyScore(i, old, value), myChoice: "yes" },
+        ),
+      );
       if (raters) void loadRaters(day.date);
     }
   };
@@ -365,6 +378,12 @@ function withMyScore(i: MenuItemView, old: number | null, score: number): MenuIt
   const total = (i.average ?? 0) * i.votes;
   if (old === null) return { ...i, votes: i.votes + 1, average: (total + score) / (i.votes + 1), myScore: score };
   return { ...i, average: i.votes > 0 ? (total - old + score) / i.votes : score, myScore: score };
+}
+
+function withoutMyScore(i: MenuItemView, old: number | null): MenuItemView {
+  if (old === null || i.votes === 0) return { ...i, myScore: null };
+  const votes = i.votes - 1;
+  return { ...i, votes, average: votes === 0 ? null : ((i.average ?? 0) * i.votes - old) / votes, myScore: null };
 }
 
 function weightedAverage(items: MenuItemView[]): number | null {
