@@ -48,7 +48,8 @@ export function LegalScreen() {
           </li>
           <li>
             <strong>Senin girdiğin:</strong> takma adın, kaydırma kararların (yerim/yemem/belki) ve puanların. Takma adın ve puanların
-            ortalamaya katkın diğer kullanıcılara görünür; kimin hangi puanı verdiği görünmez.
+            ortalamaya katkın diğer kullanıcılara görünür; kimin hangi puanı verdiği onlara görünmez. Yalnızca yönetici, hata ve
+            kötüye kullanım ayıklamak için hangi takma adın kaç puan verdiğini görebilir.
           </li>
           <li>
             <strong>Davet bilgisi:</strong> seni kimin davet ettiği ve senin kimi davet ettiğin. Çoklu hesabı önlemek için tutulur.
