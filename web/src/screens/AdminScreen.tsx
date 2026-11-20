@@ -68,8 +68,12 @@ function ScraperRuns({ runs }: { runs: Overview["scrapeRuns"] }) {
   );
 }
 
+const RECENT_USERS = 5;
+
 function Users() {
   const [users, setUsers] = useState<User[] | null>(null);
+  const [q, setQ] = useState("");
+  const [showAll, setShowAll] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const load = () => api.admin.users().then((r) => setUsers(r.users), (err) => setError(errorText(err)));
   useEffect(() => {
@@ -86,19 +90,38 @@ function Users() {
     }
   };
 
+  // Liste uzamasın: aramada eşleşenler; aramasız yönetim ekibi + son katılan 5 kişi.
+  const needle = q.trim().toLocaleLowerCase("tr-TR");
+  const all = users ?? [];
+  const staff = all.filter((u) => u.role !== "user").sort((a, b) => Number(b.role === "admin") - Number(a.role === "admin"));
+  const members = all.filter((u) => u.role === "user").reverse(); // sunucu eskiden yeniye sıralar
+  const shown = needle
+    ? all.filter((u) => u.nickname.toLocaleLowerCase("tr-TR").includes(needle))
+    : [...staff, ...(showAll ? members : members.slice(0, RECENT_USERS))];
+  const hidden = needle || showAll ? 0 : Math.max(0, members.length - RECENT_USERS);
+
   return (
     <section className="fis" aria-labelledby="kullanicilar-baslik">
       <h2 id="kullanicilar-baslik" className="alt-baslik">
         Kullanıcılar {users && <span className="sayi">({users.length})</span>}
       </h2>
+      {all.length > RECENT_USERS && (
+        <label className="alan">
+          <span className="sr-only">Takma ad ara</span>
+          <input type="search" placeholder="Takma ad ara" value={q} onChange={(e) => setQ(e.target.value)} autoComplete="off" />
+        </label>
+      )}
       {error && <p className="hata">{error}</p>}
+      {!needle && members.length > 0 && staff.length > 0 && <p className="liste-not">Yönetim ekibi, sonra son katılanlar</p>}
+      {needle && shown.length === 0 && <p className="form-aciklama">“{q.trim()}” diye biri yok.</p>}
       <ul className="kayitlar">
-        {users?.map((u) => (
+        {shown.map((u) => (
           <li key={u.id} className="kullanici">
             <span>
               <strong>{u.nickname}</strong>
               <small>
                 {u.role === "admin" ? "yönetici" : u.role === "moderator" ? "moderatör" : "kullanıcı"}
+                {u.banned ? ", yasaklı" : ""}
                 {u.invitedBy ? `, ${u.invitedBy} davet etti` : ""}
               </small>
             </span>
@@ -110,13 +133,22 @@ function Users() {
           </li>
         ))}
       </ul>
+      {hidden > 0 && (
+        <button type="button" className="dugme dugme-ikincil kod-al" onClick={() => setShowAll(true)}>
+          Diğer {hidden} kişiyi göster
+        </button>
+      )}
     </section>
   );
 }
 
+// Aramasız açılışta tüm yemekler listelenmesin; arama ya da "göster" ile hepsi.
+const RECENT_DISHES = 6;
+
 function DishImages() {
   const [q, setQ] = useState("");
   const [dishes, setDishes] = useState<Dish[] | null>(null);
+  const [showAllDishes, setShowAllDishes] = useState(false);
   const [busyId, setBusyId] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -125,6 +157,7 @@ function DishImages() {
     setError(null);
     try {
       setDishes((await api.admin.dishes(q)).dishes);
+      setShowAllDishes(q.trim() !== "");
     } catch (err) {
       setError(errorText(err));
     }
@@ -165,7 +198,7 @@ function DishImages() {
       </form>
       {error && <p className="hata">{error}</p>}
       <ul className="yemek-gorselleri">
-        {dishes?.map((d) => (
+        {(showAllDishes ? dishes : dishes?.slice(0, RECENT_DISHES))?.map((d) => (
           <li key={d.id} aria-busy={busyId === d.id || undefined}>
             <div className="mini-gorsel">
               <DishVisual name={d.displayName} imageUrl={d.imageUrl} imageCredit={null} imageSourceUrl={null} />
@@ -197,6 +230,11 @@ function DishImages() {
           </li>
         ))}
       </ul>
+      {!showAllDishes && dishes && dishes.length > RECENT_DISHES && (
+        <button type="button" className="dugme dugme-ikincil kod-al" onClick={() => setShowAllDishes(true)}>
+          Diğer {dishes.length - RECENT_DISHES} yemeği göster
+        </button>
+      )}
     </section>
   );
 }
