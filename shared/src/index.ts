@@ -6,3 +6,4 @@ export type HealthResponse = {
   ok: boolean;
   db: boolean;
 };
+export * from "./inviteLink.ts";

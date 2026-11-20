@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { inviteLink } from "@yersen/shared";
 import type { InvitesResponse, MeResponse } from "@yersen/shared";
 import { api, errorText } from "../api.ts";
 import "./Screens.css";
@@ -18,12 +19,14 @@ export function MeScreen({ me }: { me: MeResponse }) {
   }, []);
 
   const share = async (code: string) => {
-    const text = `yersen'e davet kodun: ${pretty(code)}\nhttps://yersen.aegis.net.tr`;
+    // Link kodu kendisi doldurur; kod yine de yazılı, link açılmazsa elle girilebilsin.
+    const url = inviteLink(window.location.origin, code);
+    const text = `yersen'e davetlisin. Linke dokun, Google ile giriş yap, kodun hazır gelir: ${url}\n(Kod: ${pretty(code)})`;
     try {
       if (navigator.share) await navigator.share({ text });
       else {
         await navigator.clipboard.writeText(text);
-        setNote(`${pretty(code)} kopyalandı.`);
+        setNote(`${pretty(code)} davet linki kopyalandı.`);
       }
     } catch {
       /* kullanıcı paylaşımı kapattı */

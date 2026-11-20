@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import type { MeResponse } from "@yersen/shared";
 import { api, ApiError } from "./api.ts";
 import { Shell, type Tab } from "./Shell.tsx";
+import { clearInvite } from "./invite.ts";
 import { Login } from "./screens/Login.tsx";
 import { Onboarding } from "./screens/Onboarding.tsx";
 import { TodayScreen } from "./screens/TodayScreen.tsx";
@@ -26,6 +27,7 @@ export function App() {
   const load = useCallback(async () => {
     try {
       const me = await api.me();
+      if (me.profile) clearInvite(); // zaten üyeyse bekleyen davet kodu boşa dursun
       setGate(me.profile ? { kind: "ready", me } : { kind: "needs_invite", me });
     } catch (err) {
       setGate(err instanceof ApiError && err.status === 401 ? { kind: "signed_out" } : { kind: "error" });

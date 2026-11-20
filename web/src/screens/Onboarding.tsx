@@ -1,9 +1,12 @@
 import { useState, type FormEvent } from "react";
+import { prettyCode } from "@yersen/shared";
 import { api, errorText } from "../api.ts";
+import { clearInvite, pendingInvite } from "../invite.ts";
 import "./Screens.css";
 
 export function Onboarding({ name, onDone }: { name: string; onDone: () => void }) {
-  const [code, setCode] = useState("");
+  const [fromLink] = useState(pendingInvite);
+  const [code, setCode] = useState(fromLink ? prettyCode(fromLink) : "");
   const [nickname, setNickname] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -14,6 +17,7 @@ export function Onboarding({ name, onDone }: { name: string; onDone: () => void 
     setError(null);
     try {
       await api.onboarding(code, nickname);
+      clearInvite();
       onDone();
     } catch (err) {
       setError(errorText(err));
@@ -27,7 +31,11 @@ export function Onboarding({ name, onDone }: { name: string; onDone: () => void 
     <main className="bugun">
       <form className="fis form-fis" onSubmit={(e) => void submit(e)} aria-labelledby="davet-baslik">
         <h1 id="davet-baslik">Hoş geldin {firstName}</h1>
-        <p className="form-aciklama">Davet kodunu ve burada görüneceğin takma adı yaz. Gerçek adın ve e-postan kimseye gösterilmez.</p>
+        <p className="form-aciklama">
+          {fromLink
+            ? "Davet kodun linkten geldi. Burada görüneceğin takma adı seç yeter. Gerçek adın ve e-postan kimseye gösterilmez."
+            : "Davet kodunu ve burada görüneceğin takma adı yaz. Gerçek adın ve e-postan kimseye gösterilmez."}
+        </p>
 
         <label className="alan">
           <span>Davet kodu</span>
@@ -53,6 +61,7 @@ export function Onboarding({ name, onDone }: { name: string; onDone: () => void 
             autoCapitalize="none"
             spellCheck={false}
             required
+            autoFocus={fromLink !== null}
             minLength={3}
             maxLength={20}
           />

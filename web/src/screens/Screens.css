@@ -742,3 +742,29 @@ button:disabled {
   font-size: 13px;
   color: var(--ikincil);
 }
+
+/* Davet linkiyle gelene kodu hazır göster */
+.davet-hazir {
+  margin-top: 14px;
+  padding: 10px 14px;
+  border: 2px dashed var(--vurgu);
+  border-radius: var(--kose);
+  color: var(--marka-koyu);
+  font-size: 15px;
+}
+
+.davet-hazir .kod {
+  margin-left: 4px;
+  color: var(--marka-koyu);
+  letter-spacing: 0.04em;
+}
+
+.uyari {
+  padding: 10px 14px;
+  border: 2px solid var(--vurgu);
+  border-radius: var(--kose);
+  background: var(--fis);
+  color: var(--marka-koyu);
+  font-size: 14px;
+  font-weight: 600;
+}
