@@ -768,3 +768,155 @@ button:disabled {
   font-size: 14px;
   font-weight: 600;
 }
+
+/* --- Giriş/tanıtım: içeride ne var --- */
+
+.tanitim-baslik {
+  margin-top: 8px;
+  padding: 0 4px;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.tanitim-fis {
+  position: relative;
+}
+
+.tanitim-fis .fis-bas h3 {
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+}
+
+/* Örnek fiş gerçek veri sanılmasın: başlığın altına eğik basılmış damga. */
+.ornek-damga {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 2px 10px;
+  border: 3px solid var(--marka);
+  border-radius: 4px;
+  font-size: 15px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--marka);
+  transform: rotate(-6deg);
+}
+
+.tanitim-ikon {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--koparma);
+  border-radius: var(--kose);
+  color: var(--marka);
+}
+
+.tanitim-not {
+  margin-top: 4px;
+  padding-top: 12px;
+  border-top: 2px dashed var(--koparma);
+  font-size: 14px;
+  color: var(--ikincil);
+}
+
+.tanitim-ozellik {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tanitim-ozellik h3,
+.tanitim-adimlar h2 {
+  font-size: 19px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.tanitim-ozellik p {
+  margin-top: 4px;
+  font-size: 15px;
+  line-height: 1.4;
+  color: var(--ikincil);
+}
+
+.tanitim-gorsel {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.tanitim-gorsel .benim-muhur {
+  position: static;
+}
+
+.tanitim-olcek span {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--koparma);
+  border-radius: var(--kose);
+  font-size: 17px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--marka);
+  background: var(--fis);
+}
+
+.tanitim-olcek span[data-secili] {
+  border-color: var(--marka);
+  background: var(--marka);
+  color: var(--fis);
+}
+
+.tanitim-adimlar ol {
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: adim;
+  display: grid;
+  gap: 10px;
+}
+
+.tanitim-adimlar li {
+  counter-increment: adim;
+  display: grid;
+  grid-template-columns: 30px 1fr;
+  gap: 10px;
+  align-items: start;
+  font-size: 15px;
+  line-height: 1.4;
+  color: var(--ikincil);
+}
+
+.tanitim-adimlar li::before {
+  content: counter(adim);
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border: 2px solid var(--vurgu);
+  border-radius: 50%;
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+  color: var(--marka-koyu);
+}
+
+.tanitim-adimlar b {
+  color: var(--marka-koyu);
+}
+
+/* Uzun sayfada giriş düğmesi kaydırırken elde kalsın. */
+.tanitim-eylem {
+  position: sticky;
+  bottom: 0;
+  margin-top: 4px;
+  padding: 12px 0 calc(8px + env(safe-area-inset-bottom));
+  background: linear-gradient(to bottom, transparent, var(--zemin) 14px);
+}
