@@ -73,7 +73,8 @@ Hepsi mevcut VPS'te çalışır: Debian 12, 2 çekirdek, 2 GB RAM, 40 GB disk, 2
 
 ### Giriş ve hesap
 - Google ile giriş. İlk girişte **tek kullanımlık davet kodu** zorunlu.
-- Her kullanıcının 5 davet kodu hakkı var. Admin bu sayıyı değiştirebilir ve sınırsız kod üretebilir.
+- Her kullanıcının 5 davet kodu hakkı var. Admin kodları bitince Ben sayfasından "5 yeni kod al" ile kotasını artırır (yönetim panelinde kod üretici yok; kök kodlar sunucu CLI'ında).
+- Paylaşılan davet bir linktir (`/?davet=KOD`): kod Google girişinin gidiş-dönüşünde saklanır, hoş geldin ekranında dolu gelir. Uygulama içi tarayıcıda (Instagram vb.) "Tarayıcıda aç" uyarısı çıkar.
 - Kimin kimi davet ettiği kaydedilir (davet ağacı). Sahte hesap dalları topluca banlanabilir, davet edenin kod hakkı alınabilir.
 - Kullanıcı takma adla görünür. Gerçek isim ve e-posta hiçbir yerde gösterilmez.
 - Okul maili (`@trakya.edu.tr`) doğrulaması isteğe bağlı ve süresiz. Doğrulayan kullanıcı yorum yazabilir (Faz 2).
@@ -83,11 +84,14 @@ Hepsi mevcut VPS'te çalışır: Debian 12, 2 çekirdek, 2 GB RAM, 40 GB disk, 2
 ### Kaydırma ve puanlama
 - Kaydırma ileriye dönük bir beklenti sinyali: kullanıcı yayınlanmış menüdeki gelecek günlerin yemeklerini işaretler (yerim / yemem / belki). Kaydırma puan değildir.
 - O gün sadece "yerim" ya da "belki" diyenler puanlayabilir. "Yemem" diyen kararını istediği zaman, yemeğin günü dahil, değiştirebilir. Kaydırmamış kullanıcı puanlama ekranında "yedim" diyerek puanlayabilir.
+- "Yemem/yemedim" ile puan bir arada durmaz: puanladıktan sonra "yemedim" denirse o günün puanı silinir.
+- Kaydırma destesi: bugün + sonraki 3 menülü gün, yalnızca ana yemek ve tatlı (`inDeck`); "Sonraki günlere devam et" ayın kalanını açar, "Baştan kaydır" verilmiş kararları yeniden kaydırtır.
 - Kullanıcı başına, yemek başına, gün başına bir puan (1-10). Puan pencere açıkken değiştirilebilir.
 - Yemekhane seansları: sabah 11:30-13:30, akşam 16:30-19:30. İki seansın menüsü aynı, yani günde tek menü ve tek puan var.
 - Puanlama penceresi: o gün 11:30'dan ertesi gün 11:30'a kadar.
 - Puanlamanın ana yolu, uygulama açılınca ilk ekranda duran "Bugün yedin mi, puanla" kartı. Web Push Faz 3'te gelecek ve hiçbir zaman tek yol olmayacak.
-- Puanlar yemek bazlı ve tek havuzda.
+- Puanlar güne aittir: günün ekranındaki ortalama yalnızca o günün puanlarıdır; aynı yemek başka gün çıkınca puansız başlar. Önceki çıkışların ortalaması ayrı gösterilir ("Önceki çıkışlarda X"; kaydırma kartı ve henüz açılmamış gün). Görsel yemeğe bağlıdır, ortaktır.
+- Kimin kaç puan verdiğini yalnızca admin görür (hata avı; Kurallar/KVKK metninde yazılı). Diğer herkes yalnızca ortalamayı görür.
 - **Eşleşme anahtarı:** Menüde yazan ad gösterilir. Eşleştirme için şu kurallar uygulanır, başka normalizasyon yapılmaz:
   1. Baştaki ve sondaki boşluklar silinir, çoklu boşluk teke indirilir.
   2. Parantez içindeki yüzde ekleri (`(%50)` gibi) silinir.
@@ -105,7 +109,7 @@ Hepsi mevcut VPS'te çalışır: Debian 12, 2 çekirdek, 2 GB RAM, 40 GB disk, 2
 
 ### Yönetim ve roller
 - Yönetim paneli sitenin içinde (`/yonetim`), ayrı alt alan adı yok. Asıl koruma sunucuda: her `/api/admin/*` rotası rolü kontrol eder; arayüzde gizlemek koruma sayılmaz.
-- Ek katman: Cloudflare Access, yalnızca `/yonetim*` ve `/api/admin/*` yollarında (geliştiricinin e-postası). Panel hazır olunca geliştirici Cloudflare'de açar.
+- Cloudflare Access kullanılmıyor (geliştirici kararı, 2026-11).
 - Roller: `admin`, `moderator`, `user`. Admin panelden kullanıcıyı moderatör yapabilir/moderatörlükten alabilir. Admin atamak panelde YOK: sunucuda `set-role` komutuyla yapılır (bir açık ya da hata ile kimse kendini admin yapamasın). Geliştirici Haziran 2027'de mezun olunca yöneticiliği bu komutla devreder.
 - Her yönetim işlemi kayda düşer (kim, ne zaman, ne yaptı, hangi kayıt üzerinde).
 

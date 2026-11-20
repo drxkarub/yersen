@@ -58,10 +58,12 @@ Her madde küçük ve tek başına test edilebilir. Bitince `[x]` ile işaretle.
 - [x] `set-role <takma ad> <admin|moderator|user>` sunucu komutu; geliştirici (big_brother) admin.
 - [x] Yönetim işlem kaydı tablosu (admin_action).
 - [x] Yönetim sekmesi (yalnızca admin/moderatöre görünür) ve `/api/admin/*` rotaları (sunucuda rol + Origin kontrolü; testli):
-  - [x] Davet kodu üretme, kullanıcı listesi (davet eden görünür)
+  - [x] Kullanıcı listesi (davet eden görünür; arama, aramasız yönetim ekibi + son 5)
+  - [x] Admin davet kodu: panelde üretici yok; kodları bitince Ben'de "5 yeni kod al" (kök kodlar sunucu CLI'ında)
+  - [x] Admin "Kim puanladı?" (Bugün fişinde; yalnızca admin)
   - [x] Moderatör yapma / moderatörlükten alma (yalnızca admin)
   - [x] Yemek görselini değiştirme/kaldırma (moderatör + admin; EXIF silinir)
-  - [x] Scraper durumu (son 5 çalışma). "Şimdi çalıştır" bilerek yok: API'nin Docker çalıştırması istenmiyor.
+  - [x] Scraper durumu: son çalışma + yalnızca hata verenler ve yeni yemek getirenler. "Şimdi çalıştır" bilerek yok: API'nin Docker çalıştırması istenmiyor.
   - [ ] Menüde elle düzeltme / günü gizleme
 
 **Tamam sayılır:**
@@ -70,6 +72,18 @@ Her madde küçük ve tek başına test edilebilir. Bitince `[x]` ile işaretle.
 - Davet koduyla giren bir kullanıcı telefonda uygulamayı ana ekrana ekleyip gelecek günleri kaydırabiliyor ve yemeğin günü puan verebiliyor.
 - Kuralları çiğneyen yazmaları (pencere dışında puan, ikinci puan, "yemem" diyenin puanı, oran sınırı aşımı) veritabanı reddediyor.
 - En az 5 gerçek kullanıcı bir hafta boyunca kullandı.
+
+## Sıradaki (Faz 1 kapanmadan)
+
+- [ ] **Repo'yu private yap** (geliştiricinin kararı). Sırayla:
+  1. Önce geçmişte sır olmadığını bir kez daha doğrula (`git log -p | grep -iE "secret|password|token"`); public geçmiş zaten indirilmiş sayılır, sızan bir şey varsa değiştir (rotate), gizlemek yetmez.
+  2. GitHub → Settings → Change visibility → Private. Collaborator erişimi (burakxrd) aynen kalır.
+  3. GHCR paketi (`ghcr.io/drxkarub/yersen`) repodan ayrı görünürlükte; public kalırsa derlenmiş kod indirilebilir. Private yapılacaksa ÖNCE sunucuda watchtower için giriş: `read:packages` yetkili bir token ile `docker login ghcr.io` (root'un `~/.docker/config.json`'u watchtower'a bağlı olmalı), sonra paketi private yap. Yoksa watchtower yeni sürümü çekemez ve deploy sessizce durur.
+  4. Actions dakikaları: private repoda ücretsiz plan ayda 2000 dk. CI ~2,5 dk; günde 15 push ≈ 40 dk, sığar. Ay sonunda Billing'den kontrol et.
+  5. `CLAUDE.md` ve `docs/sunucu.local.md`'deki "paket public" notlarını güncelle; bir push ile deploy'un hâlâ çalıştığını doğrula (`/api/health` ve sunulan JS'te yeni değişiklik).
+- [ ] **Veritabanı yedeği yok** (vps-backup yersen DB'sini kapsamıyor, 2026-11-20 kontrol edildi). Günlük `pg_dump` (sıkıştırılmış, 14 gün) + haftalık sunucu dışı kopya; healthchecks ping'i. Bir kez geri yükleme denemesi yapılmadan "var" sayılmaz.
+- [ ] Menüde elle düzeltme / günü gizleme (yukarıdaki madde).
+- [ ] 5 gerçek kullanıcı x 1 hafta (Faz 1 "tamam sayılır"). Tester geri bildirimleri `docs/gelistirme-notlari.md`'de.
 
 ## Faz 2: Yorum ve moderasyon
 
