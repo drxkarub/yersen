@@ -51,7 +51,7 @@ describe("ön yüz dosyaları (staticDir verildiğinde)", () => {
       const res = await app.request(path);
       expect(res.status, path).toBe(200);
       expect(await res.text()).toContain("<div id=\"root\">");
-      expect(res.headers.get("cache-control")).toBe("no-cache");
+      expect(res.headers.get("cache-control")).toBe("no-cache, no-transform");
     }
   });
 

@@ -277,10 +277,13 @@ export function createApp({ db, auth, staticDir, imageDir, publicOrigin, now = (
     app.get("/assets/*", (c) => c.notFound());
 
     // Diğer statik dosyalar (favicon, manifest) ve tarayıcı içi rotalar için index.html.
-    app.use("*", cacheControl("no-cache"), serveStatic({ root: staticDir }));
+    // no-transform: Cloudflare HTML'e kendi satır içi betiklerini (bot algılama, analitik)
+    // eklemesin; CSP onları zaten engelliyor ve konsolu hatayla dolduruyordu.
+    const HTML_CACHE = "no-cache, no-transform";
+    app.use("*", cacheControl(HTML_CACHE), serveStatic({ root: staticDir }));
     const indexHtml = readFileSync(join(staticDir, "index.html"), "utf8");
     app.get("*", (c) => {
-      c.header("Cache-Control", "no-cache");
+      c.header("Cache-Control", HTML_CACHE);
       return c.html(indexHtml);
     });
   }
