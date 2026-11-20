@@ -18,7 +18,7 @@ import {
   setModerator,
 } from "./domain/admin.ts";
 import { deleteAccount } from "./domain/account.ts";
-import { claimInvite, myInvites } from "./domain/invites.ts";
+import { claimInvite, grantMoreInvites, myInvites } from "./domain/invites.ts";
 import { getDayMenu, getDayNav, getUpcoming } from "./domain/menuQueries.ts";
 import { addTrayPhoto, removeTrayPhoto } from "./domain/trayPhotos.ts";
 import { istanbulDate } from "./domain/time.ts";
@@ -140,6 +140,12 @@ export function createApp({ db, auth, staticDir, imageDir, publicOrigin, now = (
     };
 
     api.get("/invites", requireUser, requireProfile, async (c) => c.json(await myInvites(db, c.get("userId"))));
+
+    // Yönetici kodları bitince kendine 5 yeni kod alır (Ben sayfası).
+    api.post("/invites/more", requireJson, requireUser, requireProfile, async (c) => {
+      const r = await grantMoreInvites(db, { actorId: c.get("userId") });
+      return r.ok ? c.json({ codes: r.codes }) : fail(c, r.error);
+    });
 
     api.get("/menu/today", requireUser, requireProfile, async (c) => {
       const t = now();

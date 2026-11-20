@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it } from "vitest";
 import { eq } from "drizzle-orm";
 import { createTestDb, type Db } from "../db/client.ts";
 import { inviteCode, profile } from "../db/schema.ts";
-import { adminCreateCodes, claimInvite, myInvites, normalizeCode, validateNickname } from "./invites.ts";
+import { adminCreateCodes, claimInvite, grantMoreInvites, myInvites, normalizeCode, validateNickname } from "./invites.ts";
 
 let db: Db;
 const NOW = new Date("2026-11-16T10:00:00Z");
@@ -127,5 +127,32 @@ describe("myInvites", () => {
     const [mine] = (await myInvites(db, "u1")).codes;
     await db.update(profile).set({ bannedAt: NOW }).where(eq(profile.id, "u1"));
     expect(await claimInvite(db, { userId: "kukla", code: mine!.code, nickname: "kukla", now: NOW })).toEqual({ ok: false, error: "invalid_code" });
+  });
+});
+
+describe("grantMoreInvites", () => {
+  const onboard = async (id: string, nickname: string) => {
+    const [code] = await adminCreateCodes(db, 1);
+    await claimInvite(db, { userId: id, code: code!, nickname, now: NOW });
+  };
+
+  it("yönetici kendine 5 yeni kod alır; eskiler (kullanılmışlar dahil) durur", async () => {
+    await onboard("adm", "big_brother");
+    await db.update(profile).set({ role: "admin" }).where(eq(profile.id, "adm"));
+    const before = (await myInvites(db, "adm")).codes;
+    const r = await grantMoreInvites(db, { actorId: "adm" });
+    expect(r.ok).toBe(true);
+    if (!r.ok) return;
+    expect(r.codes).toHaveLength(10);
+    expect(r.codes.slice(0, 5).map((c) => c.code)).toEqual(before.map((c) => c.code));
+    const [p] = await db.select({ q: profile.inviteQuota }).from(profile).where(eq(profile.id, "adm"));
+    expect(p?.q).toBe(10);
+  });
+
+  it("normal kullanıcı ve moderatör yeni kod alamaz", async () => {
+    await onboard("u1", "ali");
+    expect(await grantMoreInvites(db, { actorId: "u1" })).toEqual({ ok: false, error: "forbidden" });
+    await db.update(profile).set({ role: "moderator" }).where(eq(profile.id, "u1"));
+    expect(await grantMoreInvites(db, { actorId: "u1" })).toEqual({ ok: false, error: "forbidden" });
   });
 });

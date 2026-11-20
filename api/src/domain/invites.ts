@@ -2,7 +2,7 @@ import { randomInt } from "node:crypto";
 import { and, asc, count, eq, sql } from "drizzle-orm";
 import { alias } from "drizzle-orm/pg-core";
 import type { Db, DbOrTx } from "../db/client.ts";
-import { inviteCode, profile } from "../db/schema.ts";
+import { adminAction, inviteCode, profile } from "../db/schema.ts";
 
 // 0/O ve 1/I gibi karıştırılan harfler yok: kod sesli okunup elle yazılabilsin.
 const ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
@@ -118,6 +118,29 @@ export async function myInvites(db: Db, userId: string): Promise<MyInvites> {
       .limit(me.quota);
     return { codes: rows };
   });
+}
+
+const TOP_UP = 5;
+
+/** Yalnızca admin: kendi kotasını 5 artırır, yeni kodlar üretilir. Eski (kullanılmış) kodlar kayıt olarak durur. */
+export async function grantMoreInvites(
+  db: Db,
+  input: { actorId: string },
+): Promise<({ ok: true } & MyInvites) | { ok: false; error: "forbidden" }> {
+  const [me] = await db.select({ role: profile.role, bannedAt: profile.bannedAt }).from(profile).where(eq(profile.id, input.actorId));
+  if (!me || me.bannedAt || me.role !== "admin") return { ok: false, error: "forbidden" };
+  await db
+    .update(profile)
+    .set({ inviteQuota: sql`${profile.inviteQuota} + ${TOP_UP}` })
+    .where(eq(profile.id, input.actorId));
+  await db.insert(adminAction).values({
+    actorId: input.actorId,
+    action: "grant_invites",
+    targetType: "profile",
+    targetId: input.actorId,
+    detail: { added: TOP_UP },
+  });
+  return { ok: true, ...(await myInvites(db, input.actorId)) };
 }
 
 function isUniqueViolation(err: unknown, constraint: string): boolean {

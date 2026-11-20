@@ -194,6 +194,16 @@ describe("GET /api/menu/day", () => {
   });
 });
 
+describe("POST /api/invites/more", () => {
+  it("yönetici 5 yeni kod alır; normal kullanıcı 403", async () => {
+    expect((await req("/api/invites/more", { user: "u1", body: {} })).status).toBe(403);
+    await db.update(profile).set({ role: "admin" }).where(eq(profile.id, "u1"));
+    const res = await req("/api/invites/more", { user: "u1", body: {} });
+    expect(res.status).toBe(200);
+    expect((await res.json()).codes.length).toBeGreaterThanOrEqual(5);
+  });
+});
+
 describe("DELETE /api/me", () => {
   it("takma ad onayıyla hesabı siler (204), sonra profil yok", async () => {
     const res = await req("/api/me", { user: "u1", method: "DELETE", body: { confirmNickname: "u1" } });

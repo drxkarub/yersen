@@ -112,10 +112,23 @@ button:disabled {
   font-variant-numeric: tabular-nums;
 }
 
-.kodlar li[data-kullanildi] .kod {
-  color: var(--soluk);
-  text-decoration: line-through;
-  text-decoration-thickness: 2px;
+/* Kullanılmış kodlar listelenmez; kimi davet ettiğin tek satırda. */
+.davet-edilenler {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--cizgi);
+  font-size: 15px;
+  line-height: 1.4;
+  color: var(--marka-koyu);
+}
+
+.davet-edilenler span {
+  font-weight: 700;
+  color: var(--ikincil);
+}
+
+.kod-al {
+  margin-top: 14px;
 }
 
 .kod-kim {

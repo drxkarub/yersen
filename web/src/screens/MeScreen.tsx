@@ -7,6 +7,7 @@ const pretty = (code: string) => `${code.slice(0, 4)}-${code.slice(4)}`;
 
 export function MeScreen({ me }: { me: MeResponse }) {
   const [invites, setInvites] = useState<InvitesResponse | null>(null);
+  const [busy, setBusy] = useState(false);
   const [note, setNote] = useState<string | null>(null);
 
   useEffect(() => {
@@ -32,6 +33,20 @@ export function MeScreen({ me }: { me: MeResponse }) {
   };
 
   const free = invites?.codes.filter((c) => c.usedBy === null) ?? [];
+  // Kullanılmış kodlar liste kalabalığı yapmasın: yalnızca kimi davet ettiğin.
+  const used = invites?.codes.flatMap((c) => (c.usedBy ? [c.usedBy] : [])) ?? [];
+  const isAdmin = me.profile?.role === "admin";
+  const more = async () => {
+    setBusy(true);
+    setNote(null);
+    try {
+      setInvites(await api.moreInvites());
+    } catch (err) {
+      setNote(errorText(err));
+    } finally {
+      setBusy(false);
+    }
+  };
 
   return (
     <main className="bugun">
@@ -42,22 +57,34 @@ export function MeScreen({ me }: { me: MeResponse }) {
         </div>
         <h2 className="alt-baslik">Davet kodların</h2>
         <p className="form-aciklama">
-          {invites ? `${free.length} kodun boşta. Her kod bir kişiyi içeri alır.` : "Yükleniyor…"}
+          {!invites
+            ? "Yükleniyor…"
+            : free.length > 0
+              ? `${free.length} kodun boşta. Her kod bir kişiyi içeri alır.`
+              : "Kodların bitti."}
         </p>
-        <ul className="kodlar">
-          {invites?.codes.map((c) => (
-            <li key={c.code} data-kullanildi={c.usedBy !== null || undefined}>
-              <span className="kod">{pretty(c.code)}</span>
-              {c.usedBy ? (
-                <span className="kod-kim">{c.usedBy} kullandı</span>
-              ) : (
+        {free.length > 0 && (
+          <ul className="kodlar">
+            {free.map((c) => (
+              <li key={c.code}>
+                <span className="kod">{pretty(c.code)}</span>
                 <button type="button" className="kod-paylas" onClick={() => void share(c.code)}>
                   Paylaş
                 </button>
-              )}
-            </li>
-          ))}
-        </ul>
+              </li>
+            ))}
+          </ul>
+        )}
+        {used.length > 0 && (
+          <p className="davet-edilenler">
+            <span>Davet ettiklerin ({used.length}):</span> {used.join(", ")}
+          </p>
+        )}
+        {invites && free.length === 0 && isAdmin && (
+          <button type="button" className="dugme dugme-ikincil kod-al" disabled={busy} onClick={() => void more()}>
+            {busy ? "Üretiliyor…" : "5 yeni kod al"}
+          </button>
+        )}
         {note && (
           <p className="form-aciklama" role="status">
             {note}

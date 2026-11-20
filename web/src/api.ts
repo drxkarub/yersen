@@ -36,6 +36,7 @@ export const api = {
   me: () => call<MeResponse>("/me"),
   onboarding: (code: string, nickname: string) => call<void>("/onboarding", { body: { code, nickname } }),
   invites: () => call<InvitesResponse>("/invites"),
+  moreInvites: () => call<InvitesResponse>("/invites/more", { body: {} }),
   today: () => call<TodayResponse>("/menu/today"),
   day: (date?: string) => call<DayNavResponse>(date ? `/menu/day?date=${date}` : "/menu/day"),
   upcoming: () => call<UpcomingResponse>("/menu/upcoming"),
