@@ -69,6 +69,7 @@ export function SwipeScreen() {
   const toCards = (ds: DayMenuView[]): Card[] => ds.flatMap((d) => d.items.filter((i) => i.inDeck).map((i) => ({ ...i, date: d.date })));
   const cards = toCards(deckDays);
   const deck = redo ? cards.filter((c) => !redo.has(c.menuItemId)) : cards.filter((c) => c.myChoice === null);
+  const allCards = toCards(pending);
   const laterWaiting = more ? 0 : toCards(pending.filter((d) => !isNear(d))).filter((c) => c.myChoice === null).length;
 
   const decide = async (card: Card, choice: SwipeChoice) => {
@@ -108,20 +109,22 @@ export function SwipeScreen() {
             Tamam
           </span>
           <h1>{laterWaiting > 0 ? "Yakın günler bitti" : "Hepsini kaydırdın"}</h1>
-          <p>{cards.length === 0 && laterWaiting === 0 ? "Önümüzdeki günlerin menüsü henüz yok." : "Fikrin değişirse aşağıdan düzeltebilirsin."}</p>
+          <p>{allCards.length === 0 ? "Önümüzdeki günlerin menüsü henüz yok." : "Fikrin değişirse aşağıdan düzeltebilirsin."}</p>
         </section>
       )}
 
-      {deck.length === 0 && cards.length > 0 && (
+      {deck.length === 0 && allCards.length > 0 && (
         <button
           type="button"
           className="dugme dugme-ikincil"
           onClick={() => {
+            // Baştan kaydırma ayın kalanını da kapsar: ileriki günlerdeki kararlar da değişebilsin.
+            setMore(true);
             setRedo(new Set());
             setView("deste");
           }}
         >
-          Baştan kaydır ({cards.length} yemek)
+          Baştan kaydır ({allCards.length} yemek)
         </button>
       )}
 
@@ -145,10 +148,10 @@ export function SwipeScreen() {
         </p>
       )}
 
-      {cards.some((c) => c.myChoice !== null) && (
+      {allCards.some((c) => c.myChoice !== null) && (
         <section className="ek" aria-labelledby="kararlar-baslik">
           <h2 id="kararlar-baslik">Kararlarım</h2>
-          {deckDays.map((d) => {
+          {pending.map((d) => {
             const decided = d.items.filter((i) => i.myChoice !== null && i.inDeck);
             if (decided.length === 0) return null;
             return (
