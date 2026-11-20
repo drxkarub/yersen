@@ -63,12 +63,6 @@ Her madde küçük ve tek başına test edilebilir. Bitince `[x]` ile işaretle.
   - [x] Yemek görselini değiştirme/kaldırma (moderatör + admin; EXIF silinir)
   - [x] Scraper durumu (son 5 çalışma). "Şimdi çalıştır" bilerek yok: API'nin Docker çalıştırması istenmiyor.
   - [ ] Menüde elle düzeltme / günü gizleme
-- [ ] Cloudflare Access: `/api/admin/*` için kural (geliştirici Cloudflare panelinden). Not: panel ayrı sayfa değil, sekme (#yonetim); korunacak yol API.
-
-### Operasyon
-- [ ] Günlük `pg_dump` yedeği (sunucuda 14 gün tutulsun) ve haftalık R2 kopyası. Yedekten geri yükleme bir kez denenmiş olsun.
-- [ ] Faz sonu güvenlik denetimi: `security-audit` skill'iyle tam denetim. Yüksek ve kritik bulgular kapatılmış olsun.
-- [ ] Faz sonu tasarım denetimi: her ekran için `/impeccable audit`.
 
 **Tamam sayılır:**
 - Scraper bir hafta boyunca elle müdahale gerekmeden menüyü çekiyor.

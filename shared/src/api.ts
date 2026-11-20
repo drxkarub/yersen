@@ -6,7 +6,7 @@ export type MenuItemView = {
   menuItemId: number;
   dishId: number;
   rawName: string; // menüde yazdığı gibi
-  category: "corba" | "ana" | "pilav" | "yan"; // bkz. dishCategory
+  category: "corba" | "ana" | "pilav" | "zeytinyagli" | "yan"; // bkz. dishCategory
   inDeck: boolean; // kaydırma destesine girer mi (ana yemek, tatlı); bkz. inDeck
   imageUrl: string | null; // temsili görsel (yoksa ön yüz ikon gösterir)
   imageCredit: string | null; // "Yazar, lisans"

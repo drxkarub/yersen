@@ -25,6 +25,12 @@ describe("dishCategory (gerçek Kasım 2026 menülerinden)", () => {
     ["MEYVE", 3, "yan"],
     ["ERİŞTE", 2, "pilav"],
     ["TAVUK DÖNER PATATES KIZARTMASI", 1, "ana"],
+    // Kasım menülerinde yanlış çıkanlar
+    ["ZEYTİNYAĞLI TAZE FASULYE", 2, "zeytinyagli"],
+    ["ZEYTİNYAĞLI PIRASA", 2, "zeytinyagli"],
+    ["BAZLAMALI YOĞURTLU KEBAP", 1, "ana"], // yoğurtlu ama kebap
+    ["ÇİKOLATALI PUDİNG", 3, "yan"],
+    ["FINDIKLI KEŞKÜL", 3, "yan"],
   ])("%s (sıra %i) → %s", (name, position, expected) => {
     expect(dishCategory(name, position)).toBe(expected);
   });
@@ -37,7 +43,13 @@ describe("dishCategory (gerçek Kasım 2026 menülerinden)", () => {
   });
 
   it("etiketler", () => {
-    expect(CATEGORY_LABEL).toEqual({ corba: "Çorba", ana: "Ana yemek", pilav: "Pilav/makarna", yan: "Tatlı/salata/içecek" });
+    expect(CATEGORY_LABEL).toEqual({
+      corba: "Çorba",
+      ana: "Ana yemek",
+      pilav: "Pilav/makarna",
+      zeytinyagli: "Zeytinyağlı",
+      yan: "Tatlı/salata/içecek",
+    });
   });
 });
 
@@ -57,6 +69,9 @@ describe("inDeck (kaydırma destesine sadece ana yemek ve tatlı girer)", () => 
     ["AYRAN", 4, false],
     ["YOĞURT", 3, false],
     ["MEYVE", 3, false],
+    ["ZEYTİNYAĞLI BEZELYE", 2, false],
+    ["BAZLAMALI YOĞURTLU KEBAP", 1, true],
+    ["FINDIKLI KEŞKÜL", 3, true],
   ])("%s (sıra %i) → %s", (name, position, expected) => {
     expect(inDeck(name, position)).toBe(expected);
   });

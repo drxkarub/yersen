@@ -1,10 +1,11 @@
 /** Puanlama kategorileri. Okulun menüsü hep bu sırayla yazılır; ad önce, sıra sonra belirler. */
-export type DishCategory = "corba" | "ana" | "pilav" | "yan";
+export type DishCategory = "corba" | "ana" | "pilav" | "zeytinyagli" | "yan";
 
 export const CATEGORY_LABEL: Record<DishCategory, string> = {
   corba: "Çorba",
   ana: "Ana yemek",
   pilav: "Pilav/makarna",
+  zeytinyagli: "Zeytinyağlı", // üçüncü sırada pilav yerine gelebiliyor
   yan: "Tatlı/salata/içecek",
 };
 
@@ -12,6 +13,8 @@ export const CATEGORY_LABEL: Record<DishCategory, string> = {
 const RULES: [DishCategory, RegExp][] = [
   ["corba", /çorba/],
   ["ana", /patates|püre|kızartma/], // ana yemeğin yanında gelir
+  ["ana", /kebap|kebabı|köfte|tantuni|döner/], // "BAZLAMALI YOĞURTLU KEBAP" yoğurtlu ama ana yemek
+  ["zeytinyagli", /zeytinyağlı/],
   ["pilav", /pilav|makarna|erişte|spagetti|mantı|kuskus|bulgur|börek|(^|\s)şehriye(\s|$)|lazanya|penne/],
   ["yan", /tatlı|baklava|revani|tulumba|sütlaç|kazandibi|puding|helva|kek\b|kadayıf|irmik|komposto|ayran|yoğurt|cacık|salata|söğüş|meyve|turşu|(^|\s)su(\s|$)|limonata|şıra/],
 ];
