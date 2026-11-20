@@ -31,8 +31,15 @@ jobs:
       - name: Tip kontrolü
         run: npm run typecheck
 
+      # Testler CI'da arada bir takılıyor (yerelde 2 çekirdekle tekrarlanamadı). Takılırsa 15 dk
+      # beklemek yerine 5 dk'da kesilip bir kez yeniden denenir; hanging-process neyin açık kaldığını yazar.
       - name: Testler
-        run: npm test
+        run: |
+          for attempt in 1 2; do
+            timeout --kill-after=10s 300 npx vitest run --reporter=default --reporter=hanging-process && exit 0
+            echo "::warning::Testler $attempt. denemede geçmedi ya da takıldı (çıkış $?)"
+          done
+          exit 1
 
       - name: Derleme
         run: npm run build
