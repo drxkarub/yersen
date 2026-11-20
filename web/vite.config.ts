@@ -9,7 +9,7 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: "autoUpdate",
-      injectRegister: "script",
+      injectRegister: false, // kayıt main.tsx'te: yeni sürüm gelince sayfa kendini yeniler
       includeAssets: ["icon.svg", "favicon-32.png", "apple-touch-icon.png"],
       manifest: {
         name: "yersen",
@@ -33,6 +33,7 @@ export default defineConfig({
       workbox: {
         // Uygulama kabuğu önbellekte (hızlı açılış). Menü ve puanlar her zaman canlı:
         // /api bilerek önbelleğe alınmaz, eski menü ya da eski puan gösterilmesin.
+        clientsClaim: true, // yeni sürüm açık sekmeyi hemen devralır
         navigateFallback: "/index.html",
         navigateFallbackDenylist: [/^\/api\//, /^\/img\//],
         globPatterns: ["**/*.{js,css,html,svg,png,woff2}"],
